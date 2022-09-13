@@ -1,4 +1,4 @@
-
+# Avista Digital Exchange SDK
 
 ## Getting Started
 
@@ -13,17 +13,20 @@ digitalExchange = AvistaDigitalExchange("{token}")
 ```
 
 ---
+
 ## Methods
 
 ### 1. getUserInfo
 
 Retrieves your user information.
 
-#### Parameters: 
+#### Parameters:
 
 None
 
-#### Return type: User
+#### Return Type
+
+[User](#user)
 
 #### Example
 
@@ -35,11 +38,13 @@ user = digitalExchange.getUserInfo()
 
 Lists the data stores you own.
 
-#### Parameters: 
+#### Parameters:
 
 None
 
-#### Return type: [DataStore]
+#### Return Type
+
+[[DataStore]](#datastore)
 
 #### Example
 
@@ -51,14 +56,16 @@ dataStores = digitalExchange.listDataStores()
 
 Gets the metadata of the data store.
 
-#### Parameters: 
+#### Parameters:
 
 ```
 dataStoreId :  str, required
     The id of the data store.
 ```
 
-#### Return type: DataStore
+#### Return Type
+
+[DataStore](#datastore)
 
 #### Example
 
@@ -70,14 +77,16 @@ dataStore = digitalExchange.getDataStore("{dataStoreId}")
 
 Gets the directory metadata and contents.
 
-#### Parameters: 
+#### Parameters:
 
 ```
 dataStoreDirectoryId :  str, required
     The id of the directory.
 ```
 
-#### Return type: DataStoreDirectory
+#### Return Type
+
+[DataStoreDirectory](#datastoredirectory)
 
 #### Example
 
@@ -89,14 +98,16 @@ dir = digitalExchange.getDataStoreDirectory("{dataStoreDirectoryId}")
 
 Gets the metadata of a file.
 
-#### Parameters: 
+#### Parameters:
 
 ```
 dataStoreFileId :  str, required
     The id of the file.
 ```
 
-#### Return type: DataStoreFile
+#### Return Type
+
+[DataStoreFile](#datastorefile)
 
 #### Example
 
@@ -108,7 +119,7 @@ file = digitalExchange.getDataStoreFileMeta("{dataStoreFileId}")
 
 Downloads a copy of the file to the local file system.
 
-#### Parameters: 
+#### Parameters:
 
 ```
 dataStoreFileId :  str, required
@@ -117,7 +128,9 @@ writeLocation :  str, required
     Path where the file should be written. If writeLocation is a directory, the filename will be its original name.
 ```
 
-#### Return type: DataStoreFile
+#### Return Type
+
+[DataStoreFile](#datastorefile)
 
 #### Example
 
@@ -129,7 +142,7 @@ file = digitalExchange.downloadDataStoreFile("{dataStoreFileId}", "{writeLocatio
 
 Uploads a local file to a data store.
 
-#### Parameters: 
+#### Parameters:
 
 ```
 dataStoreId :  str, required
@@ -144,7 +157,9 @@ description :  str, optional
     A description of the file.
 ```
 
-#### Return type: DataStoreFile
+#### Return Type
+
+[DataStoreFile](#datastorefile)
 
 #### Example
 
@@ -154,16 +169,18 @@ file = digitalExchange.uploadFileToDataStore("{dataStoreId}", "{dataStoreDirecto
 
 ### 8. deleteDataStoreFile
 
-Removes a file from the data store and deletes it from the Digital Exchange. 
+Removes a file from the data store and deletes it from the Digital Exchange.
 
-#### Parameters: 
+#### Parameters:
 
 ```
 dataStoreFileId :  str, required
     The id of the file to delete.
 ```
 
-#### Return type: DataStoreFile
+#### Return Type
+
+[DataStoreFile](#datastorefile)
 
 #### Example
 
@@ -175,11 +192,13 @@ file = digitalExchange.deleteDataStoreFile("{dataStoreFileId}")
 
 Lists the databases you own.
 
-#### Parameters: 
+#### Parameters:
 
 None
 
-#### Return type: [TimeSeriesDb]
+#### Return Type
+
+[[TimeSeriesDb]](#timeseriesdb)
 
 #### Example
 
@@ -191,14 +210,16 @@ databases = digitalExchange.listTimeSeriesDatabases()
 
 Gets the metadata of the database.
 
-#### Parameters: 
+#### Parameters:
 
 ```
 timeSeriesDbId :  str, required
     The id of the database.
 ```
 
-#### Return type: TimeSeriesDb
+#### Return Type
+
+[TimeSeriesDb](#timeseriesdb)
 
 #### Example
 
@@ -208,13 +229,13 @@ database = digitalExchange.getTimeSeriesDatabase("{timeSeriesDbId}")
 
 ### 11. queryTimeSeriesDatabaseWithTimestreamFormat
 
-Queries the time series data using [SQL and AWS Timestream features](https://docs.aws.amazon.com/timestream/latest/developerguide/reference.html). 
+Queries the time series data using [SQL and AWS Timestream features](https://docs.aws.amazon.com/timestream/latest/developerguide/reference.html).
 
 The result will be paginated if large enough. For the first request, omit the nextToken and clientToken parameters or set them to None. If a NextToken is present in the query result, there is more data to retrieve. In subsequent requests use the original queryString and maxRows parameters, and the nextToken and clientToken from the previous query result.
 
 Input variables begin with lowercase letters for Digital Exchange API consistency but result variables from AWS Timestream will have capitalized variable names.
 
-#### Parameters: 
+#### Parameters:
 
 ```
 timeSeriesDbId :  str, required
@@ -230,7 +251,9 @@ clientToken :  str, optional
     A unique token for a query from this device. The token will change for each query. Omit this parameter on the first request.
 ```
 
-#### Return type: QueryResult_TimestreamVariables
+#### Return Type
+
+[QueryResult_TimestreamVariables](#queryresult_timestreamvariables)
 
 #### Example
 
@@ -244,10 +267,9 @@ nextToken = result.NextToken
 
 Creates a MeasureValue object to be used as an entry for a time series record.
 
-
 Reference [AWS Timestream MeasureValue](https://docs.aws.amazon.com/timestream/latest/developerguide/API_MeasureValue.html)
 
-#### Parameters: 
+#### Parameters:
 
 ```
 Type :  str, required
@@ -258,7 +280,9 @@ Value :  str, required
     The measure value as a string.
 ```
 
-#### Return type: TimeSeriesMeasureValue
+#### Return Type
+
+[TimeSeriesMeasureValue](#timeseriesmeasurevalue)
 
 #### Example
 
@@ -268,12 +292,11 @@ measure = digitalExchange.createTimeSeriesMeasureValue("{type}", "{name}", "{val
 
 ### 13. createTimeSeriesDimension
 
-Creates a Dimension object to be used in a record.  Each Dimension is essentially a metadata attribute for a record.
-
+Creates a Dimension object to be used in a record. Each Dimension is essentially a metadata attribute for a record.
 
 Reference [AWS Timestream Dimension](https://docs.aws.amazon.com/timestream/latest/developerguide/API_Dimension.html)
 
-#### Parameters: 
+#### Parameters:
 
 ```
 DimensionValueType :  str, required
@@ -284,7 +307,9 @@ Value :  str, required
     The attribute value.
 ```
 
-#### Return type: TimeSeriesDimension
+#### Return Type
+
+[TimeSeriesDimension](#timeseriesdimension)
 
 #### Example
 
@@ -296,10 +321,9 @@ dimension = digitalExchange.createTimeSeriesDimension("VARCHAR", "{name}", "{val
 
 Creates a time series data point record.
 
-
 Reference (AWS Timestream Record)(https://docs.aws.amazon.com/timestream/latest/developerguide/API_Record.html)
 
-#### Parameters: 
+#### Parameters:
 
 ```
 Time :  str, required
@@ -320,7 +344,9 @@ Version : int, optional
     The version of the record. Record data can be updated by publishing it again with an incremented Version number. Defaults to 1.
 ```
 
-#### Return type: TimeSeriesInputRecord
+#### Return Type
+
+[TimeSeriesInputRecord](#timeseriesinputrecord)
 
 #### Example
 
@@ -341,11 +367,11 @@ record = digitalExchange.createTimeSeriesInputRecord('1662155084', 'SECONDS', 'm
 
 ### 15. publishToTimeSeriesDatabase
 
-Publishes data records to the database. 
-        
+Publishes data records to the database.
+
 You may only publish records for 1 asset per request. To support viewing on data on the web, include a Dimension entry with DimensionName 'name' and DimensionValue containing the name of the asset.
 
-#### Parameters: 
+#### Parameters:
 
 ```
 timeSeriesDbId :  str, required
@@ -356,7 +382,9 @@ records : [TimeSeriesInputRecord], required
     An array of data records to write to the database.
 ```
 
-#### Return type: [TimeSeriesAssetData]
+#### Return Type
+
+[[TimeSeriesAssetData]](#timeseriesassetdata)
 
 #### Example
 
@@ -388,11 +416,13 @@ result = digitalExchange.publishToTimeSeriesDatabase('{}', 'asset1', records)
 
 Lists the collaboratives you are a member of.
 
-#### Parameters: 
+#### Parameters:
 
 None
 
-#### Return type: [Collaborative]
+#### Return Type
+
+[[Collaborative]](#collaborative)
 
 #### Example
 
@@ -404,14 +434,16 @@ collaboratives = digitalExchange.listCollaboratives()
 
 Gets the metadata of the collaborative.
 
-#### Parameters: 
+#### Parameters:
 
 ```
 collaborativeId :  str, required
     The id of the collaborative.
 ```
 
-#### Return type: Collaborative
+#### Return Type
+
+[Collaborative](#collaborative)
 
 #### Example
 
@@ -423,14 +455,16 @@ collaborative = digitalExchange.getCollaborative("{collaborativeId}")
 
 Lists all services (Data Stores of Time Series Databases) shared in the collaborative.
 
-#### Parameters: 
+#### Parameters:
 
 ```
 collaborativeId :  str, required
     The id of the collaborative.
 ```
 
-#### Return type: [Service]
+#### Return Type
+
+[[Service]](#service)
 
 #### Example
 
@@ -442,14 +476,16 @@ services = digitalExchange.listCollaborativeServices("{collaborativeId}")
 
 Gets the collaboratives that a service is shared with. You must be the owner of the service.
 
-#### Parameters: 
+#### Parameters:
 
 ```
 serviceId :  str, required
     The id of the service (either a dataStoreId or timeSeriesDbId).
 ```
 
-#### Return type: [Collaborative]
+#### Return Type
+
+[[Collaborative]](#collaborative)
 
 #### Example
 
@@ -461,7 +497,7 @@ collaboratives = digitalExchange.listCollaborativesServiceSharedWith("{serviceId
 
 Shares a service (Data Store or Time Series database) with a collaborative.
 
-#### Parameters: 
+#### Parameters:
 
 ```
 serviceId :  str, required
@@ -470,7 +506,9 @@ collaborativeId :  str, required
     The id of the collaborative to share the service with.
 ```
 
-#### Return type: Service
+#### Return Type
+
+[Service](#service)
 
 #### Example
 
@@ -482,7 +520,7 @@ service = digitalExchange.addServiceToCollaborative("{serviceId}", "{collaborati
 
 Removes the service from a collaborative.
 
-#### Parameters: 
+#### Parameters:
 
 ```
 serviceId :  str, required
@@ -491,7 +529,9 @@ collaborativeId :  str, required
     The id of the collaborative to remove the service from.
 ```
 
-#### Return type: Service
+#### Return Type
+
+[Service](#service)
 
 #### Example
 
@@ -500,6 +540,7 @@ service = digitalExchange.removeServiceFromCollaborative("{serviceId}", "{collab
 ```
 
 ---
+
 ## Types
 
 ### User
@@ -545,9 +586,9 @@ timeSeriesDb : TimeSeriesDb | None
     Reference to the Time Series Database Service object.
 ```
 
-### DataStore 
+### DataStore
 
-A Data Store Service object. 
+A Data Store Service object.
 
 #### Properties
 
@@ -627,7 +668,7 @@ A time series query result that includes the AWS Timestream result object.
 #### Properties
 
 ```
-timestreamResults: dict : 
+timestreamResults: dict :
     The AWS Timestream query result object. [Reference](https://docs.aws.amazon.com/timestream/latest/developerguide/API_query_Query.html). Some properties are stored within the QueryResult object for easy access.
 clientToken: str
     The token generated in the cloud associating the query to the requesting user device.
@@ -765,6 +806,6 @@ A single time/value data point for an attribute.
 ```
 timestamp: str
     The time in ISO8601 format.
-value: str 
+value: str
     The attribute value at this timestamp.
 ```
