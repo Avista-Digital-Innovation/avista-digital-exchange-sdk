@@ -1,0 +1,40 @@
+-------------------------------------------------------------------------------------
+Avista Digital Exchange SDK Changes Log 
+-------------------------------------------------------------------------------------
+
+Release Summary:
+
+0.0.18, September 13, 2022
+     First beta release ready for user testing.
+
+Details of each release follow, from most recent to oldest.
+
+-------------------------------------------------------------------------------------
+
+Release 0.0.18, September 13, 2022
+
+First beta release.
+
+1) Grants programmatic access to the Avista Digital Exchange via authentication token.
+2) Beta features ready for testing:
+2.1) getUserInfo
+2.2) listDataStores
+2.3) getDataStore
+2.4) getDataStoreDirectory
+2.5) getDataStoreFileMeta
+2.6) downloadDataStoreFile
+2.7) uploadFileToDataStore
+2.8) deleteDataStoreFile
+2.9) listTimeSeriesDatabases
+2.10) getTimeSeriesDatabase
+2.11) queryTimeSeriesDatabaseWithTimestreamFormat
+2.12) createTimeSeriesMeasureValue
+2.13) createTimeSeriesDimension
+2.14) createTimeSeriesInputRecord
+2.15) publishToTimeSeriesDatabase
+2.16) listCollaboratives
+2.17) getCollaborative
+2.18) listCollaborativeServices
+2.19) listCollaborativesServiceSharedWith
+2.20) addServiceToCollaborative
+2.21) removeServiceFromCollaborative
