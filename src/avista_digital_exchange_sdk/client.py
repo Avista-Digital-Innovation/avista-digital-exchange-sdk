@@ -1,13 +1,19 @@
 import requests
 from .common import *
 
+
 class Client:
 
     def __init__(self, token):
-        self.APPSYNC_API_ENDPOINT_URL = 'https://annsvlcb4vew7msipwjyzzvyhi.appsync-api.us-west-2.amazonaws.com/graphql'
+        APPSYNC_API_ENDPOINT_URL_dev = 'https://annsvlcb4vew7msipwjyzzvyhi.appsync-api.us-west-2.amazonaws.com/graphql'
+        APPSYNC_API_ENDPOINT_URL_prod = 'https://.appsync-api.us-west-2.amazonaws.com/graphql'
         self.token = token
+        if stage == "PRODUCTION":
+            self.APPSYNC_API_ENDPOINT_URL = APPSYNC_API_ENDPOINT_URL_prod
+        else:
+            self.APPSYNC_API_ENDPOINT_URL = APPSYNC_API_ENDPOINT_URL_dev
         return
-    
+
     def performQuery(self, queryString):
         response = None
         try:
@@ -16,8 +22,8 @@ class Client:
                     url=self.APPSYNC_API_ENDPOINT_URL,
                     method='POST',
                     headers={'Accept': 'application/json',
-                            'Content-Type': 'application/json',
-                            'Authorization': self.token},
+                             'Content-Type': 'application/json',
+                             'Authorization': self.token},
                     json={'query': queryString}
                 )
         except Exception as e:
@@ -33,11 +39,10 @@ class Client:
                     url=self.APPSYNC_API_ENDPOINT_URL,
                     method='POST',
                     headers={'Accept': 'application/json',
-                            'Content-Type': 'application/json',
-                            'Authorization': self.token},
+                             'Content-Type': 'application/json',
+                             'Authorization': self.token},
                     json={'query': mutationString}
                 )
         except Exception as error:
             raise error
         return response.json()
-    

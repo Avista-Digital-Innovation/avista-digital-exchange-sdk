@@ -8,7 +8,6 @@ This package allows you to access the Avista Digital Exchange and perform a subs
 
 ```
 pip3 install avista-digital-exchange-sdk
-
 ```
 
 2. Ensure you have the latest version.
@@ -17,7 +16,7 @@ pip3 install avista-digital-exchange-sdk
 pip3 install --upgrade avista-digital-exchange-sdk
 ```
 
-3. Import the module to your python script.
+3. Import the module in your python script.
 4. Initialize the module with your authentication token.
 
 ```
@@ -25,11 +24,13 @@ from avista_digital_exchange_sdk import AvistaDigitalExchange
 
 digitalExchange = AvistaDigitalExchange("{token}")
 
+# Alternatively, instantiate with debug mode enabled
+# digitalExchange = AvistaDigitalExchange("{token}", True)
 ```
 
 ---
 
-## Methods
+## AvistaDigitalExchange Functions
 
 ### 1. getUserInfo
 

@@ -38,9 +38,10 @@ from .data_types.timestream_query_result import QueryResult_TimestreamVariables
 from .exceptions import *
 import os
 
+
 class AvistaDigitalExchange(object):
-    def __init__(self, token = True, debugParam = None):
-        if debugParam is not None:
+    def __init__(self, token=True, debugMode=None):
+        if debugMode is not None:
             global debug
             debug = debug
         self.token = token
@@ -51,22 +52,23 @@ class AvistaDigitalExchange(object):
         query = user_getUserSession(self.client)
         result = query.performQuery()
         return result
-    
+
     def listDataStores(self):
         """Lists the Data Stores belonging to the user"""
         query = storage_listDataStores(self.client)
         result = query.performQuery()
         return result
-    
+
     def getDataStore(self, dataStoreId) -> DataStore:
         """Retrieves the Data Store's metadata by dataStoreId"""
         query = storage_getDataStore(self.client, dataStoreId)
         result = query.performQuery()
         return result
-    
+
     def getDataStoreDirectory(self, dataStoreDirectoryId) -> DataStoreDirectory:
         """Retrieves a Data Store directory and it's contents by dataStoreDirectoryId"""
-        query = storage_getDataStoreDirectory(self.client, dataStoreDirectoryId)
+        query = storage_getDataStoreDirectory(
+            self.client, dataStoreDirectoryId)
         result = query.performQuery()
         return result
 
@@ -81,28 +83,29 @@ class AvistaDigitalExchange(object):
         query = storage_getDataStoreFile(self.client, dataStoreFileId)
         dataStoreFile = query.performQuery()
         presignedUrl = dataStoreFile.getFileUrl(dataStoreFileId)
-        location = dataStoreFile.downloadAndWriteFile(presignedUrl.url, writeLocation)
+        location = dataStoreFile.downloadAndWriteFile(
+            presignedUrl.url, writeLocation)
         return dataStoreFile
-
 
     def listCollaboratives(self):
         """Lists the Collaboratives the user is a member of"""
         query = collaborative_listCollaboratives(self.client)
         result = query.performQuery()
         return result
-     
+
     def getCollaborative(self, collaborativeId) -> Collaborative:
         """Gets the Collaborative's metadata by collaborativeId"""
         query = collaborative_getCollaborative(self.client, collaborativeId)
         result = query.performQuery()
         return result
-     
+
     def listCollaborativeServices(self, collaborativeId):
         """Lists all Services shared in the Collaborative"""
-        query = collaborative_listCollaborativeServices(self.client, collaborativeId)
+        query = collaborative_listCollaborativeServices(
+            self.client, collaborativeId)
         result = query.performQuery()
         return result
-     
+
     def listCollaborativesServiceSharedWith(self, serviceId):
         """Lists the Collaboratives that a Service is shared with"""
         serviceType = 'unknown'
@@ -110,7 +113,8 @@ class AvistaDigitalExchange(object):
             serviceType = 'DATA_STORE'
         elif 'timeSeriesDb' in serviceId:
             serviceType = 'TIME_SERIES_DB'
-        query = collaborative_listCollaborativesServiceSharedWith(self.client, serviceType, serviceId)
+        query = collaborative_listCollaborativesServiceSharedWith(
+            self.client, serviceType, serviceId)
         result = query.performQuery()
         return result
 
@@ -126,13 +130,14 @@ class AvistaDigitalExchange(object):
         result = query.performQuery()
         return result
 
-    def queryTimeSeriesDatabase(self, timeSeriesDbId, queryString, maxRows = None, nextToken = None, clientToken = None) -> QueryResult_TimestreamVariables:
+    def queryTimeSeriesDatabase(self, timeSeriesDbId, queryString, maxRows=None, nextToken=None, clientToken=None) -> QueryResult_TimestreamVariables:
         """Queries the Time Series Database using AWS Timestream query format"""
-        query = timeSeriesDb_queryDatabaseWithTimestreamQuery(self.client, timeSeriesDbId, queryString, maxRows, nextToken, clientToken)
+        query = timeSeriesDb_queryDatabaseWithTimestreamQuery(
+            self.client, timeSeriesDbId, queryString, maxRows, nextToken, clientToken)
         result = query.performQuery()
         return result
 
-    def uploadFileToDataStore(self, dataStoreId, dataStoreDirectoryId, localFilePath, name = None, description = None) -> DataStoreFile:
+    def uploadFileToDataStore(self, dataStoreId, dataStoreDirectoryId, localFilePath, name=None, description=None) -> DataStoreFile:
         """Copies a local file to the Data Store and is placed in the directory matching dataStoreDirectoryId"""
         # Check if file exists in local file system
         if not os.path.isfile(localFilePath):
@@ -143,14 +148,16 @@ class AvistaDigitalExchange(object):
         fileRoot = name.split('.')[0]
 
         # Create the file in the Digital Exchange and receive a presigned url to upload the file to
-        mutation = storage_createDataStoreFile(self.client, dataStoreId, dataStoreDirectoryId, fileRoot, fileExtension, description)
+        mutation = storage_createDataStoreFile(
+            self.client, dataStoreId, dataStoreDirectoryId, fileRoot, fileExtension, description)
         presignedUrl = mutation.performMutation()
         dataStoreFileId = presignedUrl.itemId
         uploadResult = None
         try:
             if presignedUrl.url is None:
                 raise Exception('Did not receive upload endpoint as expected')
-            uploadResult = DataStoreFile.uploadFile(presignedUrl.url, localFilePath)
+            uploadResult = DataStoreFile.uploadFile(
+                presignedUrl.url, localFilePath)
         except FileUploadException as err:
             self.deleteDataStoreFile(dataStoreFileId)
             raise err
@@ -169,7 +176,8 @@ class AvistaDigitalExchange(object):
             serviceType = 'DATA_STORE'
         elif 'timeSeriesDb' in serviceId:
             serviceType = 'TIME_SERIES_DB'
-        mutation = collaborative_addServiceToCollaborative(self.client, collaborativeId, serviceType, serviceId)
+        mutation = collaborative_addServiceToCollaborative(
+            self.client, collaborativeId, serviceType, serviceId)
         result = mutation.performMutation()
         return result
 
@@ -180,13 +188,14 @@ class AvistaDigitalExchange(object):
             serviceType = 'DATA_STORE'
         elif 'timeSeriesDb' in serviceId:
             serviceType = 'TIME_SERIES_DB'
-        mutation = collaborative_removeServiceFromCollaborative(self.client, collaborativeId, serviceType, serviceId)
+        mutation = collaborative_removeServiceFromCollaborative(
+            self.client, collaborativeId, serviceType, serviceId)
         result = mutation.performMutation()
         return result
 
     def publishToTimeSeriesDatabase(self, timeSeriesDbId, assetId, records):
         """Publishes data records to the database. 
-        
+
         You may only publish records for 1 asset per request. To support viewing on data on the web, 
         include a Dimension entry with DimensionName 'name' and DimensionValue containing the name of the asset.
 
@@ -211,9 +220,10 @@ class AvistaDigitalExchange(object):
             If your authentication token is invalid, you are performing an action that your 
             user roles do not permit, you are performing an action on a resource that does not
             belong to you, or the operation is invalid.
-            
+
         """
-        mutation = timeSeriesDb_publishToDatabase(self.client, timeSeriesDbId, assetId, records)
+        mutation = timeSeriesDb_publishToDatabase(
+            self.client, timeSeriesDbId, assetId, records)
         result = mutation.performMutation()
         return result
 
@@ -222,8 +232,8 @@ class AvistaDigitalExchange(object):
 
     def createTimeSeriesDimension(self, DimensionValueType, Name, Value) -> TimeSeriesDimension:
         return TimeSeriesDimension(DimensionValueType, Name, Value)
-    
-    def createTimeSeriesInputRecord(self, Time, TimeUnit, MeasureName, MeasureValueType, MeasureValue = None, MeasureValues = None, Dimensions = None, Version = 1) -> TimeSeriesInputRecord:
+
+    def createTimeSeriesInputRecord(self, Time, TimeUnit, MeasureName, MeasureValueType, MeasureValue=None, MeasureValues=None, Dimensions=None, Version=1) -> TimeSeriesInputRecord:
         """Creates and returns a TimeSeriesInputRecord object.
 
         @Time

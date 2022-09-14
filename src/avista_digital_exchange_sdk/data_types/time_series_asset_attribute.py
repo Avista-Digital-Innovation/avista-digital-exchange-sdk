@@ -2,6 +2,7 @@ from ..exceptions import *
 from ..common import *
 from .time_series_asset_attribute_data import TimeSeriesAssetAttributeData
 
+
 class TimeSeriesAssetAttribute:
     def __init__(self, dict, client):
         self.client = client
@@ -10,11 +11,13 @@ class TimeSeriesAssetAttribute:
         else:
             self.buildFromDictionary(dict)
 
-#     def __str__(self):
-#         return f"""Asset Attribute:
-#    add attribute data"""
-#    #name: {self.name}
-#    #description: {self.description}"""
+    def __str__(self):
+        return f"""Asset Attribute:
+    name: {self.name}
+    attributeType: {self.attributeType}
+    lastValue: {self.attributeType}
+    lastValueTime: {self.lastValueTime}
+    data: {len(self.data)} records"""
 
     def buildFromDictionary(self, dict):
         if dict is None:
@@ -28,7 +31,7 @@ class TimeSeriesAssetAttribute:
             self.data.append(TimeSeriesAssetAttributeData(entry, self.client))
 
     @staticmethod
-    def getQueryString(tabs = 1, subobjectsRemaining = 4):
+    def getQueryString(tabs=1, subobjectsRemaining=4):
         tabStr = getTabStr(tabs)
 
         return f""" {{
@@ -38,4 +41,3 @@ class TimeSeriesAssetAttribute:
 {tabStr}name
 {tabStr}{f"data {TimeSeriesAssetAttributeData.getQueryString(tabs + 1, subobjectsRemaining - 1)}" if subobjectsRemaining > 0 else ""}
 {tabStr[0:-4]}}} """
-
