@@ -10,7 +10,7 @@ authors = [
   {  name="Jon Thompson", email="jon.thompson@avistacorp.com" }
 ]
 description = "An SDK to programmatically access the Avista Digital Exchange"
-readme = "README.md"
+readme = "../README.md"
 license = { file="LICENSE" }
 requires-python = ">=3.7"
 classifiers = [
