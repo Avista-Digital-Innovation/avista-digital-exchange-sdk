@@ -4,9 +4,10 @@ from .collaborative_member_user import CollaborativeMemberUser
 from .user import User
 from .organization import Organization
 
+
 class CollaborativeMemberOrganization:
     def __init__(self, dict, client):
-        self.client = client
+        self._client = client
         if dict is None:
             raise MissingDataInResultException
         else:
@@ -15,15 +16,16 @@ class CollaborativeMemberOrganization:
     def buildFromDictionary(self, dict):
         if dict is None:
             raise MissingDataInResultException
-        self.organization = Organization(dict['organization'], self.client)
+        self.organization = Organization(dict['organization'], self._client)
         self.collaborativeId = dict['collaborativeId']
         self.memberState = dict['memberState']
         self.usersInCollaborative = []
         for user in dict['usersInCollaborative']:
-            self.usersInCollaborative.append(CollaborativeMemberUser(user, self.client))
+            self.usersInCollaborative.append(
+                CollaborativeMemberUser(user, self._client))
 
     @staticmethod
-    def getQueryString(tabs = 1, subobjectsRemaining = 4):
+    def getQueryString(tabs=1, subobjectsRemaining=4):
         tabStr = getTabStr(tabs)
 
         return f""" {{

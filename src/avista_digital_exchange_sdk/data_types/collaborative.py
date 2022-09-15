@@ -3,14 +3,15 @@ from ..common import *
 from .service import Service
 from .collaborative_member_organization import CollaborativeMemberOrganization
 
+
 class Collaborative:
     def __init__(self, dict, client):
-        self.client = client
+        self._client = client
         if dict is None:
             raise MissingDataInResultException
         else:
             self.buildFromDictionary(dict)
-    
+
     def __str__(self):
         return f"""Collaborative: {self.collaborativeId}
    name: {self.name}
@@ -27,7 +28,6 @@ class Collaborative:
                 result += f"    - {org.organization.name} | {len(org.usersInCollaborative)} user{'s' if len(org.usersInCollaborative) > 1 else ''}\n"
         return result
 
-
     def buildFromDictionary(self, dict):
         if dict is None:
             raise MissingDataInResultException
@@ -37,10 +37,11 @@ class Collaborative:
         self.hostOrganizationId = dict['hostOrganizationId']
         self.memberOrganizations = []
         for org in dict['memberOrganizations']:
-            self.memberOrganizations.append(CollaborativeMemberOrganization(org, self.client))
+            self.memberOrganizations.append(
+                CollaborativeMemberOrganization(org, self._client))
 
     @staticmethod
-    def getQueryString(tabs = 1, subobjectsRemaining = 4):
+    def getQueryString(tabs=1, subobjectsRemaining=4):
         tabStr = getTabStr(tabs)
 
         return f""" {{

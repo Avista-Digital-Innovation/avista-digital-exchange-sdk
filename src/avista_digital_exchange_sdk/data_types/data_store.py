@@ -3,10 +3,11 @@ from ..common import *
 from .service import Service
 import requests
 
+
 class DataStore(Service):
     def __init__(self, dict, client):
         super().__init__(dict, client)
-        self.client = client
+        self._client = client
         if dict is None:
             return
         else:
@@ -31,7 +32,7 @@ class DataStore(Service):
         self.serviceId = self.dataStoreId
 
     @staticmethod
-    def getQueryString(tabs = 1, subobjectsRemaining = 4):
+    def getQueryString(tabs=1, subobjectsRemaining=4):
         tabStr = getTabStr(tabs)
 
         return f""" {{
@@ -48,7 +49,8 @@ class DataStore(Service):
 
     def getFileUrl(self, dataStoreFileId):
         from graphql_queries.storage_getDataStoreFileDownloadUrl import storage_getDataStoreFileDownloadUrl
-        query = storage_getDataStoreFileDownloadUrl(self.client, self.dataStoreId, dataStoreFileId)
+        query = storage_getDataStoreFileDownloadUrl(
+            self._client, self.dataStoreId, dataStoreFileId)
         result = query.performQuery()
         return result
 

@@ -5,7 +5,7 @@ from .time_series_asset_attribute import TimeSeriesAssetAttribute
 
 class TimeSeriesAssetData:
     def __init__(self, dict, client):
-        self.client = client
+        self._client = client
         if dict is None:
             raise MissingDataInResultException
         else:
@@ -25,7 +25,7 @@ class TimeSeriesAssetData:
         self.attributes = []
         for attribute in dict['attributes']:
             self.attributes.append(
-                TimeSeriesAssetAttribute(attribute, self.client))
+                TimeSeriesAssetAttribute(attribute, self._client))
 
     @staticmethod
     def getQueryString(tabs=1, subobjectsRemaining=4):

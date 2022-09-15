@@ -2,10 +2,11 @@ from ..exceptions import *
 from ..common import *
 from .service import Service
 
+
 class TimeSeriesDb(Service):
     def __init__(self, dict, client):
         super().__init__(dict, client)
-        self.client = client
+        self._client = client
         if dict is None:
             raise MissingDataInResultException
         else:
@@ -32,7 +33,7 @@ class TimeSeriesDb(Service):
         self.serviceId = self.timeSeriesDbId
 
     @staticmethod
-    def getQueryString(tabs = 1, subobjectsRemaining = 4):
+    def getQueryString(tabs=1, subobjectsRemaining=4):
         tabStr = getTabStr(tabs)
 
         return f""" {{

@@ -1,9 +1,10 @@
 from ..exceptions import *
 from ..common import *
 
+
 class Organization:
     def __init__(self, dict, client):
-        self.client = client
+        self._client = client
         if dict is None:
             raise MissingDataInResultException
         else:
@@ -17,7 +18,7 @@ class Organization:
         # self.hostOrganization = dict['hostOrganization']
 
     @staticmethod
-    def getQueryString(tabs = 1, subobjectsRemaining = 4):
+    def getQueryString(tabs=1, subobjectsRemaining=4):
         tabStr = getTabStr(tabs)
 
         return f""" {{

@@ -1,9 +1,10 @@
 from ..exceptions import *
 from ..common import *
 
+
 class TimeSeriesPublishResponse:
     def __init__(self, dict, client):
-        self.client = client
+        self._client = client
         if dict is None:
             raise MissingDataInResultException
         else:
@@ -20,7 +21,7 @@ class TimeSeriesPublishResponse:
         self.totalRecordsWritten = dict["RecordsIngested"]["Total"]
 
     @staticmethod
-    def getQueryString(tabs = 1, subobjectsRemaining = 4):
+    def getQueryString(tabs=1, subobjectsRemaining=4):
         tabStr = getTabStr(tabs)
 
         return f""" {{

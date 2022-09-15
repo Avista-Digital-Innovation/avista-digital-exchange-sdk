@@ -1,9 +1,10 @@
 from ..exceptions import *
 from ..common import *
 
+
 class TimeSeriesAssetAttributeData:
     def __init__(self, dict, client):
-        self.client = client
+        self._client = client
         if dict is None:
             raise MissingDataInResultException
         else:
@@ -21,7 +22,7 @@ class TimeSeriesAssetAttributeData:
         self.value = dict['value']
 
     @staticmethod
-    def getQueryString(tabs = 1, subobjectsRemaining = 4):
+    def getQueryString(tabs=1, subobjectsRemaining=4):
         tabStr = getTabStr(tabs)
 
         return f""" {{

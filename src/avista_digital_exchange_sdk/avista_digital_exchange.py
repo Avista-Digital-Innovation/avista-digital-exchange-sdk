@@ -45,42 +45,42 @@ class AvistaDigitalExchange(object):
             global debug
             debug = debug
         self.token = token
-        self.client = Client(token)
+        self._client = Client(token)
 
     def getUserInfo(self) -> User:
         """Retrieves the user information of the user associated with the authentication token in use."""
-        query = user_getUserSession(self.client)
+        query = user_getUserSession(self._client)
         result = query.performQuery()
         return result
 
     def listDataStores(self):
         """Lists the Data Stores belonging to the user"""
-        query = storage_listDataStores(self.client)
+        query = storage_listDataStores(self._client)
         result = query.performQuery()
         return result
 
     def getDataStore(self, dataStoreId) -> DataStore:
         """Retrieves the Data Store's metadata by dataStoreId"""
-        query = storage_getDataStore(self.client, dataStoreId)
+        query = storage_getDataStore(self._client, dataStoreId)
         result = query.performQuery()
         return result
 
     def getDataStoreDirectory(self, dataStoreDirectoryId) -> DataStoreDirectory:
         """Retrieves a Data Store directory and it's contents by dataStoreDirectoryId"""
         query = storage_getDataStoreDirectory(
-            self.client, dataStoreDirectoryId)
+            self._client, dataStoreDirectoryId)
         result = query.performQuery()
         return result
 
     def getDataStoreFileMeta(self, dataStoreFileId) -> DataStoreFile:
         """Retrieves a Data Store file's metadata by dataStoreFileId"""
-        query = storage_getDataStoreFile(self.client, dataStoreFileId)
+        query = storage_getDataStoreFile(self._client, dataStoreFileId)
         dataStoreFile = query.performQuery()
         return dataStoreFile
 
     def downloadDataStoreFile(self, dataStoreFileId, writeLocation) -> DataStoreFile:
         """Retrieves a Data Store file's metadata and downloads and writes the file to the local file system"""
-        query = storage_getDataStoreFile(self.client, dataStoreFileId)
+        query = storage_getDataStoreFile(self._client, dataStoreFileId)
         dataStoreFile = query.performQuery()
         presignedUrl = dataStoreFile.getFileUrl(dataStoreFileId)
         location = dataStoreFile.downloadAndWriteFile(
@@ -89,20 +89,20 @@ class AvistaDigitalExchange(object):
 
     def listCollaboratives(self):
         """Lists the Collaboratives the user is a member of"""
-        query = collaborative_listCollaboratives(self.client)
+        query = collaborative_listCollaboratives(self._client)
         result = query.performQuery()
         return result
 
     def getCollaborative(self, collaborativeId) -> Collaborative:
         """Gets the Collaborative's metadata by collaborativeId"""
-        query = collaborative_getCollaborative(self.client, collaborativeId)
+        query = collaborative_getCollaborative(self._client, collaborativeId)
         result = query.performQuery()
         return result
 
     def listCollaborativeServices(self, collaborativeId):
         """Lists all Services shared in the Collaborative"""
         query = collaborative_listCollaborativeServices(
-            self.client, collaborativeId)
+            self._client, collaborativeId)
         result = query.performQuery()
         return result
 
@@ -114,26 +114,26 @@ class AvistaDigitalExchange(object):
         elif 'timeSeriesDb' in serviceId:
             serviceType = 'TIME_SERIES_DB'
         query = collaborative_listCollaborativesServiceSharedWith(
-            self.client, serviceType, serviceId)
+            self._client, serviceType, serviceId)
         result = query.performQuery()
         return result
 
     def listTimeSeriesDatabases(self):
         """Lists the Time Series Databases belonging to the user"""
-        query = timeSeriesDb_listDatabases(self.client)
+        query = timeSeriesDb_listDatabases(self._client)
         result = query.performQuery()
         return result
 
     def getTimeSeriesDatabase(self, timeSeriesDbId) -> TimeSeriesDb:
         """Gets the Time Series Database's metadata"""
-        query = timeSeriesDb_getDatabase(self.client, timeSeriesDbId)
+        query = timeSeriesDb_getDatabase(self._client, timeSeriesDbId)
         result = query.performQuery()
         return result
 
     def queryTimeSeriesDatabase(self, timeSeriesDbId, queryString, maxRows=None, nextToken=None, clientToken=None) -> QueryResult_TimestreamVariables:
         """Queries the Time Series Database using AWS Timestream query format"""
         query = timeSeriesDb_queryDatabaseWithTimestreamQuery(
-            self.client, timeSeriesDbId, queryString, maxRows, nextToken, clientToken)
+            self._client, timeSeriesDbId, queryString, maxRows, nextToken, clientToken)
         result = query.performQuery()
         return result
 
@@ -149,7 +149,7 @@ class AvistaDigitalExchange(object):
 
         # Create the file in the Digital Exchange and receive a presigned url to upload the file to
         mutation = storage_createDataStoreFile(
-            self.client, dataStoreId, dataStoreDirectoryId, fileRoot, fileExtension, description)
+            self._client, dataStoreId, dataStoreDirectoryId, fileRoot, fileExtension, description)
         presignedUrl = mutation.performMutation()
         dataStoreFileId = presignedUrl.itemId
         uploadResult = None
@@ -165,7 +165,7 @@ class AvistaDigitalExchange(object):
 
     def deleteDataStoreFile(self, dataStoreFileId) -> DataStoreFile:
         """Deletes the file from the Data Store"""
-        mutation = storage_deleteDataStoreFile(self.client, dataStoreFileId)
+        mutation = storage_deleteDataStoreFile(self._client, dataStoreFileId)
         dataStoreFile = mutation.performMutation()
         return dataStoreFile
 
@@ -177,7 +177,7 @@ class AvistaDigitalExchange(object):
         elif 'timeSeriesDb' in serviceId:
             serviceType = 'TIME_SERIES_DB'
         mutation = collaborative_addServiceToCollaborative(
-            self.client, collaborativeId, serviceType, serviceId)
+            self._client, collaborativeId, serviceType, serviceId)
         result = mutation.performMutation()
         return result
 
@@ -189,7 +189,7 @@ class AvistaDigitalExchange(object):
         elif 'timeSeriesDb' in serviceId:
             serviceType = 'TIME_SERIES_DB'
         mutation = collaborative_removeServiceFromCollaborative(
-            self.client, collaborativeId, serviceType, serviceId)
+            self._client, collaborativeId, serviceType, serviceId)
         result = mutation.performMutation()
         return result
 
@@ -223,7 +223,7 @@ class AvistaDigitalExchange(object):
 
         """
         mutation = timeSeriesDb_publishToDatabase(
-            self.client, timeSeriesDbId, assetId, records)
+            self._client, timeSeriesDbId, assetId, records)
         result = mutation.performMutation()
         return result
 
@@ -241,6 +241,6 @@ class AvistaDigitalExchange(object):
         return TimeSeriesInputRecord(Time, TimeUnit, Version, MeasureName, MeasureValueType, MeasureValue, MeasureValues, Dimensions)
 
     # def generateQueryResultFile(self):
-    #     mutation = timeSeriesDb_generateQueryResultExportFile(self.client)
+    #     mutation = timeSeriesDb_generateQueryResultExportFile(self._client)
     #     result = mutation.performMutation()
     #     return result

@@ -2,9 +2,10 @@ from ..exceptions import *
 from ..common import *
 import json
 
+
 class QueryResult_TimestreamVariables:
     def __init__(self, dict, client, timeSeriesDbId, queryString, maxRows):
-        self.client = client
+        self._client = client
         if dict is None:
             raise MissingDataInResultException
         else:
@@ -34,7 +35,7 @@ Data rows: {self.Rows}
         self.NextToken = self.timestreamResults["NextToken"] if "NextToken" in self.timestreamResults else None
 
     @staticmethod
-    def getQueryString(tabs = 1, subobjectsRemaining = 4):
+    def getQueryString(tabs=1, subobjectsRemaining=4):
         tabStr = getTabStr(tabs)
 
         return f""" {{

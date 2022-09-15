@@ -1,6 +1,6 @@
 # Avista Digital Exchange SDK
 
-This package allows you to access the Avista Digital Exchange and perform a subset of its features programmatically. All that you need is a personal authentication token that can be generated at [energy.collaboratives.io](energy.collaboratives.io).
+This package allows you to access the Avista Digital Exchange and perform a subset of its features programmatically. All that you need is a personal authentication token that can be generated at [energy.collaboratives.io](https://energy.collaboratives.io).
 
 ## Getting Started
 

@@ -1,9 +1,10 @@
 from ..exceptions import *
 from ..common import *
 
+
 class Service:
     def __init__(self, dict, client):
-        self.client = client
+        self._client = client
         if dict is None:
             raise MissingDataInResultException
         else:
@@ -26,9 +27,10 @@ class Service:
         self.serviceId = dict['serviceId']
         self.serviceType = dict['serviceType']
         if self.serviceType == "DATA_STORE":
-            self.dataStore = DataStore(dict['dataStore'], self.client)
+            self.dataStore = DataStore(dict['dataStore'], self._client)
         elif self.serviceType == "TIME_SERIES_DB":
-            self.timeSeriesDb = TimeSeriesDb(dict['timeSeriesDb'], self.client)
+            self.timeSeriesDb = TimeSeriesDb(
+                dict['timeSeriesDb'], self._client)
         else:
             raise ServiceTypeNotAvailable
 
@@ -44,7 +46,7 @@ class Service:
             raise ServiceTypeNotAvailable
 
     @staticmethod
-    def getQueryString(tabs = 1, subobjectsRemaining = 4):
+    def getQueryString(tabs=1, subobjectsRemaining=4):
         from .data_store import DataStore
         from .time_series_db import TimeSeriesDb
         tabStr = getTabStr(tabs)

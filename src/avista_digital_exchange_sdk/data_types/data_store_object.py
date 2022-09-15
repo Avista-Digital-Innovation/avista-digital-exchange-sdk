@@ -1,9 +1,10 @@
 from ..exceptions import *
 from ..common import *
 
+
 class DataStoreObject:
     def __init__(self, dict, client):
-        self.client = client
+        self._client = client
         if dict is None:
             raise MissingDataInResultException
         else:
@@ -17,14 +18,16 @@ class DataStoreObject:
             raise MissingDataInResultException
         self.objectType = dict['objectType']
         if self.objectType == "FILE":
-            self.dataStoreFile = dict['dataStoreFile']# DataStoreFile(dict['dataStoreFile'], self.client)
+            # DataStoreFile(dict['dataStoreFile'], self._client)
+            self.dataStoreFile = dict['dataStoreFile']
         elif self.objectType == "DIRECTORY":
-            self.dataStoreDirectory = dict['dataStoreDirectory']# DataStoreDirectory(dict['dataStoreDirectory'], self.client)
+            # DataStoreDirectory(dict['dataStoreDirectory'], self._client)
+            self.dataStoreDirectory = dict['dataStoreDirectory']
         else:
             raise ServiceTypeNotAvailable
 
     @staticmethod
-    def getQueryString(tabs = 1, subobjectsRemaining = 4):
+    def getQueryString(tabs=1, subobjectsRemaining=4):
         from .data_store_file import DataStoreFile
         from .data_store_directory import DataStoreDirectory
         tabStr = getTabStr(tabs)
@@ -35,11 +38,9 @@ class DataStoreObject:
 {tabStr}{f"dataStoreDirectory {DataStoreDirectory.getQueryString(tabs + 1, subobjectsRemaining - 1)}" if subobjectsRemaining > 0 else ""}
 {tabStr[0:-4]}}} """
 
-
-
     # @staticmethod
     # def getCorrectServiceTypeFromServiceObject(dict, client):
     #     if dict["objectType"] == "FILE":
-    #         return DataStoreFile(dict['dataStoreFile'], self.client)
+    #         return DataStoreFile(dict['dataStoreFile'], self._client)
     #     elif dict["objectType"] == "DIRECTORY":
-    #         return TimeSeriesDb(dict['dataStoreDirectory'], self.client)
+    #         return TimeSeriesDb(dict['dataStoreDirectory'], self._client)

@@ -1,9 +1,10 @@
 from ..exceptions import *
 from ..common import *
 
+
 class Mutation:
     def __init__(self, client, mutationName, resultType):
-        self.client = client
+        self._client = client
         self._result = None
         self.mutationName = mutationName
         self.resultType = resultType
@@ -11,8 +12,7 @@ class Mutation:
 
     def _getMutationString(self):
         return f"mutation {self.mutationName} {{ {self.mutationName}() {{ {self.resultType.getQueryString(None, 4)} }} }}"
-    
-    
+
     def _processResult(self):
         if 'errors' in self._result and len(self._result['errors']) > 0:
             print('Mutation encountered error.')
@@ -23,6 +23,6 @@ class Mutation:
                 raise Unauthorized
             else:
                 raise MutationFailed(f"Mutation {self.mutationName} failed.")
-        
+
         if self._result['data'][self.mutationName] is None:
             raise MissingDataInResultException

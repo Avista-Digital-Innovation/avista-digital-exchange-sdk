@@ -5,6 +5,7 @@ from ..data_types.time_series_publish_input import TimeSeriesPublishInput
 from ..data_types.time_series_publish_response import TimeSeriesPublishResponse
 from ..data_types.time_series_asset_data import TimeSeriesAssetData
 
+
 class timeSeriesDb_publishToDatabase(Mutation):
 
     def __init__(self, client, timeSeriesDbId, assetId, records):
@@ -13,9 +14,9 @@ class timeSeriesDb_publishToDatabase(Mutation):
         self.assetId = assetId
         self.records = records
         self.dataInput = TimeSeriesPublishInput(self.records)
-    
+
     def _getMutationString(self):
-        tabs = 1        
+        tabs = 1
         tabStr = getTabStr(tabs)
         return f"""mutation {self.mutationName} {{ 
 {tabStr}{self.mutationName}(
@@ -27,16 +28,17 @@ class timeSeriesDb_publishToDatabase(Mutation):
     def performMutation(self):
         if debug:
             print("Publishing records to the database...")
-        self._result = self.client.performMutation(self._getMutationString())
+        self._result = self._client.performMutation(self._getMutationString())
         return self._processResult()
-    
+
     def _processResult(self):
         super()._processResult()
         try:
-            # self.response = TimeSeriesPublishResponse(self._result['data'][self.mutationName], self.client)
+            # self.response = TimeSeriesPublishResponse(self._result['data'][self.mutationName], self._client)
             self.assetData = []
             for current in self._result['data'][self.mutationName]:
-                self.assetData.append(TimeSeriesAssetData(current, self.client))
+                self.assetData.append(
+                    TimeSeriesAssetData(current, self._client))
             if debug:
                 print("Publish succeeded")
                 print(self.assetData)

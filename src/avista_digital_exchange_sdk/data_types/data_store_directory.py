@@ -5,22 +5,23 @@ from ..data_types.user import User
 from ..data_types.data_store_object import DataStoreObject
 from ..data_types.data_store_file import DataStoreFile
 
+
 class DataStoreDirectory(DataStoreObject):
     def __init__(self, dict, client):
         super().__init__(dict, client)
-        self.client = client
+        self._client = client
         if dict is None:
             return
         else:
             self.buildFromDictionary(dict)
-    
+
     def __str__(self):
         return f"""Directory: {self.dataStoreDirectoryId}
 name: ${self.name}
 dataStoreId: {self.dataStoreId}
 parentDirectory: {self.parentDirectoryId}
 contents: 
-{"  empty" if len(self.directories) == 0 and len(self.files) == 0 else self.printContents()} """       
+{"  empty" if len(self.directories) == 0 and len(self.files) == 0 else self.printContents()} """
 
     def printContents(self):
         result = ""
@@ -38,20 +39,21 @@ contents:
         self.dataStoreDirectoryId = dict['dataStoreDirectoryId']
         self.dataStoreId = dict['dataStoreId']
         self.name = dict['name']
-        self.owner = User(dict['owner'], self.client)
+        self.owner = User(dict['owner'], self._client)
         self.homeDirectory = dict['homeDirectory']
         self.parentDirectoryId = dict['parentDirectoryId']
         self.directories = []
         self.files = []
         for currentObject in dict['contents']:
             if currentObject["objectType"] == "FILE":
-                self.files.append(DataStoreFile(currentObject["dataStoreFile"], self.client))
+                self.files.append(DataStoreFile(
+                    currentObject["dataStoreFile"], self._client))
             elif currentObject["objectType"] == "DIRECTORY":
-                self.directories.append(DataStoreDirectory(currentObject["dataStoreDirectory"], self.client))
-
+                self.directories.append(DataStoreDirectory(
+                    currentObject["dataStoreDirectory"], self._client))
 
     @staticmethod
-    def getQueryString(tabs = 1, subobjectsRemaining = 4):
+    def getQueryString(tabs=1, subobjectsRemaining=4):
         tabStr = getTabStr(tabs)
 
         return f""" {{

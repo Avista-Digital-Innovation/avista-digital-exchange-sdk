@@ -2,9 +2,10 @@ from .organization import Organization
 from ..exceptions import *
 from ..common import *
 
+
 class User:
     def __init__(self, dict, client):
-        self.client = client
+        self._client = client
         if dict is None:
             raise MissingDataInResultException
         else:
@@ -21,7 +22,7 @@ class User:
         self.userAccountState = dict['userAccountState']
         self.lastActive = dict['lastActive']
         self.userRoles = dict['userRoles']
-        self.organization = Organization(dict['organization'], self.client)
+        self.organization = Organization(dict['organization'], self._client)
 
     def __str__(self):
         return f"""User
@@ -33,7 +34,7 @@ class User:
 """
 
     @staticmethod
-    def getQueryString(tabs = 1, subobjectsRemaining = 4):
+    def getQueryString(tabs=1, subobjectsRemaining=4):
         tabStr = getTabStr(tabs)
 
         return f""" {{

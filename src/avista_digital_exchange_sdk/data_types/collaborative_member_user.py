@@ -2,9 +2,10 @@ from ..exceptions import *
 from ..common import *
 from .user import User
 
+
 class CollaborativeMemberUser:
     def __init__(self, dict, client):
-        self.client = client
+        self._client = client
         if dict is None:
             raise MissingDataInResultException
         else:
@@ -14,10 +15,10 @@ class CollaborativeMemberUser:
         if dict is None:
             raise MissingDataInResultException
         self.permission = dict['permission']
-        self.user = User(dict['user'], self.client)
+        self.user = User(dict['user'], self._client)
 
     @staticmethod
-    def getQueryString(tabs = 1, subobjectsRemaining = 4):
+    def getQueryString(tabs=1, subobjectsRemaining=4):
         tabStr = getTabStr(tabs)
 
         return f""" {{

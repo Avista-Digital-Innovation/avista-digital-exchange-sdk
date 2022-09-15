@@ -6,7 +6,7 @@ class Client:
 
     def __init__(self, token):
         APPSYNC_API_ENDPOINT_URL_dev = 'https://annsvlcb4vew7msipwjyzzvyhi.appsync-api.us-west-2.amazonaws.com/graphql'
-        APPSYNC_API_ENDPOINT_URL_prod = 'https://.appsync-api.us-west-2.amazonaws.com/graphql'
+        APPSYNC_API_ENDPOINT_URL_prod = 'https://rrfs7pb7ancybo7bom7uxcsaxq.appsync-api.us-west-2.amazonaws.com/graphql'
         self.token = token
         if stage == "PRODUCTION":
             self.APPSYNC_API_ENDPOINT_URL = APPSYNC_API_ENDPOINT_URL_prod

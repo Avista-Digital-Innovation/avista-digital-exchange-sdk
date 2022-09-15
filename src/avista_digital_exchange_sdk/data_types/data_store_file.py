@@ -5,10 +5,11 @@ from ..data_types.user import User
 from ..data_types.data_store_object import DataStoreObject
 import os
 
+
 class DataStoreFile(DataStoreObject):
     def __init__(self, dict, client):
         super().__init__(dict, client)
-        self.client = client
+        self._client = client
         if dict is None:
             return
         else:
@@ -20,7 +21,7 @@ class DataStoreFile(DataStoreObject):
   description: {self.description}
   dataStoreId: {self.dataStoreId}
   directoryId: {self.dataStoreDirectoryId}
-  size: {self.storageSizeBytes} bytes"""       
+  size: {self.storageSizeBytes} bytes"""
 
     def buildFromDictionary(self, dict):
         if dict is None:
@@ -29,7 +30,7 @@ class DataStoreFile(DataStoreObject):
         self.dataStoreId = dict['dataStoreId']
         self.name = dict['name']
         self.description = dict['description'] if 'description' in dict else ''
-        self.owner = User(dict['owner'], self.client)
+        self.owner = User(dict['owner'], self._client)
         self.fileExtension = dict['fileExtension']
         self.storageSizeBytes = dict['storageSizeBytes']
         self.dataStoreDirectoryId = dict['dataStoreDirectoryId']
@@ -39,7 +40,7 @@ class DataStoreFile(DataStoreObject):
         # self.dataViewIds = dict['dataViewIds']
 
     @staticmethod
-    def getQueryString(tabs = 1, subobjectsRemaining = 4):
+    def getQueryString(tabs=1, subobjectsRemaining=4):
         tabStr = getTabStr(tabs)
 
         return f""" {{
@@ -61,7 +62,8 @@ class DataStoreFile(DataStoreObject):
         from graphql_queries.storage_getDataStoreFileDownloadUrl import storage_getDataStoreFileDownloadUrl
         if debug:
             print('Retrieving file download url...')
-        query = storage_getDataStoreFileDownloadUrl(self.client, self.dataStoreId, dataStoreFileId)
+        query = storage_getDataStoreFileDownloadUrl(
+            self._client, self.dataStoreId, dataStoreFileId)
         result = query.performQuery()
         if debug:
             print('File download url received...')
@@ -99,7 +101,8 @@ class DataStoreFile(DataStoreObject):
             result = requests.put(url, data=open(filePath, 'rb'))
             print(f'upload file returned status code: {result.status_code}')
             if result.ok:
-                print("File uploaded successfully")
+                if debug:
+                    print("File uploaded successfully")
             else:
                 raise FileUploadException
         except Exception as err:
