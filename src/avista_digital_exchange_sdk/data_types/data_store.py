@@ -48,7 +48,7 @@ class DataStore(Service):
         return
 
     def getFileUrl(self, dataStoreFileId):
-        from graphql_queries.storage_getDataStoreFileDownloadUrl import storage_getDataStoreFileDownloadUrl
+        from ..graphql_queries.storage_getDataStoreFileDownloadUrl import storage_getDataStoreFileDownloadUrl
         query = storage_getDataStoreFileDownloadUrl(
             self._client, self.dataStoreId, dataStoreFileId)
         result = query.performQuery()

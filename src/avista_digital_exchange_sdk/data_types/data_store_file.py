@@ -59,7 +59,7 @@ class DataStoreFile(DataStoreObject):
 {tabStr[0:-4]}}} """
 
     def getFileUrl(self, dataStoreFileId):
-        from graphql_queries.storage_getDataStoreFileDownloadUrl import storage_getDataStoreFileDownloadUrl
+        from ..graphql_queries.storage_getDataStoreFileDownloadUrl import storage_getDataStoreFileDownloadUrl
         if debug:
             print('Retrieving file download url...')
         query = storage_getDataStoreFileDownloadUrl(

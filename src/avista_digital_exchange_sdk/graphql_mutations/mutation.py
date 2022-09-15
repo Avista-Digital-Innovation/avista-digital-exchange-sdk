@@ -14,6 +14,9 @@ class Mutation:
         return f"mutation {self.mutationName} {{ {self.mutationName}() {{ {self.resultType.getQueryString(None, 4)} }} }}"
 
     def _processResult(self):
+        if debug:
+            print(f'processing mutation result: {self.mutationName}')
+            print(self._result)
         if 'errors' in self._result and len(self._result['errors']) > 0:
             print('Mutation encountered error.')
             print(self._result)

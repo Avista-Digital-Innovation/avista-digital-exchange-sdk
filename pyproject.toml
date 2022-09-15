@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "avista_digital_exchange_sdk"
-version = "0.0.20"
+version = "0.0.21"
 authors = [
   { name="Justin Whicker", email="jwhicker@urbanova.org"},
   {  name="Jon Thompson", email="jon.thompson@avistacorp.com" }
@@ -12,8 +12,6 @@ authors = [
 description = "SDK to programmatically access the Avista Digital Exchange"
 readme = "README.md"
 
-description = "An SDK to programmatically access the Avista Digital Exchange"
-readme = "../README.md"
 
 license = { file="LICENSE" }
 requires-python = ">=3.7"

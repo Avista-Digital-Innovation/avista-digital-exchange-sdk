@@ -29,6 +29,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [//]: # ( Provide info on changes that will be a part of the next release )
 
+## [0.0.21] - 2022-09-16
+
+### Changed
+
+- Changed a few print statments to be conditional with `if debug`
+
+### Fixed
+- Fixed function relative imports
+
 ## [0.0.20] - 2022-09-16
 
 ### Changed

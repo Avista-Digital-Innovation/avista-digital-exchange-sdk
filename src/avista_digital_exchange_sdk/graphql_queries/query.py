@@ -15,6 +15,9 @@ class Query:
         return f"query {self.queryName} {{ {self.queryName} {self.resultType.getQueryString()} }}"
 
     def _processResult(self):
+        if debug:
+            print(f'processing query result: {self.queryName}')
+            print(self._result)
         if 'errors' in self._result and len(self._result['errors']) > 0:
             print('Query encountered error.')
             print(self._result)

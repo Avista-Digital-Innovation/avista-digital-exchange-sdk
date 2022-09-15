@@ -43,7 +43,7 @@ class AvistaDigitalExchange(object):
     def __init__(self, token=True, debugMode=None):
         if debugMode is not None:
             global debug
-            debug = debug
+            debug = debugMode
         self.token = token
         self._client = Client(token)
 
