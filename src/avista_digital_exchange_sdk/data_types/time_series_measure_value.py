@@ -1,5 +1,6 @@
 from ..exceptions import *
-from ..common import *
+from .. import globals
+
 
 class TimeSeriesMeasureValue:
     def __init__(self, Type, Name, Value):

@@ -1,6 +1,6 @@
 from .mutation import *
 from ..exceptions import *
-from ..common import *
+from .. import globals
 from ..data_types.data_store import DataStore
 from ..data_types.time_series_db import TimeSeriesDb
 from ..data_types.service import Service
@@ -18,7 +18,7 @@ class collaborative_removeServiceFromCollaborative(Mutation):
         return f"""mutation {self.mutationName} {{ {self.mutationName}(collaborativeId: "{self.collaborativeId}", serviceType: {self.serviceType}, serviceId: "{self.serviceId}") {self.resultType.getQueryString()} }}"""
 
     def performMutation(self):
-        if debug:
+        if globals.debug:
             print("Removing the service from the collaborative...")
         self._result = self._client.performMutation(self._getMutationString())
         return self._processResult()
@@ -26,7 +26,7 @@ class collaborative_removeServiceFromCollaborative(Mutation):
     def _processResult(self):
         super()._processResult()
         try:
-            if debug:
+            if globals.debug:
                 print("Service was removed from the collaborative")
             self.service = Service(
                 self._result['data'][self.mutationName], self._client)

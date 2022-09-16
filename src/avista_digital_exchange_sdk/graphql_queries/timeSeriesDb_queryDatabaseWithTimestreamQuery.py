@@ -1,6 +1,6 @@
 from .query import *
 from ..exceptions import *
-from ..common import *
+from .. import globals
 from ..data_types.timestream_query_result import QueryResult_TimestreamVariables
 import json
 
@@ -23,14 +23,14 @@ class timeSeriesDb_queryDatabaseWithTimestreamQuery(Query):
         if self.maxRows:
             query += f', maxRows: {self.maxRows}'
         if self.nextToken:
-            query += f', nextToken: {self.nextToken}'
+            query += f', nextToken: "{self.nextToken}"'
         if self._clientToken:
-            query += f', clientToken: {self._clientToken}'
+            query += f', clientToken: "{self._clientToken}"'
         query += f') {self.resultType.getQueryString()} }}'
         return query
 
     def performQuery(self) -> str:
-        if debug:
+        if globals.debug:
             print(f'Retrieving time series db {self.timeSeriesDbId}')
         self._result = self._client.performQuery(self._getQueryString())
         return self._processResult()
@@ -40,7 +40,7 @@ class timeSeriesDb_queryDatabaseWithTimestreamQuery(Query):
         try:
             self.database = QueryResult_TimestreamVariables(
                 self._result['data'][self.queryName], self._client, self.timeSeriesDbId, self.queryString, self.maxRows)
-            if debug:
+            if globals.debug:
                 print(f'Result {self.database}')
             return self.database
         except Exception as e:

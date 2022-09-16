@@ -1,6 +1,6 @@
 from .mutation import *
 from ..exceptions import *
-from ..common import *
+from .. import globals
 from ..data_types.data_store_file import DataStoreFile
 
 
@@ -14,7 +14,7 @@ class storage_deleteDataStoreFile(Mutation):
         return f"""mutation {self.mutationName} {{ {self.mutationName}(dataStoreFileId: "{self.dataStoreFileId}") {self.resultType.getQueryString()} }}"""
 
     def performMutation(self):
-        if debug:
+        if globals.debug:
             print(f"Deleting data store file {self.dataStoreFileId}...")
         self._result = self._client.performMutation(self._getMutationString())
         return self._processResult()
@@ -24,7 +24,7 @@ class storage_deleteDataStoreFile(Mutation):
         try:
             self.result = DataStoreFile(
                 self._result['data'][self.mutationName], self._client)
-            if debug:
+            if globals.debug:
                 print(f"deleted file {self.dataStoreFileId}")
             return self.result
         except Exception as e:

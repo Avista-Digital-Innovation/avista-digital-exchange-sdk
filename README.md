@@ -2,6 +2,77 @@
 
 This package allows you to access the Avista Digital Exchange and perform a subset of its features programmatically. All that you need is a personal authentication token that can be generated at [energy.collaboratives.io](https://energy.collaboratives.io).
 
+[PyPi listing](https://pypi.org/project/avista-digital-exchange-sdk/)
+
+[GitHub Repository](https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk)
+
+## Table of Contents
+
+- [Avista Digital Exchange SDK](#avista-digital-exchange-sdk)
+  - [Table of Contents](#table-of-contents)
+  - [Getting Started](#getting-started)
+  - [AvistaDigitalExchange Functions](#avistadigitalexchange-functions)
+    - [getUserInfo](#getuserinfo)
+    - [listDataStores](#listdatastores)
+    - [getDataStore](#getdatastore)
+    - [getDataStoreDirectory](#getdatastoredirectory)
+    - [getDataStoreFileMeta](#getdatastorefilemeta)
+    - [downloadDataStoreFile](#downloaddatastorefile)
+    - [uploadFileToDataStore](#uploadfiletodatastore)
+    - [deleteDataStoreFile](#deletedatastorefile)
+    - [listTimeSeriesDatabases](#listtimeseriesdatabases)
+    - [getTimeSeriesDatabase](#gettimeseriesdatabase)
+    - [queryTimeSeriesDatabase](#querytimeseriesdatabase)
+    - [createTimeSeriesMeasureValue](#createtimeseriesmeasurevalue)
+    - [createTimeSeriesDimension](#createtimeseriesdimension)
+    - [createTimeSeriesInputRecord](#createtimeseriesinputrecord)
+    - [publishToTimeSeriesDatabase](#publishtotimeseriesdatabase)
+    - [listCollaboratives](#listcollaboratives)
+    - [getCollaborative](#getcollaborative)
+    - [listCollaborativeServices](#listcollaborativeservices)
+    - [listCollaborativesServiceSharedWith](#listcollaborativesservicesharedwith)
+    - [addServiceToCollaborative](#addservicetocollaborative)
+    - [removeServiceFromCollaborative](#removeservicefromcollaborative)
+  - [Types](#types)
+    - [User](#user)
+      - [Properties](#properties)
+    - [Organization](#organization)
+      - [Properties](#properties-1)
+    - [Service](#service)
+      - [Properties](#properties-2)
+    - [DataStore](#datastore)
+      - [Properties](#properties-3)
+    - [DataStoreDirectory](#datastoredirectory)
+      - [Properties](#properties-4)
+      - [Methods](#methods)
+        - [printContents](#printcontents)
+    - [DataStoreFile](#datastorefile)
+      - [Properties](#properties-5)
+    - [TimeSeriesDb](#timeseriesdb)
+      - [Properties](#properties-6)
+    - [QueryResult_TimestreamVariables](#queryresult_timestreamvariables)
+      - [Properties](#properties-7)
+    - [TimeSeriesMeasureValue](#timeseriesmeasurevalue)
+      - [Properties](#properties-8)
+    - [TimeSeriesDimension](#timeseriesdimension)
+      - [Properties](#properties-9)
+    - [TimeSeriesInputRecord](#timeseriesinputrecord)
+      - [Properties](#properties-10)
+    - [TimeSeriesAssetData](#timeseriesassetdata)
+      - [Properties](#properties-11)
+    - [TimeSeriesAssetAttribute](#timeseriesassetattribute)
+      - [Properties](#properties-12)
+    - [TimeSeriesAssetAttributeData](#timeseriesassetattributedata)
+      - [Properties](#properties-13)
+    - [Collaborative](#collaborative)
+      - [Properties](#properties-14)
+    - [CollaborativeMemberOrganization](#collaborativememberorganization)
+      - [Properties](#properties-15)
+    - [CollaborativeMemberUser](#collaborativememberuser)
+      - [Properties](#properties-16)
+  - [Development](#development)
+  - [Deployment](#deployment)
+
 ## Getting Started
 
 1. Install the python package.
@@ -32,110 +103,112 @@ digitalExchange = AvistaDigitalExchange("{token}")
 
 ## AvistaDigitalExchange Functions
 
-### 1. getUserInfo
+### getUserInfo
 
 Retrieves your user information.
 
-#### Parameters:
+**Parameters**
 
 None
 
-#### Return Type
+**Return Type**
 
 [User](#user)
 
-#### Example
+**Example**
 
 ```
 user = digitalExchange.getUserInfo()
 ```
 
-### 2. listDataStores
+---
+
+### listDataStores
 
 Lists the data stores you own.
 
-#### Parameters:
+**Parameters**
 
 None
 
-#### Return Type
+**Return Type**
 
 [[DataStore]](#datastore)
 
-#### Example
+**Example**
 
 ```
 dataStores = digitalExchange.listDataStores()
 ```
 
-### 3. getDataStore
+### getDataStore
 
 Gets the metadata of the data store.
 
-#### Parameters:
+**Parameters**
 
 ```
 dataStoreId :  str, required
     The id of the data store.
 ```
 
-#### Return Type
+**Return Type**
 
 [DataStore](#datastore)
 
-#### Example
+**Example**
 
 ```
 dataStore = digitalExchange.getDataStore("{dataStoreId}")
 ```
 
-### 4. getDataStoreDirectory
+### getDataStoreDirectory
 
 Gets the directory metadata and contents.
 
-#### Parameters:
+**Parameters**
 
 ```
 dataStoreDirectoryId :  str, required
     The id of the directory.
 ```
 
-#### Return Type
+**Return Type**
 
 [DataStoreDirectory](#datastoredirectory)
 
-#### Example
+**Example**
 
 ```
 dir = digitalExchange.getDataStoreDirectory("{dataStoreDirectoryId}")
 ```
 
-### 5. getDataStoreFileMeta
+### getDataStoreFileMeta
 
 Gets the metadata of a file.
 
-#### Parameters:
+**Parameters**
 
 ```
 dataStoreFileId :  str, required
     The id of the file.
 ```
 
-#### Return Type
+**Return Type**
 
 [DataStoreFile](#datastorefile)
 
-#### Example
+**Example**
 
 ```
 file = digitalExchange.getDataStoreFileMeta("{dataStoreFileId}")
 ```
 
-### 6. downloadDataStoreFile
+### downloadDataStoreFile
 
 Downloads a copy of the file to the local file system.
 
-#### Parameters:
+**Parameters**
 
 ```
 dataStoreFileId :  str, required
@@ -144,21 +217,21 @@ writeLocation :  str, required
     Path where the file should be written. If writeLocation is a directory, the filename will be its original name.
 ```
 
-#### Return Type
+**Return Type**
 
 [DataStoreFile](#datastorefile)
 
-#### Example
+**Example**
 
 ```
 file = digitalExchange.downloadDataStoreFile("{dataStoreFileId}", "{writeLocation}")
 ```
 
-### 7. uploadFileToDataStore
+### uploadFileToDataStore
 
 Uploads a local file to a data store.
 
-#### Parameters:
+**Parameters**
 
 ```
 dataStoreId :  str, required
@@ -173,77 +246,77 @@ description :  str, optional
     A description of the file.
 ```
 
-#### Return Type
+**Return Type**
 
 [DataStoreFile](#datastorefile)
 
-#### Example
+**Example**
 
 ```
 file = digitalExchange.uploadFileToDataStore("{dataStoreId}", "{dataStoreDirectoryId}", "./testFile.txt")
 ```
 
-### 8. deleteDataStoreFile
+### deleteDataStoreFile
 
 Removes a file from the data store and deletes it from the Digital Exchange.
 
-#### Parameters:
+**Parameters**
 
 ```
 dataStoreFileId :  str, required
     The id of the file to delete.
 ```
 
-#### Return Type
+**Return Type**
 
 [DataStoreFile](#datastorefile)
 
-#### Example
+**Example**
 
 ```
 file = digitalExchange.deleteDataStoreFile("{dataStoreFileId}")
 ```
 
-### 9. listTimeSeriesDatabases
+### listTimeSeriesDatabases
 
 Lists the databases you own.
 
-#### Parameters:
+**Parameters**
 
 None
 
-#### Return Type
+**Return Type**
 
 [[TimeSeriesDb]](#timeseriesdb)
 
-#### Example
+**Example**
 
 ```
 databases = digitalExchange.listTimeSeriesDatabases()
 ```
 
-### 10. getTimeSeriesDatabase
+### getTimeSeriesDatabase
 
 Gets the metadata of the database.
 
-#### Parameters:
+**Parameters**
 
 ```
 timeSeriesDbId :  str, required
     The id of the database.
 ```
 
-#### Return Type
+**Return Type**
 
 [TimeSeriesDb](#timeseriesdb)
 
-#### Example
+**Example**
 
 ```
 database = digitalExchange.getTimeSeriesDatabase("{timeSeriesDbId}")
 ```
 
-### 11. queryTimeSeriesDatabase
+### queryTimeSeriesDatabase
 
 Queries the time series data using [SQL and AWS Timestream features](https://docs.aws.amazon.com/timestream/latest/developerguide/reference.html).
 
@@ -251,7 +324,7 @@ The result will be paginated if large enough. For the first request, omit the ne
 
 Input variables begin with lowercase letters for Digital Exchange API consistency but result variables from AWS Timestream will have capitalized variable names.
 
-#### Parameters:
+**Parameters**
 
 ```
 timeSeriesDbId :  str, required
@@ -267,25 +340,31 @@ clientToken :  str, optional
     A unique token for a query from this device. The token will change for each query. Omit this parameter on the first request.
 ```
 
-#### Return Type
+**Return Type**
 
 [QueryResult_TimestreamVariables](#queryresult_timestreamvariables)
 
-#### Example
+**Example**
 
 ```
+db = digitalExchange.getTimeSeriesDatabase("{timeSeriesDbId}")
+databaseName = db.databaseName
+tableName = db.tableName
+
+queryString = 'SELECT.....FROM "{databaseName}"."{tableName}" WHERE.....'
+
 result = digitalExchange.queryTimeSeriesDatabase("{timeSeriesDbId}", "{queryString}", 100, "{nextToken}", "{clientToken}")
 clientToken = result.clientToken
 nextToken = result.NextToken
 ```
 
-### 12. createTimeSeriesMeasureValue
+### createTimeSeriesMeasureValue
 
 Creates a MeasureValue object to be used as an entry for a time series record.
 
 Reference [AWS Timestream MeasureValue](https://docs.aws.amazon.com/timestream/latest/developerguide/API_MeasureValue.html)
 
-#### Parameters:
+**Parameters**
 
 ```
 Type :  str, required
@@ -296,23 +375,23 @@ Value :  str, required
     The measure value as a string.
 ```
 
-#### Return Type
+**Return Type**
 
 [TimeSeriesMeasureValue](#timeseriesmeasurevalue)
 
-#### Example
+**Example**
 
 ```
 measure = digitalExchange.createTimeSeriesMeasureValue("{type}", "{name}", "{value}")
 ```
 
-### 13. createTimeSeriesDimension
+### createTimeSeriesDimension
 
 Creates a Dimension object to be used in a record. Each Dimension is essentially a metadata attribute for a record.
 
 Reference [AWS Timestream Dimension](https://docs.aws.amazon.com/timestream/latest/developerguide/API_Dimension.html)
 
-#### Parameters:
+**Parameters**
 
 ```
 DimensionValueType :  str, required
@@ -323,23 +402,23 @@ Value :  str, required
     The attribute value.
 ```
 
-#### Return Type
+**Return Type**
 
 [TimeSeriesDimension](#timeseriesdimension)
 
-#### Example
+**Example**
 
 ```
 dimension = digitalExchange.createTimeSeriesDimension("VARCHAR", "{name}", "{value}")
 ```
 
-### 14. createTimeSeriesInputRecord
+### createTimeSeriesInputRecord
 
 Creates a time series data point record.
 
 Reference (AWS Timestream Record)(https://docs.aws.amazon.com/timestream/latest/developerguide/API_Record.html)
 
-#### Parameters:
+**Parameters**
 
 ```
 Time :  str, required
@@ -360,11 +439,11 @@ Version : int, optional
     The version of the record. Record data can be updated by publishing it again with an incremented Version number. Defaults to 1.
 ```
 
-#### Return Type
+**Return Type**
 
 [TimeSeriesInputRecord](#timeseriesinputrecord)
 
-#### Example
+**Example**
 
 ```
 # Initialize Dimensions
@@ -381,13 +460,13 @@ measureValues.append(digitalExchange.createTimeSeriesMeasureValue('BIGINT', 'Mea
 record = digitalExchange.createTimeSeriesInputRecord('1662155084', 'SECONDS', 'multi-measure-entry-name', 'MULTI', None, measureValues, dimensions, 1)
 ```
 
-### 15. publishToTimeSeriesDatabase
+### publishToTimeSeriesDatabase
 
 Publishes data records to the database.
 
 You may only publish records for 1 asset per request. To support viewing on data on the web, include a Dimension entry with DimensionName 'name' and DimensionValue containing the name of the asset.
 
-#### Parameters:
+**Parameters**
 
 ```
 timeSeriesDbId :  str, required
@@ -398,11 +477,11 @@ records : [TimeSeriesInputRecord], required
     An array of data records to write to the database.
 ```
 
-#### Return Type
+**Return Type**
 
 [[TimeSeriesAssetData]](#timeseriesassetdata)
 
-#### Example
+**Example**
 
 ```
 # Initialize Dimensions
@@ -428,92 +507,92 @@ records.append(digitalExchange.createTimeSeriesInputRecord('1662155082', 'SECOND
 result = digitalExchange.publishToTimeSeriesDatabase('{}', 'asset1', records)
 ```
 
-### 16. listCollaboratives
+### listCollaboratives
 
 Lists the collaboratives you are a member of.
 
-#### Parameters:
+**Parameters**
 
 None
 
-#### Return Type
+**Return Type**
 
 [[Collaborative]](#collaborative)
 
-#### Example
+**Example**
 
 ```
 collaboratives = digitalExchange.listCollaboratives()
 ```
 
-### 17. getCollaborative
+### getCollaborative
 
 Gets the metadata of the collaborative.
 
-#### Parameters:
+**Parameters**
 
 ```
 collaborativeId :  str, required
     The id of the collaborative.
 ```
 
-#### Return Type
+**Return Type**
 
 [Collaborative](#collaborative)
 
-#### Example
+**Example**
 
 ```
 collaborative = digitalExchange.getCollaborative("{collaborativeId}")
 ```
 
-### 18. listCollaborativeServices
+### listCollaborativeServices
 
 Lists all services (Data Stores of Time Series Databases) shared in the collaborative.
 
-#### Parameters:
+**Parameters**
 
 ```
 collaborativeId :  str, required
     The id of the collaborative.
 ```
 
-#### Return Type
+**Return Type**
 
 [[Service]](#service)
 
-#### Example
+**Example**
 
 ```
 services = digitalExchange.listCollaborativeServices("{collaborativeId}")
 ```
 
-### 19. listCollaborativesServiceSharedWith
+### listCollaborativesServiceSharedWith
 
 Gets the collaboratives that a service is shared with. You must be the owner of the service.
 
-#### Parameters:
+**Parameters**
 
 ```
 serviceId :  str, required
     The id of the service (either a dataStoreId or timeSeriesDbId).
 ```
 
-#### Return Type
+**Return Type**
 
 [[Collaborative]](#collaborative)
 
-#### Example
+**Example**
 
 ```
 collaboratives = digitalExchange.listCollaborativesServiceSharedWith("{serviceId}")
 ```
 
-### 20. addServiceToCollaborative
+### addServiceToCollaborative
 
 Shares a service (Data Store or Time Series database) with a collaborative.
 
-#### Parameters:
+**Parameters**
 
 ```
 serviceId :  str, required
@@ -522,21 +601,21 @@ collaborativeId :  str, required
     The id of the collaborative to share the service with.
 ```
 
-#### Return Type
+**Return Type**
 
 [Service](#service)
 
-#### Example
+**Example**
 
 ```
 service = digitalExchange.addServiceToCollaborative("{serviceId}", "{collaborativeId}")
 ```
 
-### 21. removeServiceFromCollaborative
+### removeServiceFromCollaborative
 
 Removes the service from a collaborative.
 
-#### Parameters:
+**Parameters**
 
 ```
 serviceId :  str, required
@@ -545,11 +624,11 @@ collaborativeId :  str, required
     The id of the collaborative to remove the service from.
 ```
 
-#### Return Type
+**Return Type**
 
 [Service](#service)
 
-#### Example
+**Example**
 
 ```
 service = digitalExchange.removeServiceFromCollaborative("{serviceId}", "{collaborativeId}")
@@ -638,6 +717,24 @@ directories: [DataStoreDirectory]
 files: [DataStoreFile]
     This directory's contents - files.
 ```
+
+#### Methods
+
+##### printContents
+
+Lists all of the directory contents (directories and files), along with their ids.
+
+**Parameters**
+
+None
+
+**Example**
+
+```
+dir = digitalExchange.getDataStoreDirectory("{dataStoreDirectoryId}")
+dir.printContents()
+```
+
 
 ### DataStoreFile
 
@@ -745,6 +842,46 @@ Version : int
     The version of the record.
 ```
 
+### TimeSeriesAssetData
+
+An additional format for Time Series Database data, in a more human readable format.
+
+#### Properties
+
+```
+assetId: str
+name: str
+attributes: [TimeSeriesAssetAttribute]
+```
+
+### TimeSeriesAssetAttribute
+
+One attribute of an asset and some of its data.
+
+#### Properties
+
+```
+attributeType: one of "DOUBLE", "BIGINT", "VARCHAR", "BOOLEAN", "TIMESTAMP", "MULTI"
+lastValue: str
+lastValueTime: str
+name: str
+data: [TimeSeriesAssetAttributeData]
+```
+
+### TimeSeriesAssetAttributeData
+
+A single time/value data point for an attribute.
+
+#### Properties
+
+```
+timestamp: str
+    The time in ISO8601 format.
+value: str
+    The attribute value at this timestamp.
+```
+
+
 ### Collaborative
 
 A Digital Exchange data Collaborative.
@@ -787,41 +924,30 @@ permission : str
 user : user
 ```
 
-### TimeSeriesAssetData
+## Development
 
-An additional format for Time Series Database data, in a more human readable format.
+If necessary, clone the repository with command `git clone https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk.git`.
 
-#### Properties
+Use VS Code with the Python extension to utilize formatting and type-ahead.
 
-```
-assetId: str
-name: str
-attributes: [TimeSeriesAssetAttribute]
-```
+Deployment related code is in the root directory and the package code is found in `src/avista_digital_exchange_sdk`.
 
-### TimeSeriesAssetAttribute
+## Deployment
 
-One attribute of an asset and some of its data.
+Follow the steps below to build and push the new package version to PyPi. [(Python packaging reference used)](https://packaging.python.org/en/latest/tutorials/packaging-projects/)
 
-#### Properties
+**Steps**
 
-```
-attributeType: one of "DOUBLE", "BIGINT", "VARCHAR", "BOOLEAN", "TIMESTAMP", "MULTI"
-lastValue: str
-lastValueTime: str
-name: str
-data: [TimeSeriesAssetAttributeData]
-```
-
-### TimeSeriesAssetAttributeData
-
-A single time/value data point for an attribute.
-
-#### Properties
-
-```
-timestamp: str
-    The time in ISO8601 format.
-value: str
-    The attribute value at this timestamp.
-```
+1. Update `CHANGELOG.md` with new release notes.
+2. Update `README.md` if necessary.
+3. PyPi deployment
+   1. Update the package version in `pyproject.toml`. Follow [this versioning method](https://py-pkgs.org/07-releasing-versioning.html#version-numbering)
+   2. From the root directory of the repository:
+      1. Run `python3 -m build`
+      2. Run `python3 -m twine upload dist/* ` to upload the new build to PyPi.
+         1. Use username `__token__`
+         2. Use your [PyPi authentication token](https://pypi.org/help/#apitoken) as the password. 
+   3. Test that the new version is available in pip by running `pip3 install --upgrade avista-digital-exchange-sdk`.
+4. Push changes to git.
+5. Merge changes to `main`.
+6. Create a branch from main with the name `release/YYYY_MM_DD_vXX.XX.XX` where XX.XX.XX is the new version number, and YYYY_MM_DD is the date the version was deployed.

@@ -1,5 +1,5 @@
 from ..exceptions import *
-from ..common import *
+from .. import globals
 
 
 class TimeSeriesAssetAttributeData:
@@ -23,7 +23,7 @@ class TimeSeriesAssetAttributeData:
 
     @staticmethod
     def getQueryString(tabs=1, subobjectsRemaining=4):
-        tabStr = getTabStr(tabs)
+        tabStr = globals.getTabStr(tabs)
 
         return f""" {{
 {tabStr}timestamp

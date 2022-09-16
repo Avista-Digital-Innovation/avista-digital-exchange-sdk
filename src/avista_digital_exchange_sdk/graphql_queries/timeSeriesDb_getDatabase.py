@@ -1,6 +1,6 @@
 from .query import *
 from ..exceptions import *
-from ..common import *
+from .. import globals
 from ..data_types.time_series_db import TimeSeriesDb
 
 
@@ -16,7 +16,7 @@ class timeSeriesDb_getDatabase(Query):
         return f'query {self.queryName} {{ {self.queryName}(timeSeriesDbId: "{self.timeSeriesDbId}") {self.resultType.getQueryString()} }}'
 
     def performQuery(self) -> str:
-        if debug:
+        if globals.debug:
             print(f'Retrieving time series db {self.timeSeriesDbId}')
         self._result = self._client.performQuery(self._getQueryString())
         return self._processResult()
@@ -26,7 +26,7 @@ class timeSeriesDb_getDatabase(Query):
         try:
             self.database = TimeSeriesDb(
                 self._result['data'][self.queryName], self._client)
-            if debug:
+            if globals.debug:
                 print(f'Result {self.database}')
             return self.database
         except Exception as e:

@@ -1,6 +1,6 @@
 from .query import *
 from ..exceptions import *
-from ..common import *
+from .. import globals
 from ..data_types.time_series_db import TimeSeriesDb
 from ..data_types.service import Service
 
@@ -14,7 +14,7 @@ class timeSeriesDb_listDatabases(Query):
         return super()._getQueryString()
 
     def performQuery(self) -> str:
-        if debug:
+        if globals.debug:
             print('Retrieving your time series databases...')
         self._result = self._client.performQuery(self._getQueryString())
         return self._processResult()
@@ -26,7 +26,7 @@ class timeSeriesDb_listDatabases(Query):
             for currentDatabase in self._result['data'][self.queryName]:
                 self.databases.append(TimeSeriesDb(
                     currentDatabase, self._client))
-            if debug:
+            if globals.debug:
                 i = 0
                 print('Your databases:')
                 for database in self.databases:

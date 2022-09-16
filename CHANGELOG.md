@@ -29,7 +29,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [//]: # ( Provide info on changes that will be a part of the next release )
 
-## [0.0.21] - 2022-09-16
+## [0.0.22] - 2022-09-16
+
+### Changed
+
+- Updated README
+
+### Fixed
+
+- Fixed time series querying
+- Fixed debug mode
+
+## [0.0.21] - 2022-09-15
 
 ### Changed
 
@@ -89,8 +100,9 @@ First Beta-ready release.
      - removeServiceFromCollaborative
 
 
-
-
-[Unreleased]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2022_09_15_v0.0.19...HEAD
-[0.0.19]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/2022_09_13_v0.0.18...2022_09_15_v0.0.19
+[Unreleased]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2022_09_16_v0.0.22...HEAD
+[0.0.21]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2022_09_15_v0.0.21...release/2022_09_16_v0.0.22
+[0.0.21]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2022_09_15_v0.0.20...release/2022_09_15_v0.0.21
+[0.0.20]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2022_09_13_v0.0.18...release/2022_09_15_v0.0.20
+[0.0.19]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2022_09_13_v0.0.18...release/2022_09_15_v0.0.20
 [0.0.18]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/tree/release/2022_09_13_v0.0.18

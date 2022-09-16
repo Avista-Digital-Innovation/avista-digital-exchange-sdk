@@ -1,5 +1,5 @@
 from ..exceptions import *
-from ..common import *
+from .. import globals
 from .user import User
 
 
@@ -19,7 +19,7 @@ class CollaborativeMemberUser:
 
     @staticmethod
     def getQueryString(tabs=1, subobjectsRemaining=4):
-        tabStr = getTabStr(tabs)
+        tabStr = globals.getTabStr(tabs)
 
         return f""" {{
 {tabStr}permission

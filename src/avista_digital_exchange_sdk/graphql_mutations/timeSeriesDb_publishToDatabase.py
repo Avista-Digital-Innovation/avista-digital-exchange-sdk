@@ -1,6 +1,6 @@
 from .mutation import *
 from ..exceptions import *
-from ..common import *
+from .. import globals
 from ..data_types.time_series_publish_input import TimeSeriesPublishInput
 from ..data_types.time_series_publish_response import TimeSeriesPublishResponse
 from ..data_types.time_series_asset_data import TimeSeriesAssetData
@@ -17,7 +17,7 @@ class timeSeriesDb_publishToDatabase(Mutation):
 
     def _getMutationString(self):
         tabs = 1
-        tabStr = getTabStr(tabs)
+        tabStr = globals.getTabStr(tabs)
         return f"""mutation {self.mutationName} {{ 
 {tabStr}{self.mutationName}(
 {tabStr}    assetId: "{self.assetId}", 
@@ -26,7 +26,7 @@ class timeSeriesDb_publishToDatabase(Mutation):
 }}"""
 
     def performMutation(self):
-        if debug:
+        if globals.debug:
             print("Publishing records to the database...")
         self._result = self._client.performMutation(self._getMutationString())
         return self._processResult()
@@ -39,7 +39,7 @@ class timeSeriesDb_publishToDatabase(Mutation):
             for current in self._result['data'][self.mutationName]:
                 self.assetData.append(
                     TimeSeriesAssetData(current, self._client))
-            if debug:
+            if globals.debug:
                 print("Publish succeeded")
                 print(self.assetData)
             return self.assetData

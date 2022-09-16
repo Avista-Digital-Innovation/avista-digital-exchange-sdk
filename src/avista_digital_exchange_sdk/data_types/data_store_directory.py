@@ -1,5 +1,5 @@
 from ..exceptions import *
-from ..common import *
+from .. import globals
 import requests
 from ..data_types.user import User
 from ..data_types.data_store_object import DataStoreObject
@@ -27,10 +27,10 @@ contents:
         result = ""
         if len(self.directories) > 0:
             for dir in self.directories:
-                result += f"  (directory) {dir.name} | {dir.dataStoreDirectoryId}\n"
+                result += f"  {dir.name}/ | id: {dir.dataStoreDirectoryId}\n"
         if len(self.files) > 0:
             for file in self.files:
-                result += f"  (file) {file.getFilename()} | id: {file.dataStoreFileId}\n"
+                result += f"  {file.getFilename()} | id: {file.dataStoreFileId}\n"
         return result
 
     def buildFromDictionary(self, dict):
@@ -54,7 +54,7 @@ contents:
 
     @staticmethod
     def getQueryString(tabs=1, subobjectsRemaining=4):
-        tabStr = getTabStr(tabs)
+        tabStr = globals.getTabStr(tabs)
 
         return f""" {{
 {tabStr}dataStoreDirectoryId

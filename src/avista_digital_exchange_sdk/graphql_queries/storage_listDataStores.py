@@ -1,6 +1,6 @@
 from .query import *
 from ..exceptions import *
-from ..common import *
+from .. import globals
 from ..data_types.data_store import DataStore
 from ..data_types.service import Service
 
@@ -14,7 +14,7 @@ class storage_listDataStores(Query):
         return super()._getQueryString()
 
     def performQuery(self) -> str:
-        if debug:
+        if globals.debug:
             print('Retrieving your data stores...')
         self._result = self._client.performQuery(self._getQueryString())
         return self._processResult()
@@ -29,7 +29,7 @@ class storage_listDataStores(Query):
                     DataStore(currentDataStore, self._client))
             i = 0
 
-            if debug:
+            if globals.debug:
                 print('Your data stores:')
                 for dataStore in self.dataStores:
                     print(f'{i}: {dataStore}')

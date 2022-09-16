@@ -1,5 +1,5 @@
 from ..exceptions import *
-from ..common import *
+from .. import globals
 import json
 
 
@@ -36,7 +36,7 @@ Data rows: {self.Rows}
 
     @staticmethod
     def getQueryString(tabs=1, subobjectsRemaining=4):
-        tabStr = getTabStr(tabs)
+        tabStr = globals.getTabStr(tabs)
 
         return f""" {{
 {tabStr}resultJSONString

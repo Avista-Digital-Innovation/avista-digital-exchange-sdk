@@ -1,5 +1,5 @@
 from ..exceptions import *
-from ..common import *
+from .. import globals
 
 
 class Service:
@@ -49,7 +49,7 @@ class Service:
     def getQueryString(tabs=1, subobjectsRemaining=4):
         from .data_store import DataStore
         from .time_series_db import TimeSeriesDb
-        tabStr = getTabStr(tabs)
+        tabStr = globals.getTabStr(tabs)
 
         return f""" {{
 {tabStr}serviceId

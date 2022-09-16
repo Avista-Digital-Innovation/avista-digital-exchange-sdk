@@ -1,5 +1,5 @@
 from ..exceptions import *
-from ..common import *
+from .. import globals
 
 
 class Mutation:
@@ -14,7 +14,7 @@ class Mutation:
         return f"mutation {self.mutationName} {{ {self.mutationName}() {{ {self.resultType.getQueryString(None, 4)} }} }}"
 
     def _processResult(self):
-        if debug:
+        if globals.debug:
             print(f'processing mutation result: {self.mutationName}')
             print(self._result)
         if 'errors' in self._result and len(self._result['errors']) > 0:

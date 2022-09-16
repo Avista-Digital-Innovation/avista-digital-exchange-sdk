@@ -1,5 +1,5 @@
 from ..exceptions import *
-from ..common import *
+from .. import globals
 import requests
 from ..data_types.user import User
 from ..data_types.data_store_object import DataStoreObject
@@ -41,7 +41,7 @@ class DataStoreFile(DataStoreObject):
 
     @staticmethod
     def getQueryString(tabs=1, subobjectsRemaining=4):
-        tabStr = getTabStr(tabs)
+        tabStr = globals.getTabStr(tabs)
 
         return f""" {{
 {tabStr}dataStoreFileId
@@ -60,12 +60,12 @@ class DataStoreFile(DataStoreObject):
 
     def getFileUrl(self, dataStoreFileId):
         from ..graphql_queries.storage_getDataStoreFileDownloadUrl import storage_getDataStoreFileDownloadUrl
-        if debug:
+        if globals.debug:
             print('Retrieving file download url...')
         query = storage_getDataStoreFileDownloadUrl(
             self._client, self.dataStoreId, dataStoreFileId)
         result = query.performQuery()
-        if debug:
+        if globals.debug:
             print('File download url received...')
         return result
 
@@ -79,7 +79,7 @@ class DataStoreFile(DataStoreObject):
         response = requests.get(url)
         fullWritePath = self.createWritePath(writeLocation, self.getFilename())
         open(fullWritePath, "wb").write(response.content)
-        if debug:
+        if globals.debug:
             print('Wrote file to ' + fullWritePath)
 
     @staticmethod
@@ -95,13 +95,13 @@ class DataStoreFile(DataStoreObject):
 
     @staticmethod
     def uploadFile(url, filePath):
-        if debug:
+        if globals.debug:
             print(f'Uploading file {filePath}')
         try:
             result = requests.put(url, data=open(filePath, 'rb'))
             print(f'upload file returned status code: {result.status_code}')
             if result.ok:
-                if debug:
+                if globals.debug:
                     print("File uploaded successfully")
             else:
                 raise FileUploadException

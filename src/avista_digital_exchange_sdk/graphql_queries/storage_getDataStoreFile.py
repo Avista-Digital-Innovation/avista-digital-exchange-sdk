@@ -1,6 +1,6 @@
 from .query import *
 from ..exceptions import *
-from ..common import *
+from .. import globals
 from ..data_types.data_store_file import DataStoreFile
 
 
@@ -16,7 +16,7 @@ class storage_getDataStoreFile(Query):
         return f'query {self.queryName} {{ {self.queryName}(dataStoreFileId: "{self.dataStoreFileId}") {self.resultType.getQueryString()} }}'
 
     def performQuery(self) -> str:
-        if debug:
+        if globals.debug:
             print(f"Retrieving file {self.dataStoreFileId}...")
         self._result = self._client.performQuery(self._getQueryString())
         return self._processResult()
@@ -26,7 +26,7 @@ class storage_getDataStoreFile(Query):
         try:
             result = DataStoreFile(
                 self._result['data'][self.queryName], self._client)
-            if debug:
+            if globals.debug:
                 print(f"Result {result}")
             return result
         except Exception as e:

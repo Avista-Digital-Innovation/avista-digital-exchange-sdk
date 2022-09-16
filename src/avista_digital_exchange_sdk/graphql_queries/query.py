@@ -1,6 +1,6 @@
 from ..data_types.user import User
 from ..exceptions import *
-from ..common import *
+from .. import globals
 
 
 class Query:
@@ -15,7 +15,7 @@ class Query:
         return f"query {self.queryName} {{ {self.queryName} {self.resultType.getQueryString()} }}"
 
     def _processResult(self):
-        if debug:
+        if globals.debug:
             print(f'processing query result: {self.queryName}')
             print(self._result)
         if 'errors' in self._result and len(self._result['errors']) > 0:
@@ -26,7 +26,8 @@ class Query:
             elif 'message' in self._result['errors'][0]['message'] and self._result['errors'][0]['message'] == "Unauthorized":
                 raise Unauthorized
             else:
-                raise QueryFailed(f"Query {self.queryName} failed.")
+                raise QueryFailed(
+                    f"Query {self.queryName} failed.", self._result)
 
         if self._result['data'][self.queryName] is None:
             raise MissingDataInResultException

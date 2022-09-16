@@ -1,6 +1,6 @@
 from .query import *
 from ..exceptions import *
-from ..common import *
+from .. import globals
 from ..data_types.collaborative import Collaborative
 from ..data_types.service import Service
 
@@ -15,7 +15,7 @@ class collaborative_listCollaborativeServices(Query):
         return f'query {self.queryName} {{ {self.queryName}(collaborativeId: "{self.collaborativeId}") {self.resultType.getQueryString()} }}'
 
     def performQuery(self) -> str:
-        if debug:
+        if globals.debug:
             print(
                 f'Retrieving services shared in collaborative {self.collaborativeId}...')
         self._result = self._client.performQuery(self._getQueryString())
@@ -28,7 +28,7 @@ class collaborative_listCollaborativeServices(Query):
             for currentService in self._result['data'][self.queryName]:
                 self.services.append(Service.getCorrectServiceTypeFromServiceObject(
                     currentService, self._client))
-            if debug:
+            if globals.debug:
                 print(f'{len(self.services)} services found:')
                 i = 0
                 for entry in self.services:

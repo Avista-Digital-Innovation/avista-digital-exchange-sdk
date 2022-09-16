@@ -1,6 +1,6 @@
 from .query import *
 from ..exceptions import *
-from ..common import *
+from .. import globals
 from ..data_types.collaborative import Collaborative
 from ..data_types.service import Service
 
@@ -14,7 +14,7 @@ class collaborative_listCollaboratives(Query):
         return super()._getQueryString()
 
     def performQuery(self) -> str:
-        if debug:
+        if globals.debug:
             print('Retrieving your collaboratives...')
         self._result = self._client.performQuery(self._getQueryString())
         return self._processResult()
@@ -26,7 +26,7 @@ class collaborative_listCollaboratives(Query):
             for currentCollaborative in self._result['data'][self.queryName]:
                 self.collaboratives.append(Collaborative(
                     currentCollaborative, self._client))
-            if debug:
+            if globals.debug:
                 i = 0
                 print("Collaboratives you are a member of:")
                 for entry in self.collaboratives:

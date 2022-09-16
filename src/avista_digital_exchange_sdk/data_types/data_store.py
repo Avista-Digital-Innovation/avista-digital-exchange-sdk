@@ -1,5 +1,5 @@
 from ..exceptions import *
-from ..common import *
+from .. import globals
 from .service import Service
 import requests
 
@@ -33,7 +33,7 @@ class DataStore(Service):
 
     @staticmethod
     def getQueryString(tabs=1, subobjectsRemaining=4):
-        tabStr = getTabStr(tabs)
+        tabStr = globals.getTabStr(tabs)
 
         return f""" {{
 {tabStr}dataStoreId
@@ -54,7 +54,7 @@ class DataStore(Service):
         result = query.performQuery()
         return result
 
-    @staticmethod
+    @ staticmethod
     def downloadAndWriteFile(url, writeLocation):
         response = requests.get(url)
         open(writeLocation, "wb").write(response.content)

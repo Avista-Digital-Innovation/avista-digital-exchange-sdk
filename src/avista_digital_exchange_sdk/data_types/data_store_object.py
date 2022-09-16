@@ -1,5 +1,5 @@
 from ..exceptions import *
-from ..common import *
+from .. import globals
 
 
 class DataStoreObject:
@@ -30,7 +30,7 @@ class DataStoreObject:
     def getQueryString(tabs=1, subobjectsRemaining=4):
         from .data_store_file import DataStoreFile
         from .data_store_directory import DataStoreDirectory
-        tabStr = getTabStr(tabs)
+        tabStr = globals.getTabStr(tabs)
 
         return f""" {{
 {tabStr}objectType

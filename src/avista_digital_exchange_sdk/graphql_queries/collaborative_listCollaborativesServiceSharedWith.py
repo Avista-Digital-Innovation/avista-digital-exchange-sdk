@@ -1,6 +1,6 @@
 from .query import *
 from ..exceptions import *
-from ..common import *
+from .. import globals
 from ..data_types.collaborative import Collaborative
 from ..data_types.data_store import Service
 
@@ -20,7 +20,7 @@ class collaborative_listCollaborativesServiceSharedWith(Query):
         return f'query {self.queryName} {{ {self.queryName}(serviceType: {self.serviceType}, serviceId: "{self.serviceId}") {self.resultType.getQueryString()} }}'
 
     def performQuery(self) -> str:
-        if debug:
+        if globals.debug:
             print('Retrieving the collaboratives service is shared with...')
         self._result = self._client.performQuery(self._getQueryString())
         return self._processResult()
@@ -32,7 +32,7 @@ class collaborative_listCollaborativesServiceSharedWith(Query):
             for currentCollaborative in self._result['data'][self.queryName]:
                 self.collaboratives.append(Collaborative(
                     currentCollaborative, self._client))
-            if debug:
+            if globals.debug:
                 print(
                     f'Service is shared with {len(self.collaboratives)} collaborative{"s" if len(self.collaboratives) > 1 else ""}:')
                 i = 0

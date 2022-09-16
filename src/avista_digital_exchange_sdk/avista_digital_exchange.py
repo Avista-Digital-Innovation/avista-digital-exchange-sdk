@@ -1,5 +1,5 @@
 from .client import Client
-from .common import *
+from . import globals
 from .graphql_queries.user_getUserSession import user_getUserSession
 from .graphql_queries.collaborative_listCollaboratives import collaborative_listCollaboratives
 from .graphql_queries.collaborative_listCollaborativeServices import collaborative_listCollaborativeServices
@@ -9,7 +9,7 @@ from .graphql_queries.storage_listDataStores import storage_listDataStores
 from .graphql_queries.storage_getDataStore import storage_getDataStore
 from .graphql_queries.storage_getDataStoreFile import storage_getDataStoreFile
 from .graphql_queries.storage_getDataStoreDirectory import storage_getDataStoreDirectory
-from .graphql_queries.storage_getDataStoreFileDownloadUrl import storage_getDataStoreFileDownloadUrl
+# from .graphql_queries.storage_getDataStoreFileDownloadUrl import storage_getDataStoreFileDownloadUrl
 from .graphql_queries.timeSeriesDb_listDatabases import timeSeriesDb_listDatabases
 from .graphql_queries.timeSeriesDb_getDatabase import timeSeriesDb_getDatabase
 from .graphql_queries.timeSeriesDb_queryDatabaseWithTimestreamQuery import timeSeriesDb_queryDatabaseWithTimestreamQuery
@@ -28,8 +28,8 @@ from .data_types.data_store_file import DataStoreFile
 from .data_types.data_store_directory import DataStoreDirectory
 from .data_types.time_series_db import TimeSeriesDb
 from .data_types.service import Service
-from .data_types.time_series_publish_input import TimeSeriesPublishInput
-from .data_types.time_series_asset_data import TimeSeriesAssetData
+# from .data_types.time_series_publish_input import TimeSeriesPublishInput
+# from .data_types.time_series_asset_data import TimeSeriesAssetData
 from .data_types.time_series_input_record import TimeSeriesInputRecord
 from .data_types.time_series_measure_value import TimeSeriesMeasureValue
 from .data_types.time_series_dimension import TimeSeriesDimension
@@ -40,12 +40,14 @@ import os
 
 
 class AvistaDigitalExchange(object):
-    def __init__(self, token=True, debugMode=None):
-        if debugMode is not None:
-            global debug
-            debug = debugMode
-        self.token = token
-        self._client = Client(token)
+    def __init__(self, token, debug=False):
+        if type(debug) is not bool:
+            raise InvalidParameterException(
+                "AvistaDigitalExchange debug parameter must be a bool")
+        # self._stage = "PRODUCTION"
+        # globals.init(debug, self._stage)
+        self._token = token
+        self._client = Client(self._token)
 
     def getUserInfo(self) -> User:
         """Retrieves the user information of the user associated with the authentication token in use."""

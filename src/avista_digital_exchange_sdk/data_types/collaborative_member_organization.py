@@ -1,5 +1,5 @@
 from ..exceptions import *
-from ..common import *
+from .. import globals
 from .collaborative_member_user import CollaborativeMemberUser
 from .user import User
 from .organization import Organization
@@ -26,7 +26,7 @@ class CollaborativeMemberOrganization:
 
     @staticmethod
     def getQueryString(tabs=1, subobjectsRemaining=4):
-        tabStr = getTabStr(tabs)
+        tabStr = globals.getTabStr(tabs)
 
         return f""" {{
 {tabStr}collaborativeId

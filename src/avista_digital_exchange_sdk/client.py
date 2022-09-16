@@ -1,5 +1,5 @@
 import requests
-from .common import *
+from . import globals
 
 
 class Client:
@@ -8,13 +8,14 @@ class Client:
         APPSYNC_API_ENDPOINT_URL_dev = 'https://annsvlcb4vew7msipwjyzzvyhi.appsync-api.us-west-2.amazonaws.com/graphql'
         APPSYNC_API_ENDPOINT_URL_prod = 'https://rrfs7pb7ancybo7bom7uxcsaxq.appsync-api.us-west-2.amazonaws.com/graphql'
         self.token = token
-        if stage == "PRODUCTION":
+        if globals.stage == "PRODUCTION":
             self.APPSYNC_API_ENDPOINT_URL = APPSYNC_API_ENDPOINT_URL_prod
         else:
             self.APPSYNC_API_ENDPOINT_URL = APPSYNC_API_ENDPOINT_URL_dev
         return
 
     def performQuery(self, queryString):
+        print(queryString)
         response = None
         try:
             with requests.Session() as session:
@@ -31,6 +32,7 @@ class Client:
         return response.json()
 
     def performMutation(self, mutationString):
+        print(mutationString)
         response = None
         try:
             with requests.Session() as session:

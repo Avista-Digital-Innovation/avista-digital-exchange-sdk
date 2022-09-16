@@ -1,6 +1,6 @@
 from .query import *
 from ..exceptions import *
-from ..common import *
+from .. import globals
 from ..data_types.presigned_url import PresignedUrl
 from ..data_types.service import Service
 

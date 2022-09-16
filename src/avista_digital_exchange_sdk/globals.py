@@ -1,6 +1,9 @@
 
-debug = False
+debug = True
 stage = "PRODUCTION"
+# def init(debugParam, stageParam):
+#     self.debug = debugParam
+#     self.stage = stageParam
 
 tab = "    "
 
