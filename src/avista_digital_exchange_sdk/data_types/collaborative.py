@@ -5,18 +5,19 @@ from .collaborative_member_organization import CollaborativeMemberOrganization
 
 
 class Collaborative:
-    def __init__(self, dict, client):
+    def __init__(self, dict, client, debug):
         self._client = client
+        self._debug = debug
         if dict is None:
             raise MissingDataInResultException
         else:
             self.buildFromDictionary(dict)
 
     def __str__(self):
-        return f"""Collaborative: {self.collaborativeId}
-   name: {self.name}
-   description: {self.description}
-   {self._printMembers()}"""
+        return f"""{self.name}
+    collaborativeId: {self.collaborativeId}
+    description: {self.description}
+    {self._printMembers()}"""
 
     def _printMembers(self):
         if self.memberOrganizations is not None and len(self.memberOrganizations) > 0:
@@ -38,7 +39,7 @@ class Collaborative:
         self.memberOrganizations = []
         for org in dict['memberOrganizations']:
             self.memberOrganizations.append(
-                CollaborativeMemberOrganization(org, self._client))
+                CollaborativeMemberOrganization(org, self._client, self._debug))
 
     @staticmethod
     def getQueryString(tabs=1, subobjectsRemaining=4):
@@ -51,15 +52,3 @@ class Collaborative:
 {tabStr}name
 {tabStr}{f"memberOrganizations {CollaborativeMemberOrganization.getQueryString(tabs + 1, subobjectsRemaining - 1)}" if subobjectsRemaining > 0 else ""}
 {tabStr[0:-4]}}} """
-
-    def listSharedServices(self):
-        # TODO
-        return
-
-    def shareService(self, serviceId, serviceType):
-        # TODO
-        return
-
-    def removeService(self, serviceId, serviceType):
-        # TODO
-        return

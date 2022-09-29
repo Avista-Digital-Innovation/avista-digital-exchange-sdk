@@ -3,8 +3,9 @@ from .. import globals
 
 
 class Organization:
-    def __init__(self, dict, client):
+    def __init__(self, dict, client, debug):
         self._client = client
+        self._debug = debug
         if dict is None:
             raise MissingDataInResultException
         else:

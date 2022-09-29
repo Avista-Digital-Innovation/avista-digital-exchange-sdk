@@ -6,8 +6,8 @@ from ..data_types.user import User
 
 class user_getUserSession(Query):
 
-    def __init__(self, client):
-        super().__init__(client, "user_getUserSession", User)
+    def __init__(self, client, debug):
+        super().__init__(client, debug, "user_getUserSession", User)
 
     def _getQueryString(self):
         tabs = "    "
@@ -17,6 +17,7 @@ query {self.queryName} {{ {self.queryName} {{
 }}}}"""
 
     def performQuery(self):
+        print('Getting your user information...')
         self._result = self._client.performQuery(self._getQueryString())
         return self._processResult()
 
@@ -24,7 +25,8 @@ query {self.queryName} {{ {self.queryName} {{
         super()._processResult()
         try:
             self.user = User(
-                self._result['data'][self.queryName]['user'], self._client)
+                self._result['data'][self.queryName]['user'], self._client, self._debug)
+            print(self.user)
             return self.user
         except Exception as e:
             raise e

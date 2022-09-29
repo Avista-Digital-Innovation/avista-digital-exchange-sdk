@@ -8,8 +8,8 @@ from ..data_types.service import Service
 
 class collaborative_addServiceToCollaborative(Mutation):
 
-    def __init__(self, client, collaborativeId, serviceType, serviceId):
-        super().__init__(client, "collaborative_addServiceToCollaborative", Service)
+    def __init__(self, client, debug, collaborativeId, serviceType, serviceId):
+        super().__init__(client, debug, "collaborative_addServiceToCollaborative", Service)
         self.collaborativeId = collaborativeId
         self.serviceType = serviceType
         self.serviceId = serviceId
@@ -18,18 +18,16 @@ class collaborative_addServiceToCollaborative(Mutation):
         return f"""mutation {self.mutationName} {{ {self.mutationName}(collaborativeId: "{self.collaborativeId}", serviceType: {self.serviceType}, serviceId: "{self.serviceId}") {self.resultType.getQueryString()} }}"""
 
     def performMutation(self):
-        if globals.debug:
-            print("Adding your service to the collaborative...")
+        print("Adding your service to the collaborative...")
         self._result = self._client.performMutation(self._getMutationString())
         return self._processResult()
 
     def _processResult(self):
         super()._processResult()
         try:
-            if globals.debug:
-                print("Service was successfully shared to the collaborative")
             self.service = Service(
-                self._result['data'][self.mutationName], self._client)
+                self._result['data'][self.mutationName], self._client, self._debug)
+            print("Service was successfully shared to the collaborative")
             return self.service
         except Exception as e:
             raise e

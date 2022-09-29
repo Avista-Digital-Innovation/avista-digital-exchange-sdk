@@ -3,15 +3,16 @@ from .. import globals
 
 
 class TimeSeriesAssetAttributeData:
-    def __init__(self, dict, client):
+    def __init__(self, dict, client, debug):
         self._client = client
+        self._debug = debug
         if dict is None:
             raise MissingDataInResultException
         else:
             self.buildFromDictionary(dict)
 
     def __str__(self):
-        return f"""Attribute Data:
+        return f"""
    timestamp: {self.timestamp}
    description: {self.value}"""
 

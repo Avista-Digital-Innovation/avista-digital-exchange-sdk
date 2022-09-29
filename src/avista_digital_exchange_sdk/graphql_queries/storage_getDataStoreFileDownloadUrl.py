@@ -7,8 +7,8 @@ from ..data_types.service import Service
 
 class storage_getDataStoreFileDownloadUrl(Query):
 
-    def __init__(self, client, dataStoreId, dataStoreFileId):
-        super().__init__(client, "storage_getDataStoreFileDownloadUrl", PresignedUrl)
+    def __init__(self, client, debug, dataStoreId, dataStoreFileId):
+        super().__init__(client, debug, "storage_getDataStoreFileDownloadUrl", PresignedUrl)
         if dataStoreId is None:
             raise MissingParameterException("Missing parameter dataStoreId")
         if dataStoreFileId is None:
@@ -21,13 +21,14 @@ class storage_getDataStoreFileDownloadUrl(Query):
         return f'query {self.queryName} {{ {self.queryName}(dataStoreId: "{self.dataStoreId}", dataStoreFileId: "{self.dataStoreFileId}") {self.resultType.getQueryString()} }}'
 
     def performQuery(self) -> str:
+        print('Retrieving file download url...')
         self._result = self._client.performQuery(self._getQueryString())
         return self._processResult()
 
     def _processResult(self) -> PresignedUrl:
         super()._processResult()
         try:
-            return PresignedUrl(self._result['data'][self.queryName], self._client)
+            return PresignedUrl(self._result['data'][self.queryName], self._client, self._debug)
         except Exception as e:
             raise e
             raise Exception(

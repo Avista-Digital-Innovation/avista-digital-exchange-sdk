@@ -25,9 +25,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased] - WIP
+## [0.0.23] - 2022-09-29
 
-[//]: # ( Provide info on changes that will be a part of the next release )
+### Added
+
+- Added query to list all the assets and their attributes in a time series database, along with all attribute's latest value.
+- Added a structured time series query to allow for querying with a time range, and asset and attribute filter.
+
+### Changed
+
+- Improved print statements.
+
+### Fixed
+
+- Fixed debug variable access.
 
 ## [0.0.22] - 2022-09-16
 
@@ -99,9 +110,9 @@ First Beta-ready release.
      - addServiceToCollaborative
      - removeServiceFromCollaborative
 
-
-[Unreleased]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2022_09_16_v0.0.22...HEAD
-[0.0.21]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2022_09_15_v0.0.21...release/2022_09_16_v0.0.22
+[Unreleased]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2022_09_29_v0.0.23...HEAD
+[0.0.23]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2022_09_16_v0.0.22...release/2022_09_29_v0.0.23
+[0.0.22]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2022_09_15_v0.0.21...release/2022_09_16_v0.0.22
 [0.0.21]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2022_09_15_v0.0.20...release/2022_09_15_v0.0.21
 [0.0.20]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2022_09_13_v0.0.18...release/2022_09_15_v0.0.20
 [0.0.19]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2022_09_13_v0.0.18...release/2022_09_15_v0.0.20

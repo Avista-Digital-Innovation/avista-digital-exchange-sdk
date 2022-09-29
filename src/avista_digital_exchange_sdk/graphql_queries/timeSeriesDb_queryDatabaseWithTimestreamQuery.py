@@ -7,8 +7,8 @@ import json
 
 class timeSeriesDb_queryDatabaseWithTimestreamQuery(Query):
 
-    def __init__(self, client, timeSeriesDbId, queryString, maxRows, nextToken, clientToken):
-        super().__init__(client, "timeSeriesDb_queryDatabaseWithTimestreamQuery",
+    def __init__(self, client, debug, timeSeriesDbId, queryString, maxRows, nextToken, clientToken):
+        super().__init__(client, debug, "timeSeriesDb_queryDatabaseWithTimestreamQuery",
                          QueryResult_TimestreamVariables)
         if timeSeriesDbId is None:
             raise MissingParameterException("Missing timeSeriesDbId")
@@ -30,19 +30,18 @@ class timeSeriesDb_queryDatabaseWithTimestreamQuery(Query):
         return query
 
     def performQuery(self) -> str:
-        if globals.debug:
-            print(f'Retrieving time series db {self.timeSeriesDbId}')
+        print(
+            f'Querying time series db {self.timeSeriesDbId}{f" with nextToken" if self.nextToken is not None else ""}...')
         self._result = self._client.performQuery(self._getQueryString())
         return self._processResult()
 
     def _processResult(self) -> QueryResult_TimestreamVariables:
         super()._processResult()
         try:
-            self.database = QueryResult_TimestreamVariables(
-                self._result['data'][self.queryName], self._client, self.timeSeriesDbId, self.queryString, self.maxRows)
-            if globals.debug:
-                print(f'Result {self.database}')
-            return self.database
+            self.result = QueryResult_TimestreamVariables(
+                self._result['data'][self.queryName], self._client, self._debug, self.timeSeriesDbId, self.queryString, self.maxRows)
+            print(f'{self.result}')
+            return self.result
         except Exception as e:
             raise e
             raise Exception(

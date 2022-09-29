@@ -22,7 +22,9 @@ This package allows you to access the Avista Digital Exchange and perform a subs
     - [deleteDataStoreFile](#deletedatastorefile)
     - [listTimeSeriesDatabases](#listtimeseriesdatabases)
     - [getTimeSeriesDatabase](#gettimeseriesdatabase)
-    - [queryTimeSeriesDatabase](#querytimeseriesdatabase)
+    - [listTimeSeriesAssetsAndLatestValues](#listtimeseriesassetsandlatestvalues)
+    - [queryTimeSeriesDatabaseWithFilters](#querytimeseriesdatabasewithfilters)
+    - [queryTimeSeriesDatabase_TimestreamFormat](#querytimeseriesdatabase_timestreamformat)
     - [createTimeSeriesMeasureValue](#createtimeseriesmeasurevalue)
     - [createTimeSeriesDimension](#createtimeseriesdimension)
     - [createTimeSeriesInputRecord](#createtimeseriesinputrecord)
@@ -72,6 +74,7 @@ This package allows you to access the Avista Digital Exchange and perform a subs
       - [Properties](#properties-16)
   - [Development](#development)
   - [Deployment](#deployment)
+  - [Resources](#resources)
 
 ## Getting Started
 
@@ -316,13 +319,94 @@ timeSeriesDbId :  str, required
 database = digitalExchange.getTimeSeriesDatabase("{timeSeriesDbId}")
 ```
 
-### queryTimeSeriesDatabase
+### listTimeSeriesAssetsAndLatestValues
+
+Queries the time series database to collect a list of all assets and their attributes in the database, as well as the latest value and timestamp for each attribute.
+
+**Parameters**
+
+```
+timeSeriesDbId :  str, required
+    The id of the database.
+resultFileWriteLocation :  str, optional
+    If you would like the results stored in a file, include a name or path here. 
+    Results will be in JSON format.
+```
+
+**Return Type**
+
+[[TimeSeriesAssetData](#timeseriesassetdata)]
+
+**Example**
+
+```
+result = digitalExchange.listTimeSeriesAssetsAndLatestValues(
+     "<timeSeriesDbId>", None)
+
+# Example iteration through assets and attributes in the result
+for asset in result:
+    assetId = asset.assetId
+    for attribute in asset.attributes:
+        name = attribute.name
+        latestValue = attribute.lastValue
+        timestamp = attribute.lastValueTime
+```
+
+### queryTimeSeriesDatabaseWithFilters
+
+Queries the time series data using asset, attribute and time filters, and writes the results to a file.
+
+You must provide a time range and the assets (and their attributes) that you wish to query. The method automatically 
+iterates over all pagination tokens so the result will be compiled upon completion. When the compiled result is available, it will be written to the local file system.
+
+**Parameters**
+
+```
+timeSeriesDbId :  str, required
+    The id of the database.
+startTime :  ISO8601 str, required
+    The beginning of the time interval to query.
+    Example: "2022-09-27T10:22:45.000Z"
+endTime: ISO8601 str, required
+    The end of the time interval to query.
+    Example: "2022-09-27T10:22:45.000Z"
+assetAndAttributesFilter: [{"assetId": <str>, "attributeNamesFilter": [<str>]}], required
+resultFileWriteLocation: str, required
+    The location to store the result file on the local file system. If a directory is provided but not a file name, the file will be saved as "result.csv" or "result.json" in the specified directory.
+exportFileFormat: str, optional
+    The file format in which to compile the query result. If JSON is used, the data will be stored as an array of TimeSeriesAssetData objects (see Data Types section below).
+    Valid values: "CSV" | "JSON"
+    Defaults to "CSV"
+```
+
+**Return Type**
+
+Bool
+
+**Example**
+
+```
+result = digitalExchange.queryTimeSeriesDatabaseWithFilters(
+     "<timeSeriesDbId>", [
+         {"assetId": "<assetId>",
+             "attributeNamesFilter": ["SOC", "V", "V - Setpoint"]},
+         {"assetId": "<assetId>",
+             "attributeNamesFilter": ["A kW", "B Amps", "B PF"]},
+         {"assetId": "<assetId>", 
+             "attributeNamesFilter": ["A kVAR", "A kW", "B Amps"]}], 
+    "2022-09-25T20:13:04.465Z", 
+    "2022-09-26T20:58:04.465Z", 
+    "./", 
+    "JSON")
+```
+
+### queryTimeSeriesDatabase_TimestreamFormat
 
 Queries the time series data using [SQL and AWS Timestream features](https://docs.aws.amazon.com/timestream/latest/developerguide/reference.html).
 
-The result will be paginated if large enough. For the first request, omit the nextToken and clientToken parameters or set them to None. If a NextToken is present in the query result, there is more data to retrieve. In subsequent requests use the original queryString and maxRows parameters, and the nextToken and clientToken from the previous query result.
+The result will be paginated if large enough. For the first request, omit the nextToken and clientToken parameters or set them to None. If a nextToken is present in the query result, there is more data to retrieve. In subsequent requests use the original queryString and maxRows parameters, and the nextToken and clientToken from the previous query result.
 
-Input variables begin with lowercase letters for Digital Exchange API consistency but result variables from AWS Timestream will have capitalized variable names.
+This SDK uses lowercase first letter variable names and AWS Timestream documented variables are capitalized.
 
 **Parameters**
 
@@ -353,25 +437,25 @@ tableName = db.tableName
 
 queryString = 'SELECT.....FROM "{databaseName}"."{tableName}" WHERE.....'
 
-result = digitalExchange.queryTimeSeriesDatabase("{timeSeriesDbId}", "{queryString}", 100, "{nextToken}", "{clientToken}")
+result = digitalExchange.queryTimeSeriesDatabase_TimestreamFormat("{timeSeriesDbId}", "{queryString}", 100, "{nextToken}", "{clientToken}")
 clientToken = result.clientToken
-nextToken = result.NextToken
+nextToken = result.nextToken
 ```
 
 ### createTimeSeriesMeasureValue
 
-Creates a MeasureValue object to be used as an entry for a time series record.
+Creates a measureValue object to be used as an entry for a time series record.
 
 Reference [AWS Timestream MeasureValue](https://docs.aws.amazon.com/timestream/latest/developerguide/API_MeasureValue.html)
 
 **Parameters**
 
 ```
-Type :  str, required
+type :  str, required
     The type of the the measure value. Valid values: "DOUBLE", "BIGINT", "VARCHAR", "BOOLEAN", "TIMESTAMP"
-Name :  str, required
+name :  str, required
     The name of the measure.
-Value :  str, required
+value :  str, required
     The measure value as a string.
 ```
 
@@ -394,11 +478,11 @@ Reference [AWS Timestream Dimension](https://docs.aws.amazon.com/timestream/late
 **Parameters**
 
 ```
-DimensionValueType :  str, required
+dimensionValueType :  str, required
     The type of the attribute. Valid values: "VARCHAR"
-Name :  str, required
+name :  str, required
     The name of the attribute.
-Value :  str, required
+value :  str, required
     The attribute value.
 ```
 
@@ -421,22 +505,22 @@ Reference (AWS Timestream Record)(https://docs.aws.amazon.com/timestream/latest/
 **Parameters**
 
 ```
-Time :  str, required
+time :  str, required
     The timestamp for the record.
-TimeUnit :  str, required
+timeUnit :  str, required
     The unit of the Time timestamp. Valid values: "MILLISECONDS", "SECONDS", "MICROSECONDS", "NANOSECONDS"
-MeasureName :  str, required
+measureName :  str, required
     The name of the measure.
-MeasureValueType :  str, required
-    The type of the measure. Valid values: "DOUBLE", "BIGINT", "VARCHAR", "BOOLEAN", "TIMESTAMP", "MULTI". "MULTI" is used to include an array of MeasureValues for the single time point. If type is "MULTI" include an array of MeasureValues for the MeasureValues parameter. Otherwise, pass a single value for MeasureValue.
-MeasureValue :  str, optional
+measureValueType :  str, required
+    The type of the measure. Valid values: "DOUBLE", "BIGINT", "VARCHAR", "BOOLEAN", "TIMESTAMP", "MULTI". "MULTI" is used to include an array of measureValues for the single time point. If type is "MULTI" include an array of measureValues for the measureValues parameter. Otherwise, pass a single value for measureValue.
+measureValue :  str, optional
     The measure value as a string.
-MeasureValues : [TimeSeriesMeasureValue], optional
-    An array of MeasureValues.
-Dimensions : [TimeSeriesDimension], optional
+measureValues : [TimeSeriesMeasureValue], optional
+    An array of measureValues.
+dimensions : [TimeSeriesDimension], optional
     The dimensions, or metadata, of the record. Include a Dimension with name "name" and a value of the asset's name so it can be viewed on the Avista Digital Exchange web platform.
-Version : int, optional
-    The version of the record. Record data can be updated by publishing it again with an incremented Version number. Defaults to 1.
+version : int, optional
+    The version of the record. Record data can be updated by publishing it again with an incremented version number. Defaults to 1.
 ```
 
 **Return Type**
@@ -464,7 +548,7 @@ record = digitalExchange.createTimeSeriesInputRecord('1662155084', 'SECONDS', 'm
 
 Publishes data records to the database.
 
-You may only publish records for 1 asset per request. To support viewing on data on the web, include a Dimension entry with DimensionName 'name' and DimensionValue containing the name of the asset.
+You may only publish records for 1 asset per request. To support viewing on data on the web, include a dimension entry with dimensionName 'name' and dimensionValue containing the name of the asset.
 
 **Parameters**
 
@@ -484,21 +568,21 @@ records : [TimeSeriesInputRecord], required
 **Example**
 
 ```
-# Initialize Dimensions
+# Initialize dimensions
 dimensions = []
 dimensions.append(digitalExchange.createTimeSeriesDimension('VARCHAR', 'name', 'Asset 1 Name'))
 dimensions.append(digitalExchange.createTimeSeriesDimension('VARCHAR', 'Dimension2Name', 'Dimension2Value'))
 
-# Initialize MeasureValues
+# Initialize measureValues
 measureValues = []
 measureValues.append(digitalExchange.createTimeSeriesMeasureValue('VARCHAR', 'Measure 1', 'a string...' ))
 measureValues.append(digitalExchange.createTimeSeriesMeasureValue('BIGINT', 'Measure 2', '321' ))
 
-# Initialize Records
+# Initialize records
 records = []
 records.append(digitalExchange.createTimeSeriesInputRecord('1662155081', 'SECONDS', 'multi-measure-entry-name', 'MULTI', None, measureValues, dimensions, 1))
 
-# Use other MeasureValues for another record
+# Use other measureValues for another record
 measureValues = []
 ...
 records.append(digitalExchange.createTimeSeriesInputRecord('1662155082', 'SECONDS', 'multi-measure-entry-name', 'MULTI', None, measureValues, dimensions, 1))
@@ -785,12 +869,12 @@ timestreamResults: dict :
     The AWS Timestream query result object. [Reference](https://docs.aws.amazon.com/timestream/latest/developerguide/API_query_Query.html). Some properties are stored within the QueryResult object for easy access.
 clientToken: str
     The token generated in the cloud associating the query to the requesting user device.
-NextToken: str | None
+nextToken: str | None
     Present if the query result is paginated.
-QueryId: str
-QueryStatus: dict
-Rows: dict
-ColumnInfo: dict
+queryId: str
+queryStatus: dict
+rows: dict
+columnInfo: dict
 ```
 
 ### TimeSeriesMeasureValue
@@ -800,9 +884,9 @@ A measure and its data value. [Timestream Reference](https://docs.aws.amazon.com
 #### Properties
 
 ```
-Type: str
-Name: str
-Value: str
+rype: str
+name: str
+value: str
 ```
 
 ### TimeSeriesDimension
@@ -812,9 +896,9 @@ A dimension (or a metadata entry). [Timestream Reference](https://docs.aws.amazo
 #### Properties
 
 ```
-DimensionValueType: str
-Name: str
-Value: str
+dimensionValueType: str
+name: str
+value: str
 ```
 
 ### TimeSeriesInputRecord
@@ -824,21 +908,21 @@ A time series record. [Timestream Reference](https://docs.aws.amazon.com/timestr
 #### Properties
 
 ```
-Time :  str
+time :  str
     The timestamp for the record.
-TimeUnit :  str
+timeUnit :  str
     The unit of the Time timestamp. Valid values: "MILLISECONDS", "SECONDS", "MICROSECONDS", "NANOSECONDS"
-MeasureName :  str
+measureName :  str
     The name of the measure.
-MeasureValueType :  str
-    The type of the measure. Valid values: "DOUBLE", "BIGINT", "VARCHAR", "BOOLEAN", "TIMESTAMP", "MULTI". "MULTI" is used to include an array of MeasureValues for the single time point. If type is "MULTI" include an array of MeasureValues for the MeasureValues parameter. Otherwise, pass a single value for MeasureValue.
-MeasureValue :  str
-    The measure value. Only present if MeasureValueType != "MULTI"
-MeasureValues : [TimeSeriesMeasureValue]
-    An array of MeasureValues. Only present if MeasureValueType == "MULTI"
-Dimensions : [TimeSeriesDimension]
+measureValueType :  str
+    The type of the measure. Valid values: "DOUBLE", "BIGINT", "VARCHAR", "BOOLEAN", "TIMESTAMP", "MULTI". "MULTI" is used to include an array of measureValues for the single time point. If type is "MULTI" include an array of measureValues for the measureValues parameter. Otherwise, pass a single value for measureValue.
+measureValue :  str
+    The measure value. Only present if measureValueType != "MULTI"
+measureValues : [TimeSeriesMeasureValue]
+    An array of measureValues. Only present if measureValueType == "MULTI"
+dimensions : [TimeSeriesDimension]
     The dimensions, or metadata, of the record.
-Version : int
+version : int
     The version of the record.
 ```
 
@@ -950,4 +1034,12 @@ Follow the steps below to build and push the new package version to PyPi. [(Pyth
    3. Test that the new version is available in pip by running `pip3 install --upgrade avista-digital-exchange-sdk`.
 4. Push changes to git.
 5. Merge changes to `main`.
-6. Create a branch from main with the name `release/YYYY_MM_DD_vXX.XX.XX` where XX.XX.XX is the new version number, and YYYY_MM_DD is the date the version was deployed.
+6. Create a release branch from main with the name `release/YYYY_MM_DD_vXX.XX.XX` where XX.XX.XX is the new version number, and YYYY_MM_DD is the date the version was deployed.
+
+## Resources
+
+1. [Avista Digital Exchange](https://energy.collaboratives.io/)
+2. [PyPi SDK project listing](https://pypi.org/project/avista-digital-exchange-sdk/)
+3. [GitHub project repository](https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk)
+4. [Python package deployment tutorial](https://packaging.python.org/en/latest/tutorials/packaging-projects/)
+5. [PyPi API Token](https://pypi.org/help/#apitoken)

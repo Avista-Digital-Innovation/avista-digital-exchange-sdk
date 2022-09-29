@@ -7,8 +7,9 @@ from ..data_types.data_store import Service
 
 class collaborative_listCollaborativesServiceSharedWith(Query):
 
-    def __init__(self, client, serviceType, serviceId):
-        super().__init__(client, "collaborative_listCollaborativesServiceSharedWith", Collaborative)
+    def __init__(self, client, debug, serviceType, serviceId):
+        super().__init__(client, debug,
+                         "collaborative_listCollaborativesServiceSharedWith", Collaborative)
         if serviceType is None:
             raise MissingParameterException("Missing serviceType")
         if serviceId is None:
@@ -20,8 +21,8 @@ class collaborative_listCollaborativesServiceSharedWith(Query):
         return f'query {self.queryName} {{ {self.queryName}(serviceType: {self.serviceType}, serviceId: "{self.serviceId}") {self.resultType.getQueryString()} }}'
 
     def performQuery(self) -> str:
-        if globals.debug:
-            print('Retrieving the collaboratives service is shared with...')
+        print(
+            f'Listing the collaboratives service {self.serviceId} is shared with...')
         self._result = self._client.performQuery(self._getQueryString())
         return self._processResult()
 
@@ -31,14 +32,11 @@ class collaborative_listCollaborativesServiceSharedWith(Query):
             self.collaboratives = []
             for currentCollaborative in self._result['data'][self.queryName]:
                 self.collaboratives.append(Collaborative(
-                    currentCollaborative, self._client))
-            if globals.debug:
-                print(
-                    f'Service is shared with {len(self.collaboratives)} collaborative{"s" if len(self.collaboratives) > 1 else ""}:')
-                i = 0
-                for entry in self.collaboratives:
-                    print(f'{i}: {entry}')
-                    i += 1
+                    currentCollaborative, self._client, self._debug))
+            i = 0
+            for entry in self.collaboratives:
+                print(f'{i}: {entry}')
+                i += 1
             return self.collaboratives
         except Exception as e:
             raise e

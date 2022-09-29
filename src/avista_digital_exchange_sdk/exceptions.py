@@ -12,14 +12,19 @@ class UnauthorizedException(Exception):
 
 class QueryFailed(Exception):
     def __init__(self, message="The query failed.", error=""):
-        self.message = message
-        print(error)
+        self.message = f'{message}\nERROR - Query Result/Error: {error}'
         super().__init__(self.message)
 
 
 class MutationFailed(Exception):
-    def __init__(self, message="The mutation failed."):
-        self.message = message
+    def __init__(self, message="The mutation failed.", error=""):
+        self.message = f'{message}\nERROR - Mutation Result/Error: {error}'
+        super().__init__(self.message)
+
+
+class SubscriptionFailed(Exception):
+    def __init__(self, message="The subscription failed.", error=""):
+        self.message = f'{message}\nERROR - subscription Result/Error: {error}'
         super().__init__(self.message)
 
 
@@ -62,4 +67,10 @@ class FileUploadException(Exception):
 class InvalidParameterException(Exception):
     def __init__(self, message="You passed an invalid type to the function."):
         self.message = message
+        super().__init__(self.message)
+
+
+class InvalidTimestampParameter(Exception):
+    def __init__(self, parameterName, timestamp):
+        self.message = f'Received invalid timestamp for parameter "{parameterName}": "{timestamp}"'
         super().__init__(self.message)

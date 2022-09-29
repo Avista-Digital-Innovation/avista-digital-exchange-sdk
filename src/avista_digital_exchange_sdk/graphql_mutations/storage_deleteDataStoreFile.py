@@ -6,16 +6,16 @@ from ..data_types.data_store_file import DataStoreFile
 
 class storage_deleteDataStoreFile(Mutation):
 
-    def __init__(self, client, dataStoreFileId):
-        super().__init__(client, "storage_deleteDataStoreFile", DataStoreFile)
+    def __init__(self, client, debug, dataStoreFileId):
+        super().__init__(client, debug, "storage_deleteDataStoreFile", DataStoreFile)
         self.dataStoreFileId = dataStoreFileId
 
     def _getMutationString(self):
         return f"""mutation {self.mutationName} {{ {self.mutationName}(dataStoreFileId: "{self.dataStoreFileId}") {self.resultType.getQueryString()} }}"""
 
     def performMutation(self):
-        if globals.debug:
-            print(f"Deleting data store file {self.dataStoreFileId}...")
+        print(
+            f"Deleting file {self.dataStoreFileId}...")
         self._result = self._client.performMutation(self._getMutationString())
         return self._processResult()
 
@@ -23,9 +23,8 @@ class storage_deleteDataStoreFile(Mutation):
         super()._processResult()
         try:
             self.result = DataStoreFile(
-                self._result['data'][self.mutationName], self._client)
-            if globals.debug:
-                print(f"deleted file {self.dataStoreFileId}")
+                self._result['data'][self.mutationName], self._client, self._debug)
+            print(f"File deleted")
             return self.result
         except Exception as e:
             raise e

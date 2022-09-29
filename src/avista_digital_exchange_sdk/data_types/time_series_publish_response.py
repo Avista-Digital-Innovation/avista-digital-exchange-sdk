@@ -3,8 +3,9 @@ from .. import globals
 
 
 class TimeSeriesPublishResponse:
-    def __init__(self, dict, client):
+    def __init__(self, dict, client, debug):
         self._client = client
+        self._debug = debug
         if dict is None:
             raise MissingDataInResultException
         else:
@@ -12,7 +13,7 @@ class TimeSeriesPublishResponse:
 
     def __str__(self):
         return f"""Publish Response:
-  Total Records Written: {self.totalRecordsWritten}
+    Records Written: {self.totalRecordsWritten}
 """
 
     def buildFromDictionary(self, dict):
@@ -26,6 +27,6 @@ class TimeSeriesPublishResponse:
 
         return f""" {{
 {tabStr}RecordsIngested {{
-{tabStr}{tab}Total
+{tabStr}{globals.tab}Total
 {tabStr}}}
 {tabStr[0:-4]}}} """

@@ -8,8 +8,8 @@ from ..data_types.service import Service
 
 class collaborative_removeServiceFromCollaborative(Mutation):
 
-    def __init__(self, client, collaborativeId, serviceType, serviceId):
-        super().__init__(client, "collaborative_removeServiceFromCollaborative", Service)
+    def __init__(self, client, debug, collaborativeId, serviceType, serviceId):
+        super().__init__(client, debug, "collaborative_removeServiceFromCollaborative", Service)
         self.collaborativeId = collaborativeId
         self.serviceType = serviceType
         self.serviceId = serviceId
@@ -18,18 +18,16 @@ class collaborative_removeServiceFromCollaborative(Mutation):
         return f"""mutation {self.mutationName} {{ {self.mutationName}(collaborativeId: "{self.collaborativeId}", serviceType: {self.serviceType}, serviceId: "{self.serviceId}") {self.resultType.getQueryString()} }}"""
 
     def performMutation(self):
-        if globals.debug:
-            print("Removing the service from the collaborative...")
+        print("Removing the service from the collaborative...")
         self._result = self._client.performMutation(self._getMutationString())
         return self._processResult()
 
     def _processResult(self):
         super()._processResult()
         try:
-            if globals.debug:
-                print("Service was removed from the collaborative")
             self.service = Service(
-                self._result['data'][self.mutationName], self._client)
+                self._result['data'][self.mutationName], self._client, self._debug)
+            print("Service was removed")
             return self.service
         except Exception as e:
             raise e

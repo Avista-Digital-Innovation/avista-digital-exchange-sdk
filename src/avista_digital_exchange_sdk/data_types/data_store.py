@@ -5,17 +5,18 @@ import requests
 
 
 class DataStore(Service):
-    def __init__(self, dict, client):
-        super().__init__(dict, client)
+    def __init__(self, dict, client, debug):
+        super().__init__(dict, client, debug)
         self._client = client
+        self._debug = debug
         if dict is None:
             return
         else:
             self.buildFromDictionary(dict)
 
     def __str__(self):
-        return f"""Data Store: {self.dataStoreId}
-   name: {self.name}
+        return f"""name: {self.name}
+   dataStoreId: {self.dataStoreId}
    description: {self.description}
    homeDirectoryId: {self.homeDirectoryId}"""
 
@@ -43,10 +44,6 @@ class DataStore(Service):
 {tabStr}homeDirectoryId
 {tabStr[0:-4]}}} """
 
-    def listDirectoryContents(self, dataStoreDirectoryId):
-        # TODO
-        return
-
     def getFileUrl(self, dataStoreFileId):
         from ..graphql_queries.storage_getDataStoreFileDownloadUrl import storage_getDataStoreFileDownloadUrl
         query = storage_getDataStoreFileDownloadUrl(
@@ -58,11 +55,3 @@ class DataStore(Service):
     def downloadAndWriteFile(url, writeLocation):
         response = requests.get(url)
         open(writeLocation, "wb").write(response.content)
-
-    def writeFile(self, path, dataStoreDirectoryId):
-        # TODO
-        return
-
-    def makeDirectory(self, path, dataStoreDirectoryId):
-        # TODO
-        return

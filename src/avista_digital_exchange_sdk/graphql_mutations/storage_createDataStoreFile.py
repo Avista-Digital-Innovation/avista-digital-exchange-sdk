@@ -6,8 +6,8 @@ from ..data_types.presigned_url import PresignedUrl
 
 class storage_createDataStoreFile(Mutation):
 
-    def __init__(self, client, dataStoreId, dataStoreDirectoryId, name, fileExtension, description=None):
-        super().__init__(client, "storage_createDataStoreFile", PresignedUrl)
+    def __init__(self, client, debug, dataStoreId, dataStoreDirectoryId, name, fileExtension, description=None):
+        super().__init__(client, debug, "storage_createDataStoreFile", PresignedUrl)
         self.dataStoreDirectoryId = dataStoreDirectoryId
         self.dataStoreId = dataStoreId
         self.name = name
@@ -18,8 +18,7 @@ class storage_createDataStoreFile(Mutation):
         return f"""mutation {self.mutationName} {{ {self.mutationName}(dataStoreDirectoryId: "{self.dataStoreDirectoryId}", dataStoreId: "{self.dataStoreId}", name: "{self.name}", fileExtension: "{self.fileExtension}" {f', description: "{self.description}"' if self.description is not None else ''}) {self.resultType.getQueryString()} }}"""
 
     def performMutation(self):
-        if globals.debug:
-            print("Creating data store file...")
+        print("Creating data store file...")
         self._result = self._client.performMutation(self._getMutationString())
         return self._processResult()
 
@@ -27,9 +26,8 @@ class storage_createDataStoreFile(Mutation):
         super()._processResult()
         try:
             self.presignedUrl = PresignedUrl(
-                self._result['data'][self.mutationName], self._client)
-            if globals.debug:
-                print("received upload endpoint for file...")
+                self._result['data'][self.mutationName], self._client, self._debug)
+            print("Received upload endpoint for file...")
             return self.presignedUrl
         except Exception as e:
             raise e

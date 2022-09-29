@@ -4,18 +4,25 @@ from .time_series_asset_attribute import TimeSeriesAssetAttribute
 
 
 class TimeSeriesAssetData:
-    def __init__(self, dict, client):
+    def __init__(self, dict, client, debug):
         self._client = client
+        self._debug = debug
         if dict is None:
             raise MissingDataInResultException
         else:
             self.buildFromDictionary(dict)
 
     def __str__(self):
-        return f"""Asset Data:
+        return f"""asset: {self.name}
     assetId: {self.assetId}
-    name: {self.name}
-    attributes: {len(self.attributes)} attributes"""
+    attributes: {self.getAttributesString()}
+"""
+
+    def getAttributesString(self):
+        result = ""
+        for entry in self.attributes:
+            result += f'{entry}'
+        return result
 
     def buildFromDictionary(self, dict):
         if dict is None:
@@ -25,7 +32,7 @@ class TimeSeriesAssetData:
         self.attributes = []
         for attribute in dict['attributes']:
             self.attributes.append(
-                TimeSeriesAssetAttribute(attribute, self._client))
+                TimeSeriesAssetAttribute(attribute, self._client, self._debug))
 
     @staticmethod
     def getQueryString(tabs=1, subobjectsRemaining=4):

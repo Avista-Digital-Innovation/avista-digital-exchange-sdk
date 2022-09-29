@@ -4,16 +4,16 @@ from .. import globals
 
 class TimeSeriesDimension:
     def __init__(self, DimensionValueType, Name, Value):
-        self.DimensionValueType = DimensionValueType
-        self.Name = Name
-        self.Value = Value
+        self.dimensionValueType = DimensionValueType
+        self.name = Name
+        self.value = Value
         return
 
     def __str__(self):
         return f"""      Dimension:
-        DimensionValueType: {self.DimensionValueType}
-        Name: {self.Name}
-        Value: {self.Value}
+        dimensionValueType: {self.dimensionValueType}
+        name: {self.name}
+        value: {self.value}
 """
 
     def getMutationParameterString(self, tabs):
@@ -23,7 +23,7 @@ class TimeSeriesDimension:
             tabStr += tab
 
         return f""" {{
-{tabStr}DimensionValueType: {self.DimensionValueType},
-{tabStr}Name: "{self.Name}",
-{tabStr}Value: "{self.Value}"
+{tabStr}DimensionValueType: {self.dimensionValueType},
+{tabStr}Name: "{self.name}",
+{tabStr}Value: "{self.value}"
 {tabStr[0:-4]}}}"""

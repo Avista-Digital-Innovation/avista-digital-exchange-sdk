@@ -1,21 +1,28 @@
 import requests
 from . import globals
+import json
+import base64
+import websocket
+from .subscriptionClient import Subscription
 
 
 class Client:
 
-    def __init__(self, token):
+    def __init__(self, token, stage, debug):
         APPSYNC_API_ENDPOINT_URL_dev = 'https://annsvlcb4vew7msipwjyzzvyhi.appsync-api.us-west-2.amazonaws.com/graphql'
         APPSYNC_API_ENDPOINT_URL_prod = 'https://rrfs7pb7ancybo7bom7uxcsaxq.appsync-api.us-west-2.amazonaws.com/graphql'
         self.token = token
-        if globals.stage == "PRODUCTION":
+        self._debug = debug
+        self._stage = stage
+        if self._stage == "PRODUCTION":
             self.APPSYNC_API_ENDPOINT_URL = APPSYNC_API_ENDPOINT_URL_prod
         else:
             self.APPSYNC_API_ENDPOINT_URL = APPSYNC_API_ENDPOINT_URL_dev
         return
 
     def performQuery(self, queryString):
-        print(queryString)
+        if self._debug:
+            print(f'DEBUG - {queryString}')
         response = None
         try:
             with requests.Session() as session:
@@ -32,7 +39,8 @@ class Client:
         return response.json()
 
     def performMutation(self, mutationString):
-        print(mutationString)
+        if self._debug:
+            print(f'DEBUG - {mutationString}')
         response = None
         try:
             with requests.Session() as session:
@@ -48,3 +56,10 @@ class Client:
         except Exception as error:
             raise error
         return response.json()
+
+    def getSubscriptionClient(self, subscriptionName, subscriptionQueryString, subscriptionMessageQueue, subscriptionErrorQueue):
+        if self._debug:
+            print(f'subscribing to {subscriptionQueryString}...')
+        subscription = Subscription(
+            self._debug, subscriptionName, subscriptionQueryString, self.APPSYNC_API_ENDPOINT_URL, self.token, subscriptionMessageQueue, subscriptionErrorQueue)
+        return subscription

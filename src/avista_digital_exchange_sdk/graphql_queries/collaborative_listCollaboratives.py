@@ -7,15 +7,14 @@ from ..data_types.service import Service
 
 class collaborative_listCollaboratives(Query):
 
-    def __init__(self, client):
-        super().__init__(client, "collaborative_listCollaboratives", Collaborative)
+    def __init__(self, client, debug):
+        super().__init__(client, debug, "collaborative_listCollaboratives", Collaborative)
 
     def _getQueryString(self):
         return super()._getQueryString()
 
     def performQuery(self) -> str:
-        if globals.debug:
-            print('Retrieving your collaboratives...')
+        print('Listing your collaboratives...')
         self._result = self._client.performQuery(self._getQueryString())
         return self._processResult()
 
@@ -25,14 +24,11 @@ class collaborative_listCollaboratives(Query):
             self.collaboratives = []
             for currentCollaborative in self._result['data'][self.queryName]:
                 self.collaboratives.append(Collaborative(
-                    currentCollaborative, self._client))
-            if globals.debug:
-                i = 0
-                print("Collaboratives you are a member of:")
-                for entry in self.collaboratives:
-                    print(f'{i}: {entry.name}')
-                    print(f'   collaborativeId: {entry.collaborativeId}')
-                    i += 1
+                    currentCollaborative, self._client, self._debug))
+            i = 0
+            for entry in self.collaboratives:
+                print(f'{i}: {entry}')
+                i += 1
             return self.collaboratives
         except Exception as e:
             raise e

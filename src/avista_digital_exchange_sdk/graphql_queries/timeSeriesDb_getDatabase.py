@@ -6,8 +6,8 @@ from ..data_types.time_series_db import TimeSeriesDb
 
 class timeSeriesDb_getDatabase(Query):
 
-    def __init__(self, client, timeSeriesDbId):
-        super().__init__(client, "timeSeriesDb_getDatabase", TimeSeriesDb)
+    def __init__(self, client, debug, timeSeriesDbId):
+        super().__init__(client, debug, "timeSeriesDb_getDatabase", TimeSeriesDb)
         if timeSeriesDbId is None:
             raise MissingParameterException("Missing timeSeriesDbId")
         self.timeSeriesDbId = timeSeriesDbId
@@ -16,8 +16,7 @@ class timeSeriesDb_getDatabase(Query):
         return f'query {self.queryName} {{ {self.queryName}(timeSeriesDbId: "{self.timeSeriesDbId}") {self.resultType.getQueryString()} }}'
 
     def performQuery(self) -> str:
-        if globals.debug:
-            print(f'Retrieving time series db {self.timeSeriesDbId}')
+        print(f'Retrieving time series db {self.timeSeriesDbId}...')
         self._result = self._client.performQuery(self._getQueryString())
         return self._processResult()
 
@@ -25,9 +24,8 @@ class timeSeriesDb_getDatabase(Query):
         super()._processResult()
         try:
             self.database = TimeSeriesDb(
-                self._result['data'][self.queryName], self._client)
-            if globals.debug:
-                print(f'Result {self.database}')
+                self._result['data'][self.queryName], self._client, self._debug)
+            print(f'{self.database}')
             return self.database
         except Exception as e:
             raise e

@@ -6,8 +6,9 @@ from .organization import Organization
 
 
 class CollaborativeMemberOrganization:
-    def __init__(self, dict, client):
+    def __init__(self, dict, client, debug):
         self._client = client
+        self._debug = debug
         if dict is None:
             raise MissingDataInResultException
         else:
@@ -16,13 +17,14 @@ class CollaborativeMemberOrganization:
     def buildFromDictionary(self, dict):
         if dict is None:
             raise MissingDataInResultException
-        self.organization = Organization(dict['organization'], self._client)
+        self.organization = Organization(
+            dict['organization'], self._client, self._debug)
         self.collaborativeId = dict['collaborativeId']
         self.memberState = dict['memberState']
         self.usersInCollaborative = []
         for user in dict['usersInCollaborative']:
             self.usersInCollaborative.append(
-                CollaborativeMemberUser(user, self._client))
+                CollaborativeMemberUser(user, self._client, self._debug))
 
     @staticmethod
     def getQueryString(tabs=1, subobjectsRemaining=4):

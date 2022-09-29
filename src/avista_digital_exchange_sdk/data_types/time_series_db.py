@@ -4,20 +4,21 @@ from .service import Service
 
 
 class TimeSeriesDb(Service):
-    def __init__(self, dict, client):
-        super().__init__(dict, client)
+    def __init__(self, dict, client, debug):
+        super().__init__(dict, client, debug)
         self._client = client
+        self._debug = debug
         if dict is None:
             raise MissingDataInResultException
         else:
             self.buildFromDictionary(dict)
 
     def __str__(self):
-        return f"""Time Series Db: {self.timeSeriesDbId}
-   name: {self.name}
-   description: {self.description}
-   databaseName: {self.databaseName}
-   tableName: {self.tableName}"""
+        return f"""name: {self.name}
+    timeSeriesDbId: {self.timeSeriesDbId}
+    description: {self.description}
+    databaseName: {self.databaseName}
+    tableName: {self.tableName}"""
 
     def buildFromDictionary(self, dict):
         if dict is None:
@@ -44,7 +45,3 @@ class TimeSeriesDb(Service):
 {tabStr}databaseName
 {tabStr}tableName
 {tabStr[0:-4]}}} """
-
-    def method(self):
-        # TODO
-        return

@@ -6,8 +6,8 @@ from ..data_types.data_store import DataStore
 
 class storage_getDataStore(Query):
 
-    def __init__(self, client, dataStoreId):
-        super().__init__(client, "storage_getDataStore", DataStore)
+    def __init__(self, client, debug, dataStoreId):
+        super().__init__(client, debug, "storage_getDataStore", DataStore)
         if dataStoreId is None:
             raise MissingParameterException("Missing dataStoreId")
         self.dataStoreId = dataStoreId
@@ -16,8 +16,7 @@ class storage_getDataStore(Query):
         return f'query {self.queryName} {{ {self.queryName}(dataStoreId: "{self.dataStoreId}") {self.resultType.getQueryString()} }}'
 
     def performQuery(self) -> str:
-        if globals.debug:
-            print(f'Retrieving data store {self.dataStoreId}')
+        print(f'Retrieving data store {self.dataStoreId}...')
         self._result = self._client.performQuery(self._getQueryString())
         return self._processResult()
 
@@ -25,9 +24,8 @@ class storage_getDataStore(Query):
         super()._processResult()
         try:
             self.dataStore = DataStore(
-                self._result['data'][self.queryName], self._client)
-            if globals.debug:
-                print(f'Result {self.dataStore}')
+                self._result['data'][self.queryName], self._client, self._debug)
+            print(f'{self.dataStore}')
             return self.dataStore
         except Exception as e:
             raise e

@@ -7,15 +7,14 @@ from ..data_types.service import Service
 
 class timeSeriesDb_listDatabases(Query):
 
-    def __init__(self, client):
-        super().__init__(client, "timeSeriesDb_listDatabases", TimeSeriesDb)
+    def __init__(self, client, debug):
+        super().__init__(client, debug, "timeSeriesDb_listDatabases", TimeSeriesDb)
 
     def _getQueryString(self):
         return super()._getQueryString()
 
     def performQuery(self) -> str:
-        if globals.debug:
-            print('Retrieving your time series databases...')
+        print('Listing your time series databases...')
         self._result = self._client.performQuery(self._getQueryString())
         return self._processResult()
 
@@ -25,13 +24,11 @@ class timeSeriesDb_listDatabases(Query):
             self.databases = []
             for currentDatabase in self._result['data'][self.queryName]:
                 self.databases.append(TimeSeriesDb(
-                    currentDatabase, self._client))
-            if globals.debug:
-                i = 0
-                print('Your databases:')
-                for database in self.databases:
-                    print(f'{i}: {database}')
-                    i += 1
+                    currentDatabase, self._client, self._debug))
+            i = 0
+            for database in self.databases:
+                print(f'{i}: {database}')
+                i += 1
             return self.databases
         except Exception as e:
             raise e

@@ -23,47 +23,47 @@ class TimeSeriesInputRecord:
         Dimensions : [TimeSeriesDimension], optional
         """
 
-        self.Time = Time
-        self.TimeUnit = TimeUnit
-        self.Version = Version
-        self.MeasureName = MeasureName
-        self.MeasureValueType = MeasureValueType
-        self.MeasureValue = MeasureValue
-        self.MeasureValues = MeasureValues
-        if self.MeasureValues is not None:
-            for measure in self.MeasureValues:
+        self.time = Time
+        self.timeUnit = TimeUnit
+        self.version = Version
+        self.measureName = MeasureName
+        self.measureValueType = MeasureValueType
+        self.measureValue = MeasureValue
+        self.measureValues = MeasureValues
+        if self.measureValues is not None:
+            for measure in self.measureValues:
                 if not isinstance(measure, TimeSeriesMeasureValue):
                     InvalidParameterException(
-                        "Element in MeasureValues array is an incorrect type.")
-        self.Dimensions = Dimensions
-        if self.Dimensions is not None:
-            for dimension in self.Dimensions:
+                        "Element in measureValues array is an incorrect type.")
+        self.dimensions = Dimensions
+        if self.dimensions is not None:
+            for dimension in self.dimensions:
                 if not isinstance(dimension, TimeSeriesDimension):
                     InvalidParameterException(
-                        "Element in Dimensions array is an incorrect type.")
+                        "Element in dimensions array is an incorrect type.")
         return
 
     def __str__(self):
         return f"""Time Series Record:
-   Time: {self.Time}
-   TimeUnit: {self.TimeUnit}
-   Version: {self.Version}
-   MeasureName: {self.MeasureName}
-   MeasureValueType: {self.MeasureValueType}
-   MeasureValue: {self.MeasureValue}
-   MeasureValues: 
-""" + self.getMeasureValuesStr() + f"""   Dimensions: 
+   time: {self.time}
+   timeUnit: {self.timeUnit}
+   version: {self.version}
+   measureName: {self.measureName}
+   measureValueType: {self.measureValueType}
+   measureValue: {self.measureValue}
+   measureValues: 
+""" + self.getMeasureValuesStr() + f"""   dimensions: 
 """ + self.getDimensionsStr()
 
     def getMeasureValuesStr(self):
         result = ""
-        for measure in self.MeasureValues:
+        for measure in self.measureValues:
             result += f"{measure}"
         return result
 
     def getDimensionsStr(self):
         result = ""
-        for dimension in self.Dimensions:
+        for dimension in self.dimensions:
             result += f"{dimension}"
         return result
 
@@ -74,56 +74,12 @@ class TimeSeriesInputRecord:
             tabStr += tab
 
         return f""" {{
-{f'{tabStr}Dimensions: [{",".join([Dimension.getMutationParameterString(tabs+1) for Dimension in self.Dimensions])}],' if self.Dimensions is not None and len(self.Dimensions) > 0 else ''}
-{tabStr}MeasureName: "{self.MeasureName}",
-{f'{tabStr}MeasureValue: "{self.MeasureValue}",' if self.MeasureValueType != "MULTI" else
-f'{tabStr}MeasureValues: [{",".join([MeasureValue.getMutationParameterString(tabs+1) for MeasureValue in self.MeasureValues])}],'}
-{tabStr}MeasureValueType: {self.MeasureValueType},
-{tabStr}Time: "{self.Time}",
-{tabStr}TimeUnit: {self.TimeUnit},
-{f'{tabStr}Version: {self.Version}' if self.Version is not None else ''}
+{f'{tabStr}Dimensions: [{",".join([dimension.getMutationParameterString(tabs+1) for dimension in self.dimensions])}],' if self.dimensions is not None and len(self.dimensions) > 0 else ''}
+{tabStr}MeasureName: "{self.measureName}",
+{f'{tabStr}MeasureValue: "{self.measureValue}",' if self.measureValueType != "MULTI" else
+f'{tabStr}MeasureValues: [{",".join([measureValue.getMutationParameterString(tabs+1) for measureValue in self.measureValues])}],'}
+{tabStr}MeasureValueType: {self.measureValueType},
+{tabStr}Time: "{self.time}",
+{tabStr}TimeUnit: {self.timeUnit},
+{f'{tabStr}Version: {self.version}' if self.version is not None else ''}
 {tabStr[0:-4]}}}"""
-
-# # MeasureValueType must be MULTI if using MeasureValues array
-
-#     def getDimensionsParameterString(self, tabs):
-#         tabStr = ""
-#         tab = "    "
-#         for i in range(tabs):
-#             tabStr += tab
-#         result = ""
-#         for Dimension in self.Dimensions[0:-1]:
-#             result += f"""{Dimension.getMutationParameterString(tabs+1)},"""
-#         result += f"""{self.Dimensions[-1].getMutationParameterString(tabs+1)}"""
-#         return result
-
-#     def getMeasureValuesParameterString(self, tabs):
-#         tabStr = ""
-#         tab = "    "
-#         for i in range(tabs):
-#             tabStr += tab
-#         result = ""
-#         for MeasureValue in self.MeasureValues[0:-1]:
-#             result += f"""{MeasureValue.getMutationParameterString(tabs+1)},"""
-#         result += f"""{self.MeasureValues[-1].getMutationParameterString(tabs+1)}"""
-#         return result
-
-# # mutation MyMutation {
-# #   timeSeriesDb_publishToDatabase(assetId: "", timeSeriesDbId: "",
-# data: {records: [
-#     {
-#         Dimensions: [
-#             {DimensionValueType: VARCHAR,
-#              Name: "dimName",
-#              Value: "dimValue"}],
-#         MeasureName: "measureName",
-#         MeasureValue: "measureValue",
-#         MeasureValues: [
-#             {Type: VARCHAR,
-#             Name: "name123",
-#             Value: "value123"}],
-#         MeasureValueType: MULTI,
-#         Time: "timestring",
-#         TimeUnit: MICROSECONDS,
-#         Version: 1
-#     }]}

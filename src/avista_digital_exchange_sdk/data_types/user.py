@@ -4,8 +4,9 @@ from .. import globals
 
 
 class User:
-    def __init__(self, dict, client):
+    def __init__(self, dict, client, debug):
         self._client = client
+        self._debug = debug
         if dict is None:
             raise MissingDataInResultException
         else:
@@ -22,7 +23,8 @@ class User:
         self.userAccountState = dict['userAccountState']
         self.lastActive = dict['lastActive']
         self.userRoles = dict['userRoles']
-        self.organization = Organization(dict['organization'], self._client)
+        self.organization = Organization(
+            dict['organization'], self._client, self._debug)
 
     def __str__(self):
         return f"""User

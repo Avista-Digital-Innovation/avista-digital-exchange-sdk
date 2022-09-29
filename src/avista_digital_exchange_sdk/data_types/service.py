@@ -3,8 +3,9 @@ from .. import globals
 
 
 class Service:
-    def __init__(self, dict, client):
+    def __init__(self, dict, client, debug):
         self._client = client
+        self._debug = debug
         if dict is None:
             raise MissingDataInResultException
         else:
@@ -27,21 +28,22 @@ class Service:
         self.serviceId = dict['serviceId']
         self.serviceType = dict['serviceType']
         if self.serviceType == "DATA_STORE":
-            self.dataStore = DataStore(dict['dataStore'], self._client)
+            self.dataStore = DataStore(
+                dict['dataStore'], self._client, self._debug)
         elif self.serviceType == "TIME_SERIES_DB":
             self.timeSeriesDb = TimeSeriesDb(
-                dict['timeSeriesDb'], self._client)
+                dict['timeSeriesDb'], self._client, self._debug)
         else:
             raise ServiceTypeNotAvailable
 
     @staticmethod
-    def getCorrectServiceTypeFromServiceObject(dict, client):
+    def getCorrectServiceTypeFromServiceObject(dict, client, debug):
         from .data_store import DataStore
         from .time_series_db import TimeSeriesDb
         if dict["serviceType"] == "DATA_STORE":
-            return DataStore(dict['dataStore'], client)
+            return DataStore(dict['dataStore'], client, debug)
         elif dict["serviceType"] == "TIME_SERIES_DB":
-            return TimeSeriesDb(dict['timeSeriesDb'], client)
+            return TimeSeriesDb(dict['timeSeriesDb'], client, debug)
         else:
             raise ServiceTypeNotAvailable
 

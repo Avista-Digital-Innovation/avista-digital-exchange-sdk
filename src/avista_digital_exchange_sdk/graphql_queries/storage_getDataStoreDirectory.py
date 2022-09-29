@@ -6,8 +6,8 @@ from ..data_types.data_store_directory import DataStoreDirectory
 
 class storage_getDataStoreDirectory(Query):
 
-    def __init__(self, client, dataStoreDirectoryId):
-        super().__init__(client, "storage_getDataStoreDirectory", DataStoreDirectory)
+    def __init__(self, client, debug, dataStoreDirectoryId):
+        super().__init__(client, debug, "storage_getDataStoreDirectory", DataStoreDirectory)
         if dataStoreDirectoryId is None:
             raise MissingParameterException("Missing dataStoreDirectoryId")
         self.dataStoreDirectoryId = dataStoreDirectoryId
@@ -16,8 +16,7 @@ class storage_getDataStoreDirectory(Query):
         return f'query {self.queryName} {{ {self.queryName}(dataStoreDirectoryId: "{self.dataStoreDirectoryId}") {self.resultType.getQueryString()} }}'
 
     def performQuery(self) -> str:
-        if (globals.debug):
-            print(f"Retrieving directory {self.dataStoreDirectoryId}...")
+        print(f"Getting directory {self.dataStoreDirectoryId}...")
         self._result = self._client.performQuery(self._getQueryString())
         return self._processResult()
 
@@ -25,9 +24,8 @@ class storage_getDataStoreDirectory(Query):
         super()._processResult()
         try:
             dir = DataStoreDirectory(
-                self._result['data'][self.queryName], self._client)
-            if (globals.debug):
-                print(f"Result {dir}")
+                self._result['data'][self.queryName], self._client, self._debug)
+            print(f"{dir}")
             return dir
         except Exception as e:
             raise e

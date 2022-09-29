@@ -2,7 +2,7 @@ from ..exceptions import *
 from .. import globals
 
 
-class PresignedUrl:
+class ServerResponse:
 
     def __init__(self, dict, client, debug):
         self._client = client
@@ -15,16 +15,14 @@ class PresignedUrl:
     def buildFromDictionary(self, dict):
         if dict is None:
             raise MissingDataInResultException
-        self.url = dict['url']
-        self.uploadId = dict['uploadId']
-        self.itemId = dict['itemId']
+        self.httpStatusCode = dict["httpStatusCode"]
+        self.errorMessage = dict["errorMessage"]
 
     @staticmethod
     def getQueryString(tabs=1, subobjectsRemaining=4):
         tabStr = globals.getTabStr(tabs)
 
         return f""" {{
-{tabStr}url
-{tabStr}uploadId
-{tabStr}itemId
+{tabStr}httpStatusCode
+{tabStr}errorMessage
 {tabStr[0:-4]}}} """

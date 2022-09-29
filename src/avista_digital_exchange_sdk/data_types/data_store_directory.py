@@ -7,30 +7,31 @@ from ..data_types.data_store_file import DataStoreFile
 
 
 class DataStoreDirectory(DataStoreObject):
-    def __init__(self, dict, client):
-        super().__init__(dict, client)
+    def __init__(self, dict, client, debug):
+        super().__init__(dict, client, debug)
         self._client = client
+        self._debug = debug
         if dict is None:
             return
         else:
             self.buildFromDictionary(dict)
 
     def __str__(self):
-        return f"""Directory: {self.dataStoreDirectoryId}
-name: ${self.name}
-dataStoreId: {self.dataStoreId}
-parentDirectory: {self.parentDirectoryId}
-contents: 
-{"  empty" if len(self.directories) == 0 and len(self.files) == 0 else self.printContents()} """
+        return f"""name: ${self.name}
+    dataStoreDirectoryId: {self.dataStoreDirectoryId}
+    dataStoreId: {self.dataStoreId}
+    parentDirectory: {self.parentDirectoryId}
+    contents: 
+{"        empty" if len(self.directories) == 0 and len(self.files) == 0 else self.printContents()} """
 
     def printContents(self):
         result = ""
         if len(self.directories) > 0:
             for dir in self.directories:
-                result += f"  {dir.name}/ | id: {dir.dataStoreDirectoryId}\n"
+                result += f"        {dir.name}/ | id: {dir.dataStoreDirectoryId}\n"
         if len(self.files) > 0:
             for file in self.files:
-                result += f"  {file.getFilename()} | id: {file.dataStoreFileId}\n"
+                result += f"        {file.getFilename()} | id: {file.dataStoreFileId}\n"
         return result
 
     def buildFromDictionary(self, dict):
@@ -39,7 +40,7 @@ contents:
         self.dataStoreDirectoryId = dict['dataStoreDirectoryId']
         self.dataStoreId = dict['dataStoreId']
         self.name = dict['name']
-        self.owner = User(dict['owner'], self._client)
+        self.owner = User(dict['owner'], self._client, self._debug)
         self.homeDirectory = dict['homeDirectory']
         self.parentDirectoryId = dict['parentDirectoryId']
         self.directories = []
@@ -47,10 +48,10 @@ contents:
         for currentObject in dict['contents']:
             if currentObject["objectType"] == "FILE":
                 self.files.append(DataStoreFile(
-                    currentObject["dataStoreFile"], self._client))
+                    currentObject["dataStoreFile"], self._client, self._debug))
             elif currentObject["objectType"] == "DIRECTORY":
                 self.directories.append(DataStoreDirectory(
-                    currentObject["dataStoreDirectory"], self._client))
+                    currentObject["dataStoreDirectory"], self._client, self._debug))
 
     @staticmethod
     def getQueryString(tabs=1, subobjectsRemaining=4):

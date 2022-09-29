@@ -7,9 +7,10 @@ import os
 
 
 class DataStoreFile(DataStoreObject):
-    def __init__(self, dict, client):
-        super().__init__(dict, client)
+    def __init__(self, dict, client, debug):
+        super().__init__(dict, client, debug)
         self._client = client
+        self._debug = debug
         if dict is None:
             return
         else:
@@ -30,7 +31,7 @@ class DataStoreFile(DataStoreObject):
         self.dataStoreId = dict['dataStoreId']
         self.name = dict['name']
         self.description = dict['description'] if 'description' in dict else ''
-        self.owner = User(dict['owner'], self._client)
+        self.owner = User(dict['owner'], self._client, self._debug)
         self.fileExtension = dict['fileExtension']
         self.storageSizeBytes = dict['storageSizeBytes']
         self.dataStoreDirectoryId = dict['dataStoreDirectoryId']
@@ -60,13 +61,13 @@ class DataStoreFile(DataStoreObject):
 
     def getFileUrl(self, dataStoreFileId):
         from ..graphql_queries.storage_getDataStoreFileDownloadUrl import storage_getDataStoreFileDownloadUrl
-        if globals.debug:
-            print('Retrieving file download url...')
+        if self._debug:
+            print('DEBUG - Retrieving file download url...')
         query = storage_getDataStoreFileDownloadUrl(
-            self._client, self.dataStoreId, dataStoreFileId)
+            self._client, self._debug, self.dataStoreId, dataStoreFileId)
         result = query.performQuery()
-        if globals.debug:
-            print('File download url received...')
+        if self._debug:
+            print('DEBUG - File download url received...')
         return result
 
     def getFilename(self):
@@ -79,8 +80,7 @@ class DataStoreFile(DataStoreObject):
         response = requests.get(url)
         fullWritePath = self.createWritePath(writeLocation, self.getFilename())
         open(fullWritePath, "wb").write(response.content)
-        if globals.debug:
-            print('Wrote file to ' + fullWritePath)
+        print(f'Wrote file to {fullWritePath}')
 
     @staticmethod
     def createWritePath(writeLocation, cloudFilename):
@@ -94,15 +94,15 @@ class DataStoreFile(DataStoreObject):
             return writeLocation
 
     @staticmethod
-    def uploadFile(url, filePath):
-        if globals.debug:
-            print(f'Uploading file {filePath}')
+    def uploadFile(url, filePath, debug):
+        if debug:
+            print(f'DEBUG - Uploading file {filePath}')
         try:
             result = requests.put(url, data=open(filePath, 'rb'))
             print(f'upload file returned status code: {result.status_code}')
             if result.ok:
-                if globals.debug:
-                    print("File uploaded successfully")
+                if debug:
+                    print("DEBUG - File uploaded successfully")
             else:
                 raise FileUploadException
         except Exception as err:

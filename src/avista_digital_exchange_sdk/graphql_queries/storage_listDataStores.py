@@ -7,15 +7,14 @@ from ..data_types.service import Service
 
 class storage_listDataStores(Query):
 
-    def __init__(self, client):
-        super().__init__(client, "storage_listDataStores", DataStore)
+    def __init__(self, client, debug):
+        super().__init__(client, debug, "storage_listDataStores", DataStore)
 
     def _getQueryString(self):
         return super()._getQueryString()
 
     def performQuery(self) -> str:
-        if globals.debug:
-            print('Retrieving your data stores...')
+        print('Listing your data stores...')
         self._result = self._client.performQuery(self._getQueryString())
         return self._processResult()
 
@@ -26,14 +25,12 @@ class storage_listDataStores(Query):
 
             for currentDataStore in self._result['data'][self.queryName]:
                 self.dataStores.append(
-                    DataStore(currentDataStore, self._client))
+                    DataStore(currentDataStore, self._client, self._debug))
             i = 0
 
-            if globals.debug:
-                print('Your data stores:')
-                for dataStore in self.dataStores:
-                    print(f'{i}: {dataStore}')
-                    i += 1
+            for dataStore in self.dataStores:
+                print(f'{i}: {dataStore}')
+                i += 1
             return self.dataStores
         except Exception as e:
             raise e

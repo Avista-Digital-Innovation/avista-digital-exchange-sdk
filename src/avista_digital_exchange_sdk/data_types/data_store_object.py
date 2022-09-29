@@ -3,8 +3,9 @@ from .. import globals
 
 
 class DataStoreObject:
-    def __init__(self, dict, client):
+    def __init__(self, dict, client, debug):
         self._client = client
+        self._debug = debug
         if dict is None:
             raise MissingDataInResultException
         else:
@@ -18,10 +19,10 @@ class DataStoreObject:
             raise MissingDataInResultException
         self.objectType = dict['objectType']
         if self.objectType == "FILE":
-            # DataStoreFile(dict['dataStoreFile'], self._client)
+            # DataStoreFile(dict['dataStoreFile'], self._client, self._debug)
             self.dataStoreFile = dict['dataStoreFile']
         elif self.objectType == "DIRECTORY":
-            # DataStoreDirectory(dict['dataStoreDirectory'], self._client)
+            # DataStoreDirectory(dict['dataStoreDirectory'], self._client, self._debug)
             self.dataStoreDirectory = dict['dataStoreDirectory']
         else:
             raise ServiceTypeNotAvailable

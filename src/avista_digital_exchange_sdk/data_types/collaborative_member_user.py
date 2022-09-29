@@ -4,8 +4,9 @@ from .user import User
 
 
 class CollaborativeMemberUser:
-    def __init__(self, dict, client):
+    def __init__(self, dict, client, debug):
         self._client = client
+        self._debug = debug
         if dict is None:
             raise MissingDataInResultException
         else:
@@ -15,7 +16,7 @@ class CollaborativeMemberUser:
         if dict is None:
             raise MissingDataInResultException
         self.permission = dict['permission']
-        self.user = User(dict['user'], self._client)
+        self.user = User(dict['user'], self._client, self._debug)
 
     @staticmethod
     def getQueryString(tabs=1, subobjectsRemaining=4):

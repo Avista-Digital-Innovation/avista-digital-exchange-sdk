@@ -8,8 +8,8 @@ from ..data_types.time_series_asset_data import TimeSeriesAssetData
 
 class timeSeriesDb_publishToDatabase(Mutation):
 
-    def __init__(self, client, timeSeriesDbId, assetId, records):
-        super().__init__(client, "timeSeriesDb_publishToDatabase", TimeSeriesAssetData)
+    def __init__(self, client, debug, timeSeriesDbId, assetId, records):
+        super().__init__(client, debug, "timeSeriesDb_publishToDatabase", TimeSeriesAssetData)
         self.timeSeriesDbId = timeSeriesDbId
         self.assetId = assetId
         self.records = records
@@ -26,8 +26,7 @@ class timeSeriesDb_publishToDatabase(Mutation):
 }}"""
 
     def performMutation(self):
-        if globals.debug:
-            print("Publishing records to the database...")
+        print(f"Publishing records to the database {self.timeSeriesDbId}...")
         self._result = self._client.performMutation(self._getMutationString())
         return self._processResult()
 
@@ -38,10 +37,8 @@ class timeSeriesDb_publishToDatabase(Mutation):
             self.assetData = []
             for current in self._result['data'][self.mutationName]:
                 self.assetData.append(
-                    TimeSeriesAssetData(current, self._client))
-            if globals.debug:
-                print("Publish succeeded")
-                print(self.assetData)
+                    TimeSeriesAssetData(current, self._client, self._debug))
+            print("Publish succeeded")
             return self.assetData
         except Exception as e:
             raise e

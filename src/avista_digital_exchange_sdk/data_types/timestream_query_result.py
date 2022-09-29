@@ -4,8 +4,9 @@ import json
 
 
 class QueryResult_TimestreamVariables:
-    def __init__(self, dict, client, timeSeriesDbId, queryString, maxRows):
+    def __init__(self, dict, client, debug, timeSeriesDbId, queryString, maxRows):
         self._client = client
+        self._debug = debug
         if dict is None:
             raise MissingDataInResultException
         else:
@@ -15,11 +16,11 @@ class QueryResult_TimestreamVariables:
         self.maxRows = maxRows
 
     def __str__(self):
-        return f"""Query Status: {self.QueryStatus}
-clientToken: {self.clientToken}
-NextToken: {self.NextToken}
-Column info: {self.ColumnInfo}
-Data rows: {self.Rows}
+        return f"""Query Result
+    clientToken: {self.clientToken}
+    nextToken: {self.nextToken}
+    columnInfo: {len(self.columnInfo)} columns
+    dataRows: {len(self.dataRows)} data rows
 """
 
     def buildFromDictionary(self, dict):
@@ -28,11 +29,12 @@ Data rows: {self.Rows}
         self.timestreamResultsJSONString = dict["resultJSONString"]
         self.clientToken = dict["clientToken"]
         self.timestreamResults = json.loads(self.timestreamResultsJSONString)
-        self.QueryId = self.timestreamResults["QueryId"]
-        self.QueryStatus = self.timestreamResults["QueryStatus"]
-        self.Rows = self.timestreamResults["Rows"]
-        self.ColumnInfo = self.timestreamResults["ColumnInfo"]
-        self.NextToken = self.timestreamResults["NextToken"] if "NextToken" in self.timestreamResults else None
+        self.queryId = self.timestreamResults["QueryId"]
+        self.queryStatus = self.timestreamResults["QueryStatus"]
+        self.rows = self.timestreamResults["Rows"]
+        self.dataRows = self.rows
+        self.columnInfo = self.timestreamResults["ColumnInfo"]
+        self.nextToken = self.timestreamResults["NextToken"] if "NextToken" in self.timestreamResults else None
 
     @staticmethod
     def getQueryString(tabs=1, subobjectsRemaining=4):
@@ -42,7 +44,3 @@ Data rows: {self.Rows}
 {tabStr}resultJSONString
 {tabStr}clientToken
 {tabStr[0:-4]}}} """
-
-    def method(self):
-        # TODO
-        return
