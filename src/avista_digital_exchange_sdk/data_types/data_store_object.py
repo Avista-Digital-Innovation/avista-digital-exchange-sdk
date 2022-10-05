@@ -9,21 +9,26 @@ class DataStoreObject:
         if dict is None:
             raise MissingDataInResultException
         else:
-            self.buildFromDictionary(dict)
+            self.buildFromDictionaryRoot(dict)
 
-    def buildFromDictionary(self, dict):
+    def buildFromDictionaryRoot(self, dict):
         # from .data_store_file import DataStoreFile
         # from .data_store_directory import DataStoreDirectory
 
         if dict is None:
             raise MissingDataInResultException
-        self.objectType = dict['objectType']
-        if self.objectType == "FILE":
-            # DataStoreFile(dict['dataStoreFile'], self._client, self._debug)
-            self.dataStoreFile = dict['dataStoreFile']
-        elif self.objectType == "DIRECTORY":
-            # DataStoreDirectory(dict['dataStoreDirectory'], self._client, self._debug)
-            self.dataStoreDirectory = dict['dataStoreDirectory']
+        if 'objectType' in dict:
+            self.objectType = dict['objectType']
+            if self.objectType == "FILE":
+                # DataStoreFile(dict['dataStoreFile'], self._client, self._debug)
+                self.dataStoreFile = dict['dataStoreFile']
+            elif self.objectType == "DIRECTORY":
+                # DataStoreDirectory(dict['dataStoreDirectory'], self._client, self._debug)
+                self.dataStoreDirectory = dict['dataStoreDirectory']
+        elif 'dataStoreDirectoryId' in dict:
+            self.objectType = "DIRECTORY"
+        elif 'dataStoreFileId' in dict:
+            self.objectType = "FILE"
         else:
             raise ServiceTypeNotAvailable
 

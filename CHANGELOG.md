@@ -25,6 +25,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.24] - 2022-10-05
+
+### Added
+
+- Added file system commands to DataStore object (cd, ls, pwd, uploadFile, downloadFile, deleteFile).
+- Started a simpler publishToDatabase (time series) but not usable yet.
+
+### Fixed
+
+- Fixed list all assets and their attributes to use nextToken if received.
+
 ## [0.0.23] - 2022-09-29
 
 ### Added
@@ -110,7 +121,8 @@ First Beta-ready release.
      - addServiceToCollaborative
      - removeServiceFromCollaborative
 
-[Unreleased]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2022_09_29_v0.0.23...HEAD
+[Unreleased]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2022_10_05_v0.0.24...HEAD
+[0.0.24]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2022_09_29_v0.0.23...release/2022_09_29_v0.0.24
 [0.0.23]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2022_09_16_v0.0.22...release/2022_09_29_v0.0.23
 [0.0.22]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2022_09_15_v0.0.21...release/2022_09_16_v0.0.22
 [0.0.21]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2022_09_15_v0.0.20...release/2022_09_15_v0.0.21

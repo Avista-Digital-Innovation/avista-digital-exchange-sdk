@@ -13,7 +13,7 @@ class TimeSeriesAssetData:
             self.buildFromDictionary(dict)
 
     def __str__(self):
-        return f"""asset: {self.name}
+        return f"""asset: {self.name if self.name is not None else '<unknown>'}
     assetId: {self.assetId}
     attributes: {self.getAttributesString()}
 """

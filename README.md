@@ -23,8 +23,8 @@ This package allows you to access the Avista Digital Exchange and perform a subs
     - [listTimeSeriesDatabases](#listtimeseriesdatabases)
     - [getTimeSeriesDatabase](#gettimeseriesdatabase)
     - [listTimeSeriesAssetsAndLatestValues](#listtimeseriesassetsandlatestvalues)
-    - [queryTimeSeriesDatabaseWithFilters](#querytimeseriesdatabasewithfilters)
-    - [queryTimeSeriesDatabase_TimestreamFormat](#querytimeseriesdatabase_timestreamformat)
+    - [getTimeSeriesAssetAttributeData](#gettimeseriesassetattributedata)
+    - [queryTimeSeriesDatabase_TimestreamFormat [ADVANCED]](#querytimeseriesdatabase_timestreamformat-advanced)
     - [createTimeSeriesMeasureValue](#createtimeseriesmeasurevalue)
     - [createTimeSeriesDimension](#createtimeseriesdimension)
     - [createTimeSeriesInputRecord](#createtimeseriesinputrecord)
@@ -44,9 +44,16 @@ This package allows you to access the Avista Digital Exchange and perform a subs
       - [Properties](#properties-2)
     - [DataStore](#datastore)
       - [Properties](#properties-3)
+      - [Methods](#methods)
+        - [cd](#cd)
+        - [ls](#ls)
+        - [pwd](#pwd)
+        - [uploadFile](#uploadfile)
+        - [downloadFile](#downloadfile)
+        - [deleteFile](#deletefile)
     - [DataStoreDirectory](#datastoredirectory)
       - [Properties](#properties-4)
-      - [Methods](#methods)
+      - [Methods](#methods-1)
         - [printContents](#printcontents)
     - [DataStoreFile](#datastorefile)
       - [Properties](#properties-5)
@@ -352,7 +359,7 @@ for asset in result:
         timestamp = attribute.lastValueTime
 ```
 
-### queryTimeSeriesDatabaseWithFilters
+### getTimeSeriesAssetAttributeData
 
 Queries the time series data using asset, attribute and time filters, and writes the results to a file.
 
@@ -365,12 +372,12 @@ iterates over all pagination tokens so the result will be compiled upon completi
 timeSeriesDbId :  str, required
     The id of the database.
 startTime :  ISO8601 str, required
-    The beginning of the time interval to query.
+    The beginning of the time interval.
     Example: "2022-09-27T10:22:45.000Z"
 endTime: ISO8601 str, required
-    The end of the time interval to query.
+    The end of the time interval.
     Example: "2022-09-27T10:22:45.000Z"
-assetAndAttributesFilter: [{"assetId": <str>, "attributeNamesFilter": [<str>]}], required
+assetAndAttributesFilter: [{"assetId": <str>, "attributeNames": [<str>]}], required
 resultFileWriteLocation: str, required
     The location to store the result file on the local file system. If a directory is provided but not a file name, the file will be saved as "result.csv" or "result.json" in the specified directory.
 exportFileFormat: str, optional
@@ -386,21 +393,21 @@ Bool
 **Example**
 
 ```
-result = digitalExchange.queryTimeSeriesDatabaseWithFilters(
+result = digitalExchange.getTimeSeriesAssetAttributeData(
      "<timeSeriesDbId>", [
          {"assetId": "<assetId>",
-             "attributeNamesFilter": ["SOC", "V", "V - Setpoint"]},
+             "attributeNames": ["SOC", "V", "V - Setpoint"]},
          {"assetId": "<assetId>",
-             "attributeNamesFilter": ["A kW", "B Amps", "B PF"]},
+             "attributeNames": ["A kW", "B Amps", "B PF"]},
          {"assetId": "<assetId>", 
-             "attributeNamesFilter": ["A kVAR", "A kW", "B Amps"]}], 
+             "attributeNames": ["A kVAR", "A kW", "B Amps"]}], 
     "2022-09-25T20:13:04.465Z", 
     "2022-09-26T20:58:04.465Z", 
     "./", 
     "JSON")
 ```
 
-### queryTimeSeriesDatabase_TimestreamFormat
+### queryTimeSeriesDatabase_TimestreamFormat [ADVANCED]
 
 Queries the time series data using [SQL and AWS Timestream features](https://docs.aws.amazon.com/timestream/latest/developerguide/reference.html).
 
@@ -780,6 +787,32 @@ homeDirectoryId: str
     The dataStoreDirectoryId of the Data Store's home directory
 ```
 
+#### Methods
+
+##### cd
+
+Change the working directory.
+
+**Parameters**
+
+```
+path: str, required
+  The path to the desired directory.
+```
+
+**Example**
+```
+ds = digitalExchange.getDataStore("{dataStoreId}")
+ds.cd('docs')
+```
+
+##### ls
+##### pwd
+##### uploadFile
+##### downloadFile
+##### deleteFile
+
+
 ### DataStoreDirectory
 
 A directory in a Data Store file storage hierarchy.
@@ -1022,7 +1055,7 @@ Follow the steps below to build and push the new package version to PyPi. [(Pyth
 
 **Steps**
 
-1. Update `CHANGELOG.md` with new release notes.
+1. Update `CHANGELOG.md` with new release notes.queryTimeSeriesDatabaseWithFilters
 2. Update `README.md` if necessary.
 3. PyPi deployment
    1. Update the package version in `pyproject.toml`. Follow [this versioning method](https://py-pkgs.org/07-releasing-versioning.html#version-numbering)

@@ -16,7 +16,8 @@ class storage_getDataStoreFile(Query):
         return f'query {self.queryName} {{ {self.queryName}(dataStoreFileId: "{self.dataStoreFileId}") {self.resultType.getQueryString()} }}'
 
     def performQuery(self) -> str:
-        print(f"Retrieving file {self.dataStoreFileId}...")
+        if self._debug:
+            print(f"DEBUG - Retrieving file {self.dataStoreFileId}...")
         self._result = self._client.performQuery(self._getQueryString())
         return self._processResult()
 
@@ -25,7 +26,6 @@ class storage_getDataStoreFile(Query):
         try:
             result = DataStoreFile(
                 self._result['data'][self.queryName], self._client, self._debug)
-            print(f"{result}")
             return result
         except Exception as e:
             raise e

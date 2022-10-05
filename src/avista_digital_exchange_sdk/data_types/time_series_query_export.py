@@ -16,7 +16,7 @@ class TimeSeriesQueryExport:
     def __str__(self):
         return f"""Query Export File Info:
     fileType: {self.fileType}
-    fileSizeMB: {self.fileSizeMB}
+    fileSizeBytes: {self.fileSizeBytes}
     url: {self.url}
 """
 
@@ -25,7 +25,7 @@ class TimeSeriesQueryExport:
             raise MissingDataInResultException
         self.queryId = dict['queryId']
         self.fileType = dict['fileType']
-        self.fileSizeMB = dict['fileSizeMB']
+        self.fileSizeBytes = dict['fileSizeBytes']
         self.url = dict['url']
 
     @staticmethod
@@ -35,7 +35,7 @@ class TimeSeriesQueryExport:
         return f""" {{
 {tabStr}queryId
 {tabStr}fileType
-{tabStr}fileSizeMB
+{tabStr}fileSizeBytes
 {tabStr}url
 {tabStr[0:-4]}}} """
 

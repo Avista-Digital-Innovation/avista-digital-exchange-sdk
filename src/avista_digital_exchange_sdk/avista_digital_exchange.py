@@ -54,7 +54,7 @@ class AvistaDigitalExchange(object):
         if type(debug) is not bool:
             raise InvalidParameterException(
                 "AvistaDigitalExchange debug parameter must be a bool")
-        self._stage = "DEVELOPMENT"
+        self._stage = "PRODUCTION"
         self._debug = debug
         self._token = token
         self._client = Client(self._token, self._stage, self._debug)
@@ -80,27 +80,15 @@ class AvistaDigitalExchange(object):
 
     def getDataStoreDirectory(self, dataStoreDirectoryId) -> DataStoreDirectory:
         """Retrieves a Data Store directory and it's contents by dataStoreDirectoryId"""
-        query = storage_getDataStoreDirectory(
-            self._client, self._debug, dataStoreDirectoryId)
-        result = query.performQuery()
-        return result
+        return DataStoreDirectory.getDirectory(self._client, self._debug, dataStoreDirectoryId)
 
     def getDataStoreFileMeta(self, dataStoreFileId) -> DataStoreFile:
         """Retrieves a Data Store file's metadata by dataStoreFileId"""
-        query = storage_getDataStoreFile(
-            self._client, self._debug, dataStoreFileId)
-        dataStoreFile = query.performQuery()
-        return dataStoreFile
+        return DataStoreFile.getDataStoreFile(self._client, self._debug, dataStoreFileId)
 
     def downloadDataStoreFile(self, dataStoreFileId, writeLocation) -> DataStoreFile:
         """Retrieves a Data Store file's metadata and downloads and writes the file to the local file system"""
-        query = storage_getDataStoreFile(
-            self._client, self._debug, dataStoreFileId)
-        dataStoreFile = query.performQuery()
-        presignedUrl = dataStoreFile.getFileUrl(dataStoreFileId)
-        location = dataStoreFile.downloadAndWriteFile(
-            presignedUrl.url, writeLocation)
-        return dataStoreFile
+        return DataStoreFile.downloadDataStoreFile(self._client, self._debug, dataStoreFileId, writeLocation)
 
     def listCollaboratives(self):
         """Lists the Collaboratives the user is a member of"""
@@ -150,13 +138,48 @@ class AvistaDigitalExchange(object):
     # List Assets and their last known value
     def listTimeSeriesAssetsAndLatestValues(self, timeSeriesDbId, resultFileWriteLocation=None):
         """Gets the table's assets, their attributes, and attribute last known value"""
+
+        nextToken = None
+        clientToken = None
+        # attributesNames array should be in format [{"assetId": "id123", "attributeNames": ["name1", "name2"]}]
+
+        queryId = None
+
+        def quitHandler(signum, frame):
+            # Stop query
+            if queryId is not None:
+                mutation = timeSeriesDb_cancelDatabaseQuery(
+                    self._client, self._debug, timeSeriesDbId, queryId)
+                cancelResult = mutation.performMutation()
+            exit(1)
+
+        signal.signal(signal.SIGINT, quitHandler)
+
         query = timeSeriesDb_listAllAssetLastValues(
             self._client, self._debug, timeSeriesDbId)
         result = query.performQuery()
+
+        data = []
+        clientToken = result.clientToken
+        nextToken = result.nextToken
+        queryId = result.queryId
+        i = 1
+        while i < 20 and nextToken is not None:
+            query = timeSeriesDb_listAllAssetLastValues(
+                self._client, self._debug, timeSeriesDbId, clientToken, nextToken)
+            result = query.performQuery()
+            clientToken = result.clientToken
+            nextToken = result.nextToken
+            queryId = result.queryId
+            resultChunkIndex = result.resultChunkIndex
+            data += result.data
+            print(f"received data result chunk #{resultChunkIndex}...")
+            i += 1
+
         return result
 
     # Query Time Series with structure query of array of assets and attributes, return paginated friendly format
-    def queryTimeSeriesDatabaseWithFilters(self, timeSeriesDbId, assetAndAttributesFilter, startTime, endTime, resultFileWriteLocation, exportFileFormat="CSV", maxRows=None):
+    def getTimeSeriesAssetAttributeData(self, timeSeriesDbId, assetAndAttributesFilter, startTime, endTime, resultFileWriteLocation, exportFileFormat="CSV", maxRows=None):
         """Queries the Time Series Database using AWS Timestream query format"""
 
         exportFileFormat = exportFileFormat.upper()
@@ -174,7 +197,7 @@ class AvistaDigitalExchange(object):
 
         nextToken = None
         clientToken = None
-        # attributesArray should be in format [{"assetId": "id123", "attributeNamesFilter": ["name1", "name2"]}]
+        # attributesNames array should be in format [{"assetId": "id123", "attributeNames": ["name1", "name2"]}]
 
         queryId = None
 
@@ -216,14 +239,14 @@ class AvistaDigitalExchange(object):
             queryId = result.queryId
             presignedUrl = result.presignedUrl
             resultChunkIndex = result.resultChunkIndex
-            print(f"received query result chunk #{resultChunkIndex}...")
+            print(f"received data result chunk #{resultChunkIndex}...")
             i += 1
 
         if nextToken is not None:
             mutation = timeSeriesDb_cancelDatabaseQuery(
                 self._client, self._debug, timeSeriesDbId, queryId)
             cancelResult = mutation.performMutation()
-            print('Stopped query because it surpassed sdk nextToken limit')
+            print('Stopped data request because it surpassed sdk nextToken limit')
         else:
             print('Query complete')
 
@@ -261,36 +284,13 @@ class AvistaDigitalExchange(object):
 
     def uploadFileToDataStore(self, dataStoreId, dataStoreDirectoryId, localFilePath, name=None, description=None) -> DataStoreFile:
         """Copies a local file to the Data Store and is placed in the directory matching dataStoreDirectoryId"""
-        # Check if file exists in local file system
-        if not os.path.isfile(localFilePath):
-            raise FileNotFoundException
-        if not name:
-            name = localFilePath.split('/')[-1]
-        fileExtension = '.'.join(name.split('.')[1:])
-        fileRoot = name.split('.')[0]
 
-        # Create the file in the Digital Exchange and receive a presigned url to upload the file to
-        mutation = storage_createDataStoreFile(
-            self._client, self._debug, dataStoreId, dataStoreDirectoryId, fileRoot, fileExtension, description)
-        presignedUrl = mutation.performMutation()
-        dataStoreFileId = presignedUrl.itemId
-        uploadResult = None
-        try:
-            if presignedUrl.url is None:
-                raise Exception('Did not receive upload endpoint as expected')
-            uploadResult = DataStoreFile.uploadFile(
-                presignedUrl.url, localFilePath, self._debug)
-        except FileUploadException as err:
-            self.deleteDataStoreFile(dataStoreFileId)
-            raise err
-        return self.getDataStoreFileMeta(dataStoreFileId)
+        return DataStoreFile.createAndUploadFile(self._client,
+                                                 self._debug, localFilePath, dataStoreId, dataStoreDirectoryId, name, description)
 
     def deleteDataStoreFile(self, dataStoreFileId) -> DataStoreFile:
         """Deletes the file from the Data Store"""
-        mutation = storage_deleteDataStoreFile(
-            self._client, self._debug, dataStoreFileId)
-        dataStoreFile = mutation.performMutation()
-        return dataStoreFile
+        return DataStoreFile.deleteDataStoreFile(self._client, self._debug, dataStoreFileId)
 
     def addServiceToCollaborative(self, serviceId, collaborativeId) -> Service:
         """Shares the Service to the Collaborative"""
@@ -316,10 +316,38 @@ class AvistaDigitalExchange(object):
         result = mutation.performMutation()
         return result
 
-    def publishToTimeSeriesDatabase(self, timeSeriesDbId, assetId, records):
-        """Publishes data records to the database. 
+    # def publishToDatabase(self, timeSeriesDbId, assetId, assetName, epochMilliseconds, attributeDataArray):
+    #     # attributeDataArray: [{name: "", value: "", type: ""}]
+    #     measures = []
+    #     dimensions = []
+    #     for entry in attributeDataArray:
+    #         if entry["name"] == "name":
+    #             raise Exception(
+    #                 "Only pass asset's name in 'assetName' parameter.")
+    #         else:
+    #             measures.append(self.createTimeSeriesMeasureValue(
+    #                 entry["type"], entry["name"], entry["value"]))
 
-        You may only publish records for 1 asset per request. To support viewing on data on the web, 
+    #     dimensions.append(self.createTimeSeriesDimension(
+    #         "VARCHAR", "name", assetName))
+
+    #     if len(measures) == 0:
+    #         raise Exception(
+    #             "'attributeDataArray' must contain at least one attribute value")
+    #     records = []
+    #     measureName = 'multi-measure-entry-name'
+    #     records.append(
+    #         self.createTimeSeriesInputRecord(f'{epochMilliseconds}', 'MILLISECONDS', 'multi-measure-entry-name', 'MULTI', None, measures, dimensions, 1))
+
+    #     mutation = timeSeriesDb_publishToDatabase(
+    #         self._client, self._debug, timeSeriesDbId, assetId, records)
+    #     result = mutation.performMutation()
+    #     return result
+
+    def publishToTimeSeriesDatabase(self, timeSeriesDbId, assetId, records):
+        """Publishes data records to the database.
+
+        You may only publish records for 1 asset per request. To support viewing on data on the web,
         include a Dimension entry with DimensionName 'name' and DimensionValue containing the name of the asset.
 
         Parameters
@@ -340,7 +368,7 @@ class AvistaDigitalExchange(object):
         MissingDataInResultException
             Either an empty result was received, or an expected element is not found.
         Unauthorized
-            If your authentication token is invalid, you are performing an action that your 
+            If your authentication token is invalid, you are performing an action that your
             user roles do not permit, you are performing an action on a resource that does not
             belong to you, or the operation is invalid.
 

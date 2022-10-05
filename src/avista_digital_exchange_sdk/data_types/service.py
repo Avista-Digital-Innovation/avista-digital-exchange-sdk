@@ -9,7 +9,7 @@ class Service:
         if dict is None:
             raise MissingDataInResultException
         else:
-            self.buildFromDictionary(dict)
+            self.buildFromDictionaryRoot(dict)
 
     def __str__(self):
         if self.serviceType == "DATA_STORE":
@@ -19,20 +19,28 @@ class Service:
         else:
             return f"""{self.serviceType} - id: {self.serviceId}"""
 
-    def buildFromDictionary(self, dict):
+    def buildFromDictionaryRoot(self, dict):
         from .data_store import DataStore
         from .time_series_db import TimeSeriesDb
 
         if dict is None:
             raise MissingDataInResultException
-        self.serviceId = dict['serviceId']
-        self.serviceType = dict['serviceType']
-        if self.serviceType == "DATA_STORE":
-            self.dataStore = DataStore(
-                dict['dataStore'], self._client, self._debug)
-        elif self.serviceType == "TIME_SERIES_DB":
-            self.timeSeriesDb = TimeSeriesDb(
-                dict['timeSeriesDb'], self._client, self._debug)
+
+        if 'serviceType' in dict:
+            self.serviceId = dict['serviceId']
+            self.serviceType = dict['serviceType']
+            if self.serviceType == "DATA_STORE":
+                self.dataStore = DataStore(
+                    dict['dataStore'], self._client, self._debug)
+            elif self.serviceType == "TIME_SERIES_DB":
+                self.timeSeriesDb = TimeSeriesDb(
+                    dict['timeSeriesDb'], self._client, self._debug)
+        elif 'dataStoreId' in dict:
+            self.serviceId = dict['dataStoreId']
+            self.serviceType = "DATA_STORE"
+        elif 'timeSeriesDbId' in dict:
+            self.serviceId = dict['timeSeriesDbId']
+            self.serviceType = "DATA_STORE"
         else:
             raise ServiceTypeNotAvailable
 

@@ -41,6 +41,8 @@ class TimeSeriesInputRecord:
                 if not isinstance(dimension, TimeSeriesDimension):
                     InvalidParameterException(
                         "Element in dimensions array is an incorrect type.")
+        else:
+            self.dimensions = []
         return
 
     def __str__(self):
@@ -74,7 +76,7 @@ class TimeSeriesInputRecord:
             tabStr += tab
 
         return f""" {{
-{f'{tabStr}Dimensions: [{",".join([dimension.getMutationParameterString(tabs+1) for dimension in self.dimensions])}],' if self.dimensions is not None and len(self.dimensions) > 0 else ''}
+{f'{tabStr}Dimensions: [{",".join([dimension.getMutationParameterString(tabs+1) for dimension in self.dimensions])}],' if self.dimensions is not None and len(self.dimensions) > 0 else 'Dimensions: [],'}
 {tabStr}MeasureName: "{self.measureName}",
 {f'{tabStr}MeasureValue: "{self.measureValue}",' if self.measureValueType != "MULTI" else
 f'{tabStr}MeasureValues: [{",".join([measureValue.getMutationParameterString(tabs+1) for measureValue in self.measureValues])}],'}

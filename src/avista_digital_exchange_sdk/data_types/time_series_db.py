@@ -6,6 +6,7 @@ from .service import Service
 class TimeSeriesDb(Service):
     def __init__(self, dict, client, debug):
         super().__init__(dict, client, debug)
+        self.timeSeriesDb = self
         self._client = client
         self._debug = debug
         if dict is None:

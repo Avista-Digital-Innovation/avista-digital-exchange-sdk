@@ -25,7 +25,6 @@ class storage_getDataStore(Query):
         try:
             self.dataStore = DataStore(
                 self._result['data'][self.queryName], self._client, self._debug)
-            print(f'{self.dataStore}')
             return self.dataStore
         except Exception as e:
             raise e

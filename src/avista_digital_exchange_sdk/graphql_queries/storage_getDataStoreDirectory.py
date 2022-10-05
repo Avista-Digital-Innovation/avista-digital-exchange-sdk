@@ -16,7 +16,8 @@ class storage_getDataStoreDirectory(Query):
         return f'query {self.queryName} {{ {self.queryName}(dataStoreDirectoryId: "{self.dataStoreDirectoryId}") {self.resultType.getQueryString()} }}'
 
     def performQuery(self) -> str:
-        print(f"Getting directory {self.dataStoreDirectoryId}...")
+        if self._debug:
+            print(f"Getting directory {self.dataStoreDirectoryId}...")
         self._result = self._client.performQuery(self._getQueryString())
         return self._processResult()
 
@@ -25,7 +26,6 @@ class storage_getDataStoreDirectory(Query):
         try:
             dir = DataStoreDirectory(
                 self._result['data'][self.queryName], self._client, self._debug)
-            print(f"{dir}")
             return dir
         except Exception as e:
             raise e

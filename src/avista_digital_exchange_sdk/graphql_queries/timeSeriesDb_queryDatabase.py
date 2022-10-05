@@ -42,7 +42,7 @@ class timeSeriesDb_queryDatabase(Query):
         assetsArrayString = "["
         i = 0
         for entry in self.assetsArray:
-            assetsArrayString += f'{{assetId: "{entry["assetId"]}", attributeNamesFilter: [{self.getAttributeNamesListString(entry["attributeNamesFilter"])}]}}'
+            assetsArrayString += f'{{assetId: "{entry["assetId"]}", attributeNamesFilter: [{self.getAttributeNamesListString(entry["attributeNames"])}]}}'
             i += 1
             if i >= len(self.assetsArray):
                 assetsArrayString += ','
@@ -76,7 +76,6 @@ class timeSeriesDb_queryDatabase(Query):
         try:
             self.result = TimeSeriesQueryResult(
                 self._result['data'][self.queryName], self._client, self._debug, self.timeSeriesDbId, self.maxRows)
-            print(f'{self.result}')
             return self.result
         except Exception as e:
             raise e

@@ -7,10 +7,12 @@ import os
 
 
 class DataStoreFile(DataStoreObject):
-    def __init__(self, dict, client, debug):
+    def __init__(self, dict, client, debug, directory=None):
         super().__init__(dict, client, debug)
+        self.dataStoreFile = self
         self._client = client
         self._debug = debug
+        self.directory = directory
         if dict is None:
             return
         else:
@@ -108,3 +110,65 @@ class DataStoreFile(DataStoreObject):
         except Exception as err:
             print(f"Upload failed: {err}")
             raise FileUploadException(err)
+
+    @staticmethod
+    def getFilenameSegments(name):
+        fileExtension = '.'.join(name.split('.')[1:])
+        fileRoot = name.split('.')[0]
+        return (fileRoot, fileExtension)
+
+    @staticmethod
+    def createAndUploadFile(client, debug, localFilePath, dataStoreId, dataStoreDirectoryId, name=None, description=None):
+        from ..graphql_mutations.storage_createDataStoreFile import storage_createDataStoreFile
+
+        # Check if file exists in local file system
+        if not os.path.isfile(localFilePath):
+            raise FileNotFoundException
+        if not name:
+            name = localFilePath.split('/')[-1]
+
+        (fileRoot, fileExtension) = DataStoreFile.getFilenameSegments(name)
+
+        # Create the file in the Digital Exchange and receive a presigned url to upload the file to
+        mutation = storage_createDataStoreFile(
+            client, debug, dataStoreId, dataStoreDirectoryId, fileRoot, fileExtension, description)
+        presignedUrl = mutation.performMutation()
+        dataStoreFileId = presignedUrl.itemId
+        uploadResult = None
+        try:
+            if presignedUrl.url is None:
+                raise Exception('Did not receive upload endpoint as expected')
+            uploadResult = DataStoreFile.uploadFile(
+                presignedUrl.url, localFilePath, debug)
+        except FileUploadException as err:
+            DataStoreFile.deleteDataStoreFile(
+                client, debug, dataStoreFileId)
+            raise err
+        return DataStoreFile.getDataStoreFile(client, debug, dataStoreFileId)
+
+    @staticmethod
+    def deleteDataStoreFile(client, debug, dataStoreFileId):
+        from ..graphql_mutations.storage_deleteDataStoreFile import storage_deleteDataStoreFile
+        mutation = storage_deleteDataStoreFile(
+            client, debug, dataStoreFileId)
+        dataStoreFile = mutation.performMutation()
+        return dataStoreFile
+
+    @staticmethod
+    def getDataStoreFile(client, debug, dataStoreFileId):
+        from ..graphql_queries.storage_getDataStoreFile import storage_getDataStoreFile
+        query = storage_getDataStoreFile(
+            client, debug, dataStoreFileId)
+        dataStoreFile = query.performQuery()
+        return dataStoreFile
+
+    @staticmethod
+    def downloadDataStoreFile(client, debug, dataStoreFileId, writeLocation):
+        from ..graphql_queries.storage_getDataStoreFile import storage_getDataStoreFile
+        query = storage_getDataStoreFile(
+            client, debug, dataStoreFileId)
+        dataStoreFile = query.performQuery()
+        presignedUrl = dataStoreFile.getFileUrl(dataStoreFileId)
+        location = dataStoreFile.downloadAndWriteFile(
+            presignedUrl.url, writeLocation)
+        return dataStoreFile
