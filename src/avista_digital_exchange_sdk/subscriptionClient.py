@@ -153,14 +153,14 @@ class Subscription:
 
         elif (message_object['type'] == 'error'):
             print(f"Error from AppSync: {message_object['payload']}")
-            self.errorQueue.put(message_object)
+            self.subscriptionErrorQueue.put(message_object)
 
     def onError(self, ws, error):
         if self._debug:
             print('### subscription websocket error ###')
             print(error)
             print()
-        self.errorQueue.put(error)
+        self.subscriptionErrorQueue.put(error)
 
     def onClose(self, ws, sec=None, thir=None, forth=None):
         if self._debug:

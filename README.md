@@ -13,37 +13,27 @@ This package allows you to access the Avista Digital Exchange and perform a subs
   - [Getting Started](#getting-started)
   - [AvistaDigitalExchange Functions](#avistadigitalexchange-functions)
     - [getUserInfo](#getuserinfo)
-    - [listDataStores](#listdatastores)
-    - [getDataStore](#getdatastore)
-    - [getDataStoreDirectory](#getdatastoredirectory)
-    - [getDataStoreFileMeta](#getdatastorefilemeta)
-    - [downloadDataStoreFile](#downloaddatastorefile)
-    - [uploadFileToDataStore](#uploadfiletodatastore)
-    - [deleteDataStoreFile](#deletedatastorefile)
-    - [listTimeSeriesDatabases](#listtimeseriesdatabases)
-    - [getTimeSeriesDatabase](#gettimeseriesdatabase)
-    - [listTimeSeriesAssetsAndLatestValues](#listtimeseriesassetsandlatestvalues)
-    - [getTimeSeriesAssetAttributeData](#gettimeseriesassetattributedata)
-    - [queryTimeSeriesDatabase_TimestreamFormat [ADVANCED]](#querytimeseriesdatabase_timestreamformat-advanced)
-    - [createTimeSeriesMeasureValue](#createtimeseriesmeasurevalue)
-    - [createTimeSeriesDimension](#createtimeseriesdimension)
-    - [createTimeSeriesInputRecord](#createtimeseriesinputrecord)
-    - [publishToTimeSeriesDatabase](#publishtotimeseriesdatabase)
-    - [listCollaboratives](#listcollaboratives)
-    - [getCollaborative](#getcollaborative)
-    - [listCollaborativeServices](#listcollaborativeservices)
-    - [listCollaborativesServiceSharedWith](#listcollaborativesservicesharedwith)
-    - [addServiceToCollaborative](#addservicetocollaborative)
-    - [removeServiceFromCollaborative](#removeservicefromcollaborative)
+    - [dataStore](#datastore)
+      - [listDataStores](#listdatastores)
+      - [getDataStore](#getdatastore)
+      - [getDataStoreDirectory](#getdatastoredirectory)
+      - [getDataStoreFileMeta](#getdatastorefilemeta)
+      - [downloadDataStoreFile](#downloaddatastorefile)
+      - [uploadFileToDataStore](#uploadfiletodatastore)
+      - [deleteDataStoreFile](#deletedatastorefile)
+    - [iot](#iot)
+      - [getEndpoint](#getendpoint)
+      - [listEndpointLastValues](#listendpointlastvalues)
+      - [queryByTimeRange](#querybytimerange)
+      - [publish](#publish)
+      - [updateEndpointProperties](#updateendpointproperties)
   - [Types](#types)
     - [User](#user)
       - [Properties](#properties)
     - [Organization](#organization)
       - [Properties](#properties-1)
-    - [Service](#service)
+    - [DataStore](#datastore-1)
       - [Properties](#properties-2)
-    - [DataStore](#datastore)
-      - [Properties](#properties-3)
       - [Methods](#methods)
         - [cd](#cd)
         - [ls](#ls)
@@ -52,33 +42,17 @@ This package allows you to access the Avista Digital Exchange and perform a subs
         - [downloadFile](#downloadfile)
         - [deleteFile](#deletefile)
     - [DataStoreDirectory](#datastoredirectory)
-      - [Properties](#properties-4)
+      - [Properties](#properties-3)
       - [Methods](#methods-1)
         - [printContents](#printcontents)
     - [DataStoreFile](#datastorefile)
+      - [Properties](#properties-4)
+    - [IotEndpoint](#iotendpoint)
       - [Properties](#properties-5)
-    - [TimeSeriesDb](#timeseriesdb)
+    - [EndpointProperty](#endpointproperty)
       - [Properties](#properties-6)
-    - [QueryResult_TimestreamVariables](#queryresult_timestreamvariables)
+    - [EndpointTelemetry](#endpointtelemetry)
       - [Properties](#properties-7)
-    - [TimeSeriesMeasureValue](#timeseriesmeasurevalue)
-      - [Properties](#properties-8)
-    - [TimeSeriesDimension](#timeseriesdimension)
-      - [Properties](#properties-9)
-    - [TimeSeriesInputRecord](#timeseriesinputrecord)
-      - [Properties](#properties-10)
-    - [TimeSeriesAssetData](#timeseriesassetdata)
-      - [Properties](#properties-11)
-    - [TimeSeriesAssetAttribute](#timeseriesassetattribute)
-      - [Properties](#properties-12)
-    - [TimeSeriesAssetAttributeData](#timeseriesassetattributedata)
-      - [Properties](#properties-13)
-    - [Collaborative](#collaborative)
-      - [Properties](#properties-14)
-    - [CollaborativeMemberOrganization](#collaborativememberorganization)
-      - [Properties](#properties-15)
-    - [CollaborativeMemberUser](#collaborativememberuser)
-      - [Properties](#properties-16)
   - [Development](#development)
   - [Deployment](#deployment)
   - [Resources](#resources)
@@ -98,15 +72,15 @@ pip3 install --upgrade avista-digital-exchange-sdk
 ```
 
 3. Import the module in your python script.
-4. Initialize the module with your authentication token.
+4. Initialize the module with your authentication token.  The authentication token can be a user authentication token, or an iot endpoint authentication token.  If an endpoint token is used, only iot operations can be performed.
 
 ```
 from avista_digital_exchange_sdk import AvistaDigitalExchange
 
-digitalExchange = AvistaDigitalExchange("{token}")
+digitalExchange = AvistaDigitalExchange("tokenvalue")
 
 # Alternatively, instantiate with debug mode enabled
-# digitalExchange = AvistaDigitalExchange("{token}", True)
+# digitalExchange = AvistaDigitalExchange("tokenvalue", True)
 ```
 
 ---
@@ -133,7 +107,9 @@ user = digitalExchange.getUserInfo()
 
 ---
 
-### listDataStores
+### dataStore
+
+#### listDataStores
 
 Lists the data stores you own.
 
@@ -148,12 +124,12 @@ None
 **Example**
 
 ```
-dataStores = digitalExchange.listDataStores()
+dataStores = digitalExchange.dataStores.listDataStores()
 ```
 
-### getDataStore
+#### getDataStore
 
-Gets the metadata of the data store.
+Gets a data store object. The object can be interacted with as a command line utility to navigate the data store. See [DataStore](#datastore).
 
 **Parameters**
 
@@ -169,10 +145,14 @@ dataStoreId :  str, required
 **Example**
 
 ```
-dataStore = digitalExchange.getDataStore("{dataStoreId}")
+dataStore = digitalExchange.dataStores.getDataStore("dataStoreId.1234")
+
+dataStore.ls()
+dataStore.cd("dirname1")
+
 ```
 
-### getDataStoreDirectory
+#### getDataStoreDirectory
 
 Gets the directory metadata and contents.
 
@@ -190,10 +170,10 @@ dataStoreDirectoryId :  str, required
 **Example**
 
 ```
-dir = digitalExchange.getDataStoreDirectory("{dataStoreDirectoryId}")
+dir = digitalExchange.dataStores.getDataStoreDirectory("dataStoreDirectoryId.1234")
 ```
 
-### getDataStoreFileMeta
+#### getDataStoreFileMeta
 
 Gets the metadata of a file.
 
@@ -211,10 +191,10 @@ dataStoreFileId :  str, required
 **Example**
 
 ```
-file = digitalExchange.getDataStoreFileMeta("{dataStoreFileId}")
+file = digitalExchange.dataStores.getDataStoreFileMeta("dataStoreFileId.1234")
 ```
 
-### downloadDataStoreFile
+#### downloadDataStoreFile
 
 Downloads a copy of the file to the local file system.
 
@@ -234,10 +214,10 @@ writeLocation :  str, required
 **Example**
 
 ```
-file = digitalExchange.downloadDataStoreFile("{dataStoreFileId}", "{writeLocation}")
+file = digitalExchange.dataStores.downloadDataStoreFile("dataStoreFileId.1234", "./")
 ```
 
-### uploadFileToDataStore
+#### uploadFileToDataStore
 
 Uploads a local file to a data store.
 
@@ -263,10 +243,10 @@ description :  str, optional
 **Example**
 
 ```
-file = digitalExchange.uploadFileToDataStore("{dataStoreId}", "{dataStoreDirectoryId}", "./testFile.txt")
+file = digitalExchange.dataStores.uploadFileToDataStore("dataStoreId.1234", "dataStoreDirectoryId.1234", "./testFile.txt")
 ```
 
-### deleteDataStoreFile
+#### deleteDataStoreFile
 
 Removes a file from the data store and deletes it from the Digital Exchange.
 
@@ -284,57 +264,48 @@ dataStoreFileId :  str, required
 **Example**
 
 ```
-file = digitalExchange.deleteDataStoreFile("{dataStoreFileId}")
+file = digitalExchange.dataStores.deleteDataStoreFile("dataStoreFileId.1234")
 ```
 
-### listTimeSeriesDatabases
+---
 
-Lists the databases you own.
+### iot
 
-**Parameters**
+#### getEndpoint
 
-None
-
-**Return Type**
-
-[[TimeSeriesDb]](#timeseriesdb)
-
-**Example**
-
-```
-databases = digitalExchange.listTimeSeriesDatabases()
-```
-
-### getTimeSeriesDatabase
-
-Gets the metadata of the database.
+Gets information about the iot endpoint.  Includes the digital twin data model.
 
 **Parameters**
 
 ```
-timeSeriesDbId :  str, required
-    The id of the database.
+iotEndpointId :  str, required
 ```
 
 **Return Type**
 
-[TimeSeriesDb](#timeseriesdb)
+[IotEndpoint](#iotendpoint)
 
 **Example**
 
 ```
-database = digitalExchange.getTimeSeriesDatabase("{timeSeriesDbId}")
+iotEndpointId = "iotEndpointId.1234"
+endpoint = digitalExchange.iot.getEndpoint(
+     iotEndpointId)
+
+for property in endpoint.properties:
+    print(f"Property {property.name} has type {property.schemaType}.")
+for telemetry in endpoint.telemetry:
+    print(f"Telemetry attribute {telemetry.name} has type {telemetry.schemaType}.")
 ```
 
-### listTimeSeriesAssetsAndLatestValues
+#### listEndpointLastValues
 
-Queries the time series database to collect a list of all assets and their attributes in the database, as well as the latest value and timestamp for each attribute.
+Queries for the last known values of the endpoint's attributes.
 
 **Parameters**
 
 ```
-timeSeriesDbId :  str, required
-    The id of the database.
+iotEndpointId :  str, required
 resultFileWriteLocation :  str, optional
     If you would like the results stored in a file, include a name or path here. 
     Results will be in JSON format.
@@ -342,388 +313,184 @@ resultFileWriteLocation :  str, optional
 
 **Return Type**
 
-[[TimeSeriesAssetData](#timeseriesassetdata)]
+[dict]
+
+```
+[
+    {
+        'attributeName': 'name'
+        'lastValue': 'value',
+        'timestamp': 'time'
+    }
+]
+```
 
 **Example**
 
 ```
-result = digitalExchange.listTimeSeriesAssetsAndLatestValues(
-     "<timeSeriesDbId>", None)
+iotEndpointId = "iotEndpointId.1234"
+result = digitalExchange.iot.listEndpointLastValues(
+     iotEndpointId)
 
-# Example iteration through assets and attributes in the result
-for asset in result:
-    assetId = asset.assetId
-    for attribute in asset.attributes:
-        name = attribute.name
-        latestValue = attribute.lastValue
-        timestamp = attribute.lastValueTime
+# Example iteration through result
+for entry in result:
+    attributeName = entry.attributeName
+    lastValue = entry.lastValue
+    timestamp = entry.timestamp
 ```
 
-### getTimeSeriesAssetAttributeData
+#### queryByTimeRange
 
-Queries the time series data using asset, attribute and time filters, and writes the results to a file.
+Queries the endpoint data using attribute and time filters, and writes the results to a file.
 
-You must provide a time range and the assets (and their attributes) that you wish to query. The method automatically 
+You must provide a time range and the attributeNames that you wish to query. The method automatically 
 iterates over all pagination tokens so the result will be compiled upon completion. When the compiled result is available, it will be written to the local file system.
 
 **Parameters**
 
 ```
-timeSeriesDbId :  str, required
-    The id of the database.
+iotEndpointId :  str, required
+    The id of the endpoint.
+attributeNames :  [str], required
+    The attributes to include in the query result.
 startTime :  ISO8601 str, required
     The beginning of the time interval.
     Example: "2022-09-27T10:22:45.000Z"
 endTime: ISO8601 str, required
     The end of the time interval.
-    Example: "2022-09-27T10:22:45.000Z"
-assetAndAttributesFilter: [{"assetId": <str>, "attributeNames": [<str>]}], required
+    Example: "2022-10-27T10:22:45.000Z"
 resultFileWriteLocation: str, required
-    The location to store the result file on the local file system. If a directory is provided but not a file name, the file will be saved as "result.csv" or "result.json" in the specified directory.
-exportFileFormat: str, optional
-    The file format in which to compile the query result. If JSON is used, the data will be stored as an array of TimeSeriesAssetData objects (see Data Types section below).
-    Valid values: "CSV" | "JSON"
-    Defaults to "CSV"
+    The location to store the result file on the local file system. If a directory is provided but not a file name, the file will be saved as result.csv in the specified directory.
 ```
 
 **Return Type**
 
-Bool
+Bool indicating success or error
 
 **Example**
 
 ```
-result = digitalExchange.getTimeSeriesAssetAttributeData(
-     "<timeSeriesDbId>", [
-         {"assetId": "<assetId>",
-             "attributeNames": ["SOC", "V", "V - Setpoint"]},
-         {"assetId": "<assetId>",
-             "attributeNames": ["A kW", "B Amps", "B PF"]},
-         {"assetId": "<assetId>", 
-             "attributeNames": ["A kVAR", "A kW", "B Amps"]}], 
+result = digitalExchange.iot.queryByTimeRange(
+    "iotEndpointId.1234", 
+    ["SOC", "V", "V - Setpoint"], 
     "2022-09-25T20:13:04.465Z", 
     "2022-09-26T20:58:04.465Z", 
-    "./", 
-    "JSON")
+    "./")
 ```
 
-### queryTimeSeriesDatabase_TimestreamFormat [ADVANCED]
+#### publish
 
-Queries the time series data using [SQL and AWS Timestream features](https://docs.aws.amazon.com/timestream/latest/developerguide/reference.html).
-
-The result will be paginated if large enough. For the first request, omit the nextToken and clientToken parameters or set them to None. If a nextToken is present in the query result, there is more data to retrieve. In subsequent requests use the original queryString and maxRows parameters, and the nextToken and clientToken from the previous query result.
-
-This SDK uses lowercase first letter variable names and AWS Timestream documented variables are capitalized.
+Publish telemetry values for an endpoint.  One or more data records can be written at one time.
 
 **Parameters**
 
 ```
-timeSeriesDbId :  str, required
-    The id of the database.
-queryString :  str, required
-    The query to be run.
-    The database table must be referenced as "{databaseName}"."{tableName}" (ex. 'SELECT...FROM "{databaseName}"."{tableName}"'). The databaseName and tableName can be found in the TimeSeriesDb object.
-maxRows :  str, optional
-    The maximum number of data rows to include in the query result.
-nextToken :  str, optional
-    A token that will retrieve the next set of data in a paginated result.
-clientToken :  str, optional
-    A unique token for a query from this device. The token will change for each query. Omit this parameter on the first request.
+iotEndpointId :  str, required
+    The id of the endpoint.
+data :  [dict], required
+    Array of data records to write.  Each dict should contain the record's timestamp (defaults to current milliseconds), timeUnit ("MILLISECONDS", "SECONDS", "MICROSECONDS", "NANOSECONDS") ("MILLISECONDS" by default), and a dicitonary of attribute name, value pairs. Example shown below.
 ```
 
 **Return Type**
 
-[QueryResult_TimestreamVariables](#queryresult_timestreamvariables)
+Dictionary shown below
+
+```
+{
+    'recordsWritten': [
+        {
+            'timestamp': '1670008999', # Epoch milliseconds
+            'iotEndpointId': 'iotEndpointId.1234',
+            'attributes': [
+                {
+                    'name': 'speed',
+                    'value': '24.5'
+                }
+            ]
+        }
+    ],
+    'recordsFailed': [
+        {
+            'record': {
+                'timestamp': '1670007999', # Epoch milliseconds
+                'iotEndpointId': 'iotEndpointId.1234',
+                'attributes': [
+                    {
+                        'name': 'speed',
+                        'value': '24.5'
+                    }
+                ]
+            },
+            'errors': [
+                {
+                    'errorType': 'DUPLICATE_RECORD',
+                    'errorMessage': 'A record already exists for this endpoint at the given timestamp.'
+                }
+            ]
+        }
+    ]
+}
+```
 
 **Example**
 
 ```
-db = digitalExchange.getTimeSeriesDatabase("{timeSeriesDbId}")
-databaseName = db.databaseName
-tableName = db.tableName
+# Create the input data array
+inputData = [
+    {
+        "timestamp": 1670008999,
+        "timeUnit": "MILLISECONDS", # Optional - "MILLISECONDS" by default
+        "attributes": {
+            "speed": "40.2"
+            "altitude": "2413.0"
+        }
+    }, {
+        "timestamp": 1670009999,
+        "timeUnit": "MILLISECONDS",
+        "attributes": {
+            "speed": "40.2"
+            "altitude": "2413.0"
+        }
+    }
+]
 
-queryString = 'SELECT.....FROM "{databaseName}"."{tableName}" WHERE.....'
+# Write the records
+result = digitalExchange.iot.publish('iotEndpointId.1234', inputData)
 
-result = digitalExchange.queryTimeSeriesDatabase_TimestreamFormat("{timeSeriesDbId}", "{queryString}", 100, "{nextToken}", "{clientToken}")
-clientToken = result.clientToken
-nextToken = result.nextToken
+recordsWritten = result.recordsWritten
+failedRecords = result.failedRecords
 ```
 
-### createTimeSeriesMeasureValue
+#### updateEndpointProperties
 
-Creates a measureValue object to be used as an entry for a time series record.
-
-Reference [AWS Timestream MeasureValue](https://docs.aws.amazon.com/timestream/latest/developerguide/API_MeasureValue.html)
+Update the properties (state variables) for an endpoint.
 
 **Parameters**
 
 ```
-type :  str, required
-    The type of the the measure value. Valid values: "DOUBLE", "BIGINT", "VARCHAR", "BOOLEAN", "TIMESTAMP"
-name :  str, required
-    The name of the measure.
-value :  str, required
-    The measure value as a string.
+iotEndpointId :  str, required
+    The id of the endpoint.
+properties :  dict, required
+    The properties to update and the new values. See example below for expected dict structure.
 ```
 
 **Return Type**
 
-[TimeSeriesMeasureValue](#timeseriesmeasurevalue)
+[IotEndpoint](#iotendpoint)
 
 **Example**
 
 ```
-measure = digitalExchange.createTimeSeriesMeasureValue("{type}", "{name}", "{value}")
+
+properties = {
+    'moving': False
+}
+
+instance.iot.updateEndpointProperties(
+     "iotEndpointId.1234",
+     properties)
 ```
 
-### createTimeSeriesDimension
-
-Creates a Dimension object to be used in a record. Each Dimension is essentially a metadata attribute for a record.
-
-Reference [AWS Timestream Dimension](https://docs.aws.amazon.com/timestream/latest/developerguide/API_Dimension.html)
-
-**Parameters**
-
-```
-dimensionValueType :  str, required
-    The type of the attribute. Valid values: "VARCHAR"
-name :  str, required
-    The name of the attribute.
-value :  str, required
-    The attribute value.
-```
-
-**Return Type**
-
-[TimeSeriesDimension](#timeseriesdimension)
-
-**Example**
-
-```
-dimension = digitalExchange.createTimeSeriesDimension("VARCHAR", "{name}", "{value}")
-```
-
-### createTimeSeriesInputRecord
-
-Creates a time series data point record.
-
-Reference (AWS Timestream Record)(https://docs.aws.amazon.com/timestream/latest/developerguide/API_Record.html)
-
-**Parameters**
-
-```
-time :  str, required
-    The timestamp for the record.
-timeUnit :  str, required
-    The unit of the Time timestamp. Valid values: "MILLISECONDS", "SECONDS", "MICROSECONDS", "NANOSECONDS"
-measureName :  str, required
-    The name of the measure.
-measureValueType :  str, required
-    The type of the measure. Valid values: "DOUBLE", "BIGINT", "VARCHAR", "BOOLEAN", "TIMESTAMP", "MULTI". "MULTI" is used to include an array of measureValues for the single time point. If type is "MULTI" include an array of measureValues for the measureValues parameter. Otherwise, pass a single value for measureValue.
-measureValue :  str, optional
-    The measure value as a string.
-measureValues : [TimeSeriesMeasureValue], optional
-    An array of measureValues.
-dimensions : [TimeSeriesDimension], optional
-    The dimensions, or metadata, of the record. Include a Dimension with name "name" and a value of the asset's name so it can be viewed on the Avista Digital Exchange web platform.
-version : int, optional
-    The version of the record. Record data can be updated by publishing it again with an incremented version number. Defaults to 1.
-```
-
-**Return Type**
-
-[TimeSeriesInputRecord](#timeseriesinputrecord)
-
-**Example**
-
-```
-# Initialize Dimensions
-dimensions = []
-dimensions.append(digitalExchange.createTimeSeriesDimension('VARCHAR', 'name', 'Asset 1'))
-dimensions.append(digitalExchange.createTimeSeriesDimension('VARCHAR', 'Dimension2Name', 'Dimension2Value'))
-
-# Initialize MeasureValues
-measureValues = []
-measureValues.append(digitalExchange.createTimeSeriesMeasureValue('VARCHAR', 'Measure 1', 'a string...' ))
-measureValues.append(digitalExchange.createTimeSeriesMeasureValue('BIGINT', 'Measure 2', '321' ))
-
-# Initialize Record
-record = digitalExchange.createTimeSeriesInputRecord('1662155084', 'SECONDS', 'multi-measure-entry-name', 'MULTI', None, measureValues, dimensions, 1)
-```
-
-### publishToTimeSeriesDatabase
-
-Publishes data records to the database.
-
-You may only publish records for 1 asset per request. To support viewing on data on the web, include a dimension entry with dimensionName 'name' and dimensionValue containing the name of the asset.
-
-**Parameters**
-
-```
-timeSeriesDbId :  str, required
-    The id of the database you are publishing to.
-assetId :  str, required
-    The id of the asset you are publishing data for.
-records : [TimeSeriesInputRecord], required
-    An array of data records to write to the database.
-```
-
-**Return Type**
-
-[[TimeSeriesAssetData]](#timeseriesassetdata)
-
-**Example**
-
-```
-# Initialize dimensions
-dimensions = []
-dimensions.append(digitalExchange.createTimeSeriesDimension('VARCHAR', 'name', 'Asset 1 Name'))
-dimensions.append(digitalExchange.createTimeSeriesDimension('VARCHAR', 'Dimension2Name', 'Dimension2Value'))
-
-# Initialize measureValues
-measureValues = []
-measureValues.append(digitalExchange.createTimeSeriesMeasureValue('VARCHAR', 'Measure 1', 'a string...' ))
-measureValues.append(digitalExchange.createTimeSeriesMeasureValue('BIGINT', 'Measure 2', '321' ))
-
-# Initialize records
-records = []
-records.append(digitalExchange.createTimeSeriesInputRecord('1662155081', 'SECONDS', 'multi-measure-entry-name', 'MULTI', None, measureValues, dimensions, 1))
-
-# Use other measureValues for another record
-measureValues = []
-...
-records.append(digitalExchange.createTimeSeriesInputRecord('1662155082', 'SECONDS', 'multi-measure-entry-name', 'MULTI', None, measureValues, dimensions, 1))
-
-# Write the records to the database
-result = digitalExchange.publishToTimeSeriesDatabase('{}', 'asset1', records)
-```
-
-### listCollaboratives
-
-Lists the collaboratives you are a member of.
-
-**Parameters**
-
-None
-
-**Return Type**
-
-[[Collaborative]](#collaborative)
-
-**Example**
-
-```
-collaboratives = digitalExchange.listCollaboratives()
-```
-
-### getCollaborative
-
-Gets the metadata of the collaborative.
-
-**Parameters**
-
-```
-collaborativeId :  str, required
-    The id of the collaborative.
-```
-
-**Return Type**
-
-[Collaborative](#collaborative)
-
-**Example**
-
-```
-collaborative = digitalExchange.getCollaborative("{collaborativeId}")
-```
-
-### listCollaborativeServices
-
-Lists all services (Data Stores of Time Series Databases) shared in the collaborative.
-
-**Parameters**
-
-```
-collaborativeId :  str, required
-    The id of the collaborative.
-```
-
-**Return Type**
-
-[[Service]](#service)
-
-**Example**
-
-```
-services = digitalExchange.listCollaborativeServices("{collaborativeId}")
-```
-
-### listCollaborativesServiceSharedWith
-
-Gets the collaboratives that a service is shared with. You must be the owner of the service.
-
-**Parameters**
-
-```
-serviceId :  str, required
-    The id of the service (either a dataStoreId or timeSeriesDbId).
-```
-
-**Return Type**
-
-[[Collaborative]](#collaborative)
-
-**Example**
-
-```
-collaboratives = digitalExchange.listCollaborativesServiceSharedWith("{serviceId}")
-```
-
-### addServiceToCollaborative
-
-Shares a service (Data Store or Time Series database) with a collaborative.
-
-**Parameters**
-
-```
-serviceId :  str, required
-    The id of the service (either dataStoreId or timeSeriesDbId).
-collaborativeId :  str, required
-    The id of the collaborative to share the service with.
-```
-
-**Return Type**
-
-[Service](#service)
-
-**Example**
-
-```
-service = digitalExchange.addServiceToCollaborative("{serviceId}", "{collaborativeId}")
-```
-
-### removeServiceFromCollaborative
-
-Removes the service from a collaborative.
-
-**Parameters**
-
-```
-serviceId :  str, required
-    The id of the service (either dataStoreId or timeSeriesDbId).
-collaborativeId :  str, required
-    The id of the collaborative to remove the service from.
-```
-
-**Return Type**
-
-[Service](#service)
-
-**Example**
-
-```
-service = digitalExchange.removeServiceFromCollaborative("{serviceId}", "{collaborativeId}")
-```
 
 ---
 
@@ -753,23 +520,6 @@ Stores basic information about a Digital Exchange member organization.
 ```
 name : str
 organizationId : str
-```
-
-### Service
-
-Represents a Digital Exchange service such as Data Stores or Time Series Databases.
-
-#### Properties
-
-```
-serviceType : str
-    Valid values are "DATA_STORE", "TIME_SERIES_DB"
-serviceId : str
-    Either the dataStoreId or the timeSeriesDbId of the service.
-dataStore : DataStore | None
-    Reference to the Data Store Service object.
-timeSeriesDb : TimeSeriesDb | None
-    Reference to the Time Series Database Service object.
 ```
 
 ### DataStore
@@ -802,16 +552,99 @@ path: str, required
 
 **Example**
 ```
-ds = digitalExchange.getDataStore("{dataStoreId}")
-ds.cd('docs')
+ds = digitalExchange.getDataStore("dataStoreId.1234")
+ds.cd("docs")
 ```
 
 ##### ls
+
+List the contents of the working directory.
+
+**Parameters**
+
+```
+path: str, optional
+  The path to the desired directory.
+```
+
+**Example**
+```
+ds = digitalExchange.getDataStore("dataStoreId.1234")
+ds.ls("./")
+```
+
 ##### pwd
+
+Prints the abosulte path of the working directory.
+
+**Parameters**
+
+```
+none
+```
+
+**Example**
+```
+ds = digitalExchange.getDataStore("dataStoreId.1234")
+ds.pwd()
+```
+
 ##### uploadFile
+
+Upload a file to the data store in the working directory.
+
+**Parameters**
+
+```
+localFilePath: str, required
+  The location of the file on your local file system.
+name: str, optional
+  What the file should be named in the data store.
+description: string, optional
+  A brief description of the file and it's contents.
+```
+
+**Example**
+```
+ds = digitalExchange.getDataStore("dataStoreId.1234")
+ds.uploadFile("./exampleFile.json", "remoteFileName.json", "A file containing a basic json object.")
+```
+
 ##### downloadFile
+
+Download the specified file.
+
+**Parameters**
+
+```
+filename: str, required
+  Name of the remote file in the current directory.
+writeLocation: str, optional
+  The location to store the downloaded file. If a filename is not given it will be saved with it's remote name.
+```
+
+**Example**
+```
+ds = digitalExchange.getDataStore("dataStoreId.1234")
+ds.downloadFile("remoteFileName.json", "./desiredLocalFileName.json")
+```
+
 ##### deleteFile
 
+Deletes the file from the working directory.
+
+**Parameters**
+
+```
+filename: str, required
+  The name of the file to delete.
+```
+
+**Example**
+```
+ds = digitalExchange.getDataStore("dataStoreId.1234")
+ds.deleteFile("remoteFileName.json")
+```
 
 ### DataStoreDirectory
 
@@ -848,7 +681,7 @@ None
 **Example**
 
 ```
-dir = digitalExchange.getDataStoreDirectory("{dataStoreDirectoryId}")
+dir = digitalExchange.getDataStoreDirectory("dataStoreDirectoryId.1234")
 dir.printContents()
 ```
 
@@ -874,178 +707,64 @@ lastModified: str
 contentType: str
 ```
 
-### TimeSeriesDb
-
-A time series database service object.
+### IotEndpoint
 
 #### Properties
 
 ```
-timeSeriesDbId: str
+iotEndpointId: str
+iotHubId: str
+    The iot hub the endpoint belongs to.
+modelId: str
+    The model the endpoint uses.
 name: str
+    The name of the endpoint.
 description: str
-ownerUserId: str
-databaseName: str
-    The name of the database the table is found in. Used in time series queries.
-tableName: str
-    The name of the database table. Used in time series queries.
+properties: [EndpointProperty]
+    The properties and their values. Properties are associated through the digital twin model used by the endpoint.
+telemetry: [EndpointTelemetry]
+    The telemetry attributes of the endpoint. Telemetry variables are associated through the digital twin model used by the endpoint.
 ```
 
-### QueryResult_TimestreamVariables
+### EndpointProperty
 
-A time series query result that includes the AWS Timestream result object.
+Data field that represents a state of the endpoint. No historical values. [(DTDL Property)](https://learn.microsoft.com/en-us/azure/digital-twins/concepts-models#:~:text=the%20following%20fields%3A-,Property,-%2D%20Properties%20are%20data).
 
 #### Properties
 
 ```
-timestreamResults: dict :
-    The AWS Timestream query result object. [Reference](https://docs.aws.amazon.com/timestream/latest/developerguide/API_query_Query.html). Some properties are stored within the QueryResult object for easy access.
-clientToken: str
-    The token generated in the cloud associating the query to the requesting user device.
-nextToken: str | None
-    Present if the query result is paginated.
-queryId: str
-queryStatus: dict
-rows: dict
-columnInfo: dict
-```
-
-### TimeSeriesMeasureValue
-
-A measure and its data value. [Timestream Reference](https://docs.aws.amazon.com/timestream/latest/developerguide/API_MeasureValue.html)
-
-#### Properties
-
-```
-rype: str
 name: str
+    Name of the property.
+description: str
+schemaType: str : "integer", "double", "string", "boolean", "dateTime", "duration"
+    The type of the variable.
+writable: bool
+    Indicates if the value of the property can be updated.
 value: str
-```
-
-### TimeSeriesDimension
-
-A dimension (or a metadata entry). [Timestream Reference](https://docs.aws.amazon.com/timestream/latest/developerguide/API_Dimension.html)
-
-#### Properties
-
-```
-dimensionValueType: str
-name: str
-value: str
-```
-
-### TimeSeriesInputRecord
-
-A time series record. [Timestream Reference](https://docs.aws.amazon.com/timestream/latest/developerguide/API_Record.html)
-
-#### Properties
-
-```
-time :  str
-    The timestamp for the record.
-timeUnit :  str
-    The unit of the Time timestamp. Valid values: "MILLISECONDS", "SECONDS", "MICROSECONDS", "NANOSECONDS"
-measureName :  str
-    The name of the measure.
-measureValueType :  str
-    The type of the measure. Valid values: "DOUBLE", "BIGINT", "VARCHAR", "BOOLEAN", "TIMESTAMP", "MULTI". "MULTI" is used to include an array of measureValues for the single time point. If type is "MULTI" include an array of measureValues for the measureValues parameter. Otherwise, pass a single value for measureValue.
-measureValue :  str
-    The measure value. Only present if measureValueType != "MULTI"
-measureValues : [TimeSeriesMeasureValue]
-    An array of measureValues. Only present if measureValueType == "MULTI"
-dimensions : [TimeSeriesDimension]
-    The dimensions, or metadata, of the record.
-version : int
-    The version of the record.
-```
-
-### TimeSeriesAssetData
-
-An additional format for Time Series Database data, in a more human readable format.
-
-#### Properties
-
-```
-assetId: str
-name: str
-attributes: [TimeSeriesAssetAttribute]
-```
-
-### TimeSeriesAssetAttribute
-
-One attribute of an asset and some of its data.
-
-#### Properties
-
-```
-attributeType: one of "DOUBLE", "BIGINT", "VARCHAR", "BOOLEAN", "TIMESTAMP", "MULTI"
-lastValue: str
-lastValueTime: str
-name: str
-data: [TimeSeriesAssetAttributeData]
-```
-
-### TimeSeriesAssetAttributeData
-
-A single time/value data point for an attribute.
-
-#### Properties
-
-```
+    The current value of the property. All variable types are wrapped in a string.
 timestamp: str
-    The time in ISO8601 format.
-value: str
-    The attribute value at this timestamp.
+    Timestamp (in milliseconds) that the current value was written.
 ```
 
+### EndpointTelemetry
 
-### Collaborative
-
-A Digital Exchange data Collaborative.
+Data field representing measurements or events. Values are stored in a time series database. Telemetry values must be queried for separately (queryByTimeRange, listEndpointLastValues). [(DTDL Telemetry)](https://learn.microsoft.com/en-us/azure/digital-twins/concepts-models#:~:text=and%20telemetry%20below.-,Telemetry,-%2D%20Telemetry%20fields%20represent).
 
 #### Properties
 
 ```
-collaborativeId : str
-name : str
-description : str
-hostOrganizationId : str
-    Id of the organization the collaborative belongs to.
-memberOrganizations : [CollaborativeMemberOrganization]
-    Members of the collaborative, organized by organization.
-```
-
-### CollaborativeMemberOrganization
-
-An organization and its membership details for a collaborative.
-
-#### Properties
-
-```
-organization : Organization
-collaborativeId : str
-memberState : str
-usersInCollaborative : CollaborativeMemberUser
-    The users within the organization that are members of the collaborative.
-```
-
-### CollaborativeMemberUser
-
-A user and its membership details for a collaborative.
-
-#### Properties
-
-```
-permission : str
-    The user's permission level within the collaborative. Valid values: "READ_ONLY" or "READ_WRITE"
-user : user
+name: str
+    Name of the property.
+description: str
+schemaType: str : "integer", "double", "string", "boolean", "dateTime", "duration"
+    The type of the variable.
 ```
 
 ## Development
 
-If necessary, clone the repository with command `git clone https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk.git`.
+lone the repository with command `git clone https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk.git`.
 
-Use VS Code with the Python extension to utilize formatting and type-ahead.
+Use VS Code with the Python extension to utilize formatting and code completion.
 
 Deployment related code is in the root directory and the package code is found in `src/avista_digital_exchange_sdk`.
 

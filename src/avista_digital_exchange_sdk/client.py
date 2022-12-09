@@ -24,6 +24,7 @@ class Client:
         if self._debug:
             print(f'DEBUG - {queryString}')
         response = None
+
         try:
             with requests.Session() as session:
                 response = session.request(
@@ -42,6 +43,7 @@ class Client:
         if self._debug:
             print(f'DEBUG - {mutationString}')
         response = None
+
         try:
             with requests.Session() as session:
                 # Now we can simply post the request...
