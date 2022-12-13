@@ -14,30 +14,31 @@ class IotQueryByTimeRangeResult:
         else:
             self.buildFromDictionary(dict)
 
-    def __str__(self):
-        result = f"""Endpoint last values:"""
-    # Record: iotEndpointId: {self.record.iotEndpointId} timestamp: {self.record.timestamp} ({self.record.timeUnit})
-    # Errors:"""
-    #     for error in self.errors:
-    #         result += f"""
-    #     - {error.message}"""
-        return result
+    # def __str__(self):
+    #     result = f"""Endpoint last values:"""
+    # # Record: iotEndpointId: {self.record.iotEndpointId} timestamp: {self.record.timestamp} ({self.record.timeUnit})
+    # # Errors:"""
+    # #     for error in self.errors:
+    # #         result += f"""
+    # #     - {error.message}"""
+    #     return result
 
     def buildFromDictionary(self, dict):
         if dict is None:
             raise MissingDataInResultException
-        print(dict)
+        if self._debug:
+            print(dict)
         self.clientToken = dict['clientToken']
         self.nextToken = dict['nextToken'] if 'nextToken' in dict else None
         self.queryId = dict['queryId']
         self.resultChunkIndex = dict['resultChunkIndex']
         self.presignedUrl = dict['presignedUrl']
         self.queryString = dict['queryString']
-        self.data = []
-        if "data" in dict and dict["data"] != None:
-            for entry in dict["data"]:
-                self.data.append(IotEndpointData(
-                    entry, self._client, self._debug))
+        # self.data = []
+        # if "data" in dict and dict["data"] != None:
+        #     for entry in dict["data"]:
+        #         self.data.append(IotEndpointData(
+        #             entry, self._client, self._debug))
 
     @staticmethod
     def getQueryString(tabs=1, subobjectsRemaining=4):
@@ -50,5 +51,6 @@ class IotQueryByTimeRangeResult:
 {tabStr}resultChunkIndex
 {tabStr}presignedUrl
 {tabStr}queryString
-{tabStr}{f"data {IotEndpointData.getQueryString(tabs + 1, subobjectsRemaining - 1)}" if subobjectsRemaining > 0 else ""}
 {tabStr[0:-4]}}} """
+# {tabStr}{f"data {IotEndpointData.getQueryString(tabs + 1, subobjectsRemaining - 1)}" if subobjectsRemaining > 0 else ""}
+# {tabStr[0:-4]}}} """

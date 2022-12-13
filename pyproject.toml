@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "avista_digital_exchange_sdk"
-version = "0.1.1"
+version = "0.1.2"
 authors = [
   { name="Justin Whicker", email="jwhicker@urbanova.org"},
   {  name="Jon Thompson", email="jon.thompson@avistacorp.com" }

@@ -49,21 +49,19 @@ class onNotifyIotQueryExportComplete(Subscription):
         done = False
         while not done:
             i += 1
-            # if self._debug:
-            print('subscription message queue:')
-            print(list(self.subscriptionMessageQueue.queue))
-            print()
+            if self._debug:
+                print('subscription message queue:')
+                print(list(self.subscriptionMessageQueue.queue))
+                print()
 
-            print('subscription error queue')
-            print(list(self.subscriptionErrorQueue.queue))
-            print()
+                print('subscription error queue')
+                print(list(self.subscriptionErrorQueue.queue))
+                print()
 
             if self.subscriptionMessageQueue.qsize() > 0:
                 self.endSubscription()
                 item = self.subscriptionMessageQueue.get()
                 if self.queryId == item['payload']['data'][self.subscriptionName]['queryId']:
-                    print(
-                        f'Received notification that export is ready for download')
                     self._result = item['payload']
                     return self._processResult()
                 else:

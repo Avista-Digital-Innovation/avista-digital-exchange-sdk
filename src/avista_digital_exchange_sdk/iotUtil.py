@@ -85,7 +85,6 @@ class IoTUtil(object):
         queryId = result.queryId
         print(
             f'received query result chunk {result.resultChunkIndex}')
-        print(f'queryId: {result.queryId}')
 
         def quitHandler(signum, frame):
             # Stop query
@@ -116,7 +115,8 @@ class IoTUtil(object):
 
         # wait for subscription notification
         exportFileResult = subscription.waitForResponse(240)
-        print(exportFileResult)
+        if self._debug:
+            print(exportFileResult)
 
         exportFileResult.downloadAndWriteFile(
             exportFileResult.url, resultWriteLocation)

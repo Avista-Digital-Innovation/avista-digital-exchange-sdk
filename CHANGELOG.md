@@ -25,6 +25,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.2] - 2022-12-13
+
+### Changed
+
+- Updated data format for publishing iot attribute data ('name': 'value').
+- Now allow ISO 8601 timestamps for querying iot data by time range.
+
 ## [0.1.1] - 2022-12-09
 
 ### Fixed
@@ -138,7 +145,8 @@ First Beta-ready release.
      - addServiceToCollaborative
      - removeServiceFromCollaborative
 
-[Unreleased]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2022_12_09_v0.1.1...HEAD
+[Unreleased]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2022_12_13_v0.1.2...HEAD
+[0.1.2]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2022_12_09_v0.1.1...release/2022_12_13_v0.1.2
 [0.1.1]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2022_12_09_v0.1.0...release/2022_12_09_v0.1.1
 [0.1.0]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2022_09_29_v0.0.24...release/2022_12_09_v0.1.0
 [0.0.24]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2022_09_29_v0.0.23...release/2022_09_29_v0.0.24
