@@ -13,7 +13,7 @@
 [//]: # ( - list soon-to-be removed features )
 [//]: # ( ### Removed )
 [//]: # ( - list features that have been removed )
-[//]: # ( ### Fixed for )
+[//]: # ( ### Fixed )
 [//]: # ( - list bug fixes )
 [//]: # ( ### Security )
 [//]: # ( - list any vulnerabilities )
@@ -24,6 +24,41 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [0.2.0] - 2023-02-14
+
+### Fixed
+
+- Fixed description issue in createModel.
+- Added a missing comma in createModel example in the README.
+- Removed spaces from model name in the createModel example in the README.
+
+## [0.1.5] - 2023-01-25
+
+### Added
+
+- Ability to create a new iot endpoint (iot.createEndpoint)
+- Ability to create a digital twin model (iot.createModel)
+
+### Fixed
+
+- README markdown section references not working in PyPi viewer. Added HTML tags at each section header to support scrolling to an id. It is a known [readme_renderer issue](https://github.com/pypa/readme_renderer/issues/169).
+
+## [0.1.4] - 2022-12-21
+
+### Fixed
+
+- Fixed file download error.
+
+## [0.1.3] - 2022-12-19
+
+### Added
+
+- Added ISO8601 as a time unit option for publishing iot data.
+
+### Fixed
+
+- Fixed query return type for data store files and directories (owner replaced by ownerUserId).
 
 ## [0.1.2] - 2022-12-13
 
@@ -145,7 +180,11 @@ First Beta-ready release.
      - addServiceToCollaborative
      - removeServiceFromCollaborative
 
-[Unreleased]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2022_12_13_v0.1.2...HEAD
+[Unreleased]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2023_02_14_v0.2.0...HEAD
+[0.2.0]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2022_12_25_v0.1.5...release/2023_02_14_v0.2.0
+[0.1.5]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2022_12_21_v0.1.4...release/2023_01_25_v0.1.5
+[0.1.4]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2022_12_19_v0.1.3...release/2022_12_21_v0.1.4
+[0.1.3]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2022_12_13_v0.1.2...release/2022_12_19_v0.1.3
 [0.1.2]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2022_12_09_v0.1.1...release/2022_12_13_v0.1.2
 [0.1.1]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2022_12_09_v0.1.0...release/2022_12_09_v0.1.1
 [0.1.0]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2022_09_29_v0.0.24...release/2022_12_09_v0.1.0

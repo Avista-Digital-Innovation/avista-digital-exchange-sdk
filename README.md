@@ -1,4 +1,4 @@
-# Avista Digital Exchange SDK
+# Avista Digital Exchange SDK<a id="avista-digital-exchange-sdk"></a>
 
 This package allows you to access the Avista Digital Exchange and perform a subset of its features programmatically. All that you need is a personal authentication token that can be generated at [energy.collaboratives.io](https://energy.collaboratives.io).
 
@@ -6,7 +6,11 @@ This package allows you to access the Avista Digital Exchange and perform a subs
 
 [GitHub Repository](https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk)
 
-## Table of Contents
+*Note: This document contains HTML tags at each section header to support internal document references in the PyPi markdown viewer. View [this readme_renderer issue](https://github.com/pypa/readme_renderer/issues/169) for more information.*
+
+## Table of Contents<a id="table-of-contents"></a>
+
+*Note: Internal document links are not working when viewing this document in PyPi because of this [readme_renderer](https://github.com/pypa/readme_renderer/issues/169) issue*
 
 - [Avista Digital Exchange SDK](#avista-digital-exchange-sdk)
   - [Table of Contents](#table-of-contents)
@@ -23,17 +27,16 @@ This package allows you to access the Avista Digital Exchange and perform a subs
       - [deleteDataStoreFile](#deletedatastorefile)
     - [iot](#iot)
       - [getEndpoint](#getendpoint)
+      - [createEndpoint](#createendpoint)
+      - [createModel](#createmodel)
       - [listEndpointLastValues](#listendpointlastvalues)
       - [queryByTimeRange](#querybytimerange)
       - [publish](#publish)
       - [updateEndpointProperties](#updateendpointproperties)
   - [Types](#types)
     - [User](#user)
-      - [Properties](#properties)
     - [Organization](#organization)
-      - [Properties](#properties-1)
     - [DataStore](#datastore-1)
-      - [Properties](#properties-2)
       - [Methods](#methods)
         - [cd](#cd)
         - [ls](#ls)
@@ -42,22 +45,20 @@ This package allows you to access the Avista Digital Exchange and perform a subs
         - [downloadFile](#downloadfile)
         - [deleteFile](#deletefile)
     - [DataStoreDirectory](#datastoredirectory)
-      - [Properties](#properties-3)
       - [Methods](#methods-1)
         - [printContents](#printcontents)
     - [DataStoreFile](#datastorefile)
-      - [Properties](#properties-4)
+    - [DigitalTwinModel](#digitaltwinmodel)
+    - [ModelProperty](#modelproperty)
+    - [ModelTelemetry](#modeltelemetry)
     - [IotEndpoint](#iotendpoint)
-      - [Properties](#properties-5)
     - [EndpointProperty](#endpointproperty)
-      - [Properties](#properties-6)
     - [EndpointTelemetry](#endpointtelemetry)
-      - [Properties](#properties-7)
   - [Development](#development)
   - [Deployment](#deployment)
   - [Resources](#resources)
 
-## Getting Started
+## Getting Started<a id="getting-started"></a>
 
 1. Install the python package.
 
@@ -85,9 +86,9 @@ digitalExchange = AvistaDigitalExchange("tokenvalue")
 
 ---
 
-## AvistaDigitalExchange Functions
+## AvistaDigitalExchange Functions<a id="avistadigitalexchange-functions"></a>
 
-### getUserInfo
+### getUserInfo<a id="getuserinfo"></a>
 
 Retrieves your user information.
 
@@ -107,9 +108,9 @@ user = digitalExchange.getUserInfo()
 
 ---
 
-### dataStore
+### dataStore<a id="datastore"></a>
 
-#### listDataStores
+#### listDataStores<a id="listdatastores"></a>
 
 Lists the data stores you own.
 
@@ -127,7 +128,7 @@ None
 dataStores = digitalExchange.dataStores.listDataStores()
 ```
 
-#### getDataStore
+#### getDataStore<a id="getdatastore"></a>
 
 Gets a data store object. The object can be interacted with as a command line utility to navigate the data store. See [DataStore](#datastore).
 
@@ -152,7 +153,7 @@ dataStore.cd("dirname1")
 
 ```
 
-#### getDataStoreDirectory
+#### getDataStoreDirectory<a id="getdatastoredirectory"></a>
 
 Gets the directory metadata and contents.
 
@@ -173,7 +174,7 @@ dataStoreDirectoryId :  str, required
 dir = digitalExchange.dataStores.getDataStoreDirectory("dataStoreDirectoryId.1234")
 ```
 
-#### getDataStoreFileMeta
+#### getDataStoreFileMeta<a id="getdatastorefilemeta"></a>
 
 Gets the metadata of a file.
 
@@ -194,7 +195,7 @@ dataStoreFileId :  str, required
 file = digitalExchange.dataStores.getDataStoreFileMeta("dataStoreFileId.1234")
 ```
 
-#### downloadDataStoreFile
+#### downloadDataStoreFile<a id="downloaddatastorefile"></a>
 
 Downloads a copy of the file to the local file system.
 
@@ -217,7 +218,7 @@ writeLocation :  str, required
 file = digitalExchange.dataStores.downloadDataStoreFile("dataStoreFileId.1234", "./")
 ```
 
-#### uploadFileToDataStore
+#### uploadFileToDataStore<a id="uploadfiletodatastore"></a>
 
 Uploads a local file to a data store.
 
@@ -246,7 +247,7 @@ description :  str, optional
 file = digitalExchange.dataStores.uploadFileToDataStore("dataStoreId.1234", "dataStoreDirectoryId.1234", "./testFile.txt")
 ```
 
-#### deleteDataStoreFile
+#### deleteDataStoreFile<a id="deletedatastorefile"></a>
 
 Removes a file from the data store and deletes it from the Digital Exchange.
 
@@ -269,9 +270,9 @@ file = digitalExchange.dataStores.deleteDataStoreFile("dataStoreFileId.1234")
 
 ---
 
-### iot
+### iot<a id="iot"></a>
 
-#### getEndpoint
+#### getEndpoint<a id="getendpoint"></a>
 
 Gets information about the iot endpoint.  Includes the digital twin data model.
 
@@ -298,7 +299,125 @@ for telemetry in endpoint.telemetry:
     print(f"Telemetry attribute {telemetry.name} has type {telemetry.schemaType}.")
 ```
 
-#### listEndpointLastValues
+
+#### createEndpoint<a id="createendpoint"></a>
+
+Creates a new IoT Endpoint within an existing IoT Hub.
+
+**Parameters**
+
+```
+iotHubId :  str, required
+    The hub in which to create the endpoint in.
+modelId :  str, required
+    The digital twin model for this endpoint to use.
+name :  str, required
+    The name of the iot endpoint.
+description :  str, optional
+```
+
+**Return Type**
+
+[IotEndpoint](#iotendpoint)
+
+**Example**
+
+```
+iotHubId = "iotHubId.1234"
+modelId = "modelId.4321"
+name = "Temperature Sensor"
+description = "The sensor on top of the house"
+
+
+endpoint = digitalExchange.iot.createEndpoint(
+    iotHubId,
+    modelId,
+    name,
+    description)
+```
+
+
+#### createModel<a id="createmodel"></a>
+
+Creates a digital twin data model.
+
+**Parameters**
+
+```
+name :  str, required
+    Name should not contain spaces or special characters. Alphanumeric characters only.
+description :  str, optional
+properties :  [dict], required
+    Array of dictionaries representing the properties to associate with the model. See https://learn.microsoft.com/en-us/azure/digital-twins/concepts-models#:~:text=the%20following%20fields%3A-,Property,-%2D%20Properties%20are%20data for more information on model properties.
+    The expected dictionary keys are as follows:
+        - name : str, required
+            Name of the property
+        - description : str, optional
+            Description of the property
+        - schemaType : str, required
+            The variable type of the property. Valid values are "integer", "double", "string", "boolean", "dateTime", and "duration"
+        - defaultValue : str, optional
+            Wrap the value, regardless of schemaType, in a string
+        - writable : bool, optional
+            Determines if the proeprty value can be updated. Default value is False
+
+telemetry :  [dict], required
+    Array of dictionaries representing the telemetry variables to associate with the model. See https://learn.microsoft.com/en-us/azure/digital-twins/concepts-models#:~:text=and%20telemetry%20below.-,Telemetry,-%2D%20Telemetry%20fields%20represent for more information on model telemetry.
+    The expected dictionary keys are as follows:
+        - name : str, required
+            Name of the telemetry
+        - description : str, optional
+            Description of the telemetry
+        - schemaType : str, required
+            The variable type of the telemetry. Valid values are "integer", "double", "string", "boolean", "dateTime", and "duration"
+
+```
+
+**Return Type**
+
+[DigitalTwinModel](#digitaltwinmodel)
+
+**Example**
+
+```
+properties = [
+    {
+        "name": "Longitude",
+        "description": "the last known longitude of the device",
+        "schemaType": "double",
+        "defaultValue": "-117.426048",
+        "writable": True
+    },
+    {
+        "name": "Latitude",
+        "description": "the last known latitude of the device",
+        "schemaType": "double",
+        "defaultValue": "47.658779",
+        "writable": True
+    }
+]
+
+telemetry = [
+    {
+        "name": "Temperature",
+        "description": "Temp from the sensor in celsius",
+        "schemaType": "double"
+    },
+    {
+        "name": "Humidity",
+        "description": "Humidity from the sensor",
+        "schemaType": "double"
+    }
+]
+
+model = digitalExchange.iot.createModel(
+    "MyFirstModel", 
+    "A simple example digital twin model", 
+    properties, 
+    telemetry)
+```
+
+#### listEndpointLastValues<a id="listendpointlastvalues"></a>
 
 Queries for the last known values of the endpoint's attributes.
 
@@ -339,7 +458,7 @@ for entry in result:
     timestamp = entry.timestamp
 ```
 
-#### queryByTimeRange
+#### queryByTimeRange<a id="querybytimerange"></a>
 
 Queries the endpoint data using attribute and time filters, and writes the results to a file.
 
@@ -378,7 +497,7 @@ result = digitalExchange.iot.queryByTimeRange(
     "./")
 ```
 
-#### publish
+#### publish<a id="publish"></a>
 
 Publish telemetry values for an endpoint.  One or more data records can be written at one time.
 
@@ -388,7 +507,8 @@ Publish telemetry values for an endpoint.  One or more data records can be writt
 iotEndpointId :  str, required
     The id of the endpoint.
 data :  [dict], required
-    Array of data records to write.  Each dict should contain the record's timestamp (defaults to current milliseconds), timeUnit ("MILLISECONDS", "SECONDS", "MICROSECONDS", "NANOSECONDS") ("MILLISECONDS" by default), and a dicitonary of attribute name, value pairs. Example shown below.
+    Array of data records to write.  Each dict should contain the record's timestamp (defaults to current milliseconds), timeUnit ("MILLISECONDS", "SECONDS", "MICROSECONDS", "NANOSECONDS", "ISO8601") ("MILLISECONDS" by default), and a dicitonary of attribute name, value pairs. Example shown below.
+    ISO8601 timestamps should match format yyyy-MM-ddTHH:mm:ss.SSSZ
 ```
 
 **Return Type**
@@ -399,7 +519,7 @@ Dictionary shown below
 {
     'recordsWritten': [
         {
-            'timestamp': '1670008999', # Epoch milliseconds
+            'timestamp': '1670008999', 
             'iotEndpointId': 'iotEndpointId.1234',
             'attributes': [
                 {
@@ -412,7 +532,7 @@ Dictionary shown below
     'recordsFailed': [
         {
             'record': {
-                'timestamp': '1670007999', # Epoch milliseconds
+                'timestamp': '1670007999',
                 'iotEndpointId': 'iotEndpointId.1234',
                 'attributes': [
                     {
@@ -441,14 +561,14 @@ inputData = [
         "timestamp": 1670008999,
         "timeUnit": "MILLISECONDS", # Optional - "MILLISECONDS" by default
         "attributes": {
-            "speed": "40.2"
+            "speed": "40.2",
             "altitude": "2413.0"
         }
     }, {
-        "timestamp": 1670009999,
-        "timeUnit": "MILLISECONDS",
+        "timestamp": "2022-12-15T12:45:31.055Z",
+        "timeUnit": "ISO8601",
         "attributes": {
-            "speed": "40.2"
+            "speed": "40.2",
             "altitude": "2413.0"
         }
     }
@@ -461,7 +581,7 @@ recordsWritten = result.recordsWritten
 failedRecords = result.failedRecords
 ```
 
-#### updateEndpointProperties
+#### updateEndpointProperties<a id="updateendpointproperties"></a>
 
 Update the properties (state variables) for an endpoint.
 
@@ -494,13 +614,13 @@ instance.iot.updateEndpointProperties(
 
 ---
 
-## Types
+## Types<a id="types"></a>
 
-### User
+### User<a id="user"></a>
 
 Stores basic information about a Digital Exchange user.
 
-#### Properties
+**Properties**
 
 ```
 userId : str
@@ -511,22 +631,22 @@ organization : Organization
     The organization that the user is a member of.
 ```
 
-### Organization
+### Organization<a id="organization"></a>
 
 Stores basic information about a Digital Exchange member organization.
 
-#### Properties
+**Properties**
 
 ```
 name : str
 organizationId : str
 ```
 
-### DataStore
+### DataStore<a id="datastore-1"></a>
 
 A Data Store Service object.
 
-#### Properties
+**Properties**
 
 ```
 dataStoreId: str
@@ -537,9 +657,9 @@ homeDirectoryId: str
     The dataStoreDirectoryId of the Data Store's home directory
 ```
 
-#### Methods
+#### Methods<a id="methods"></a>
 
-##### cd
+##### cd<a id="cd"></a>
 
 Change the working directory.
 
@@ -556,7 +676,7 @@ ds = digitalExchange.getDataStore("dataStoreId.1234")
 ds.cd("docs")
 ```
 
-##### ls
+##### ls<a id="ls"></a>
 
 List the contents of the working directory.
 
@@ -573,7 +693,7 @@ ds = digitalExchange.getDataStore("dataStoreId.1234")
 ds.ls("./")
 ```
 
-##### pwd
+##### pwd<a id="pwd"></a>
 
 Prints the abosulte path of the working directory.
 
@@ -589,7 +709,7 @@ ds = digitalExchange.getDataStore("dataStoreId.1234")
 ds.pwd()
 ```
 
-##### uploadFile
+##### uploadFile<a id="uploadfile"></a>
 
 Upload a file to the data store in the working directory.
 
@@ -610,7 +730,7 @@ ds = digitalExchange.getDataStore("dataStoreId.1234")
 ds.uploadFile("./exampleFile.json", "remoteFileName.json", "A file containing a basic json object.")
 ```
 
-##### downloadFile
+##### downloadFile<a id="downloadfile"></a>
 
 Download the specified file.
 
@@ -629,7 +749,7 @@ ds = digitalExchange.getDataStore("dataStoreId.1234")
 ds.downloadFile("remoteFileName.json", "./desiredLocalFileName.json")
 ```
 
-##### deleteFile
+##### deleteFile<a id="deletefile"></a>
 
 Deletes the file from the working directory.
 
@@ -646,11 +766,11 @@ ds = digitalExchange.getDataStore("dataStoreId.1234")
 ds.deleteFile("remoteFileName.json")
 ```
 
-### DataStoreDirectory
+### DataStoreDirectory<a id="datastoredirectory"></a>
 
 A directory in a Data Store file storage hierarchy.
 
-#### Properties
+**Properties**
 
 ```
 dataStoreDirectoryId: str
@@ -668,9 +788,9 @@ files: [DataStoreFile]
     This directory's contents - files.
 ```
 
-#### Methods
+#### Methods<a id="methods-1"></a>
 
-##### printContents
+##### printContents<a id="printcontents"></a>
 
 Lists all of the directory contents (directories and files), along with their ids.
 
@@ -686,11 +806,11 @@ dir.printContents()
 ```
 
 
-### DataStoreFile
+### DataStoreFile<a id="datastorefile"></a>
 
 A file belonging to a Data Store.
 
-#### Properties
+**Properties**
 
 ```
 dataStoreFileId: str
@@ -707,9 +827,61 @@ lastModified: str
 contentType: str
 ```
 
-### IotEndpoint
+### DigitalTwinModel<a id="digitaltwinmodel"></a>
 
-#### Properties
+**Properties**
+
+```
+modelId: str
+    Id of the model
+ownerUserId: str
+    UserId of the owner of the model
+displayName: str
+    The name of the model
+description: str
+    Description of the model
+properties: [ModelProperty]
+    All properties associated with the model
+telemetry: [ModelTelemetry]
+    All telemetry associated with the model
+```
+
+### ModelProperty<a id="modelproperty"></a>
+
+Data field that represents a state variable. [(DTDL Property)](https://learn.microsoft.com/en-us/azure/digital-twins/concepts-models#:~:text=the%20following%20fields%3A-,Property,-%2D%20Properties%20are%20data).
+
+**Properties**
+
+```
+name: str
+    Name of the property variable.
+description: str
+schemaType: str : "integer", "double", "string", "boolean", "dateTime", "duration"
+    The type of the variable.
+defaultValue: str
+    The original value of the property.
+writable: bool
+    Indicates if the value of the property can be updated.
+```
+
+### ModelTelemetry<a id="modeltelemetry"></a>
+
+Data field representing measurements or events. Values are stored in a time series database. [(DTDL Telemetry)](https://learn.microsoft.com/en-us/azure/digital-twins/concepts-models#:~:text=and%20telemetry%20below.-,Telemetry,-%2D%20Telemetry%20fields%20represent).
+
+**Properties**
+
+```
+name: str
+    Name of the telmetry.
+description: str
+schemaType: str : "integer", "double", "string", "boolean", "dateTime", "duration"
+    The type of the variable.
+```
+
+
+### IotEndpoint<a id="iotendpoint"></a>
+
+**Properties**
 
 ```
 iotEndpointId: str
@@ -726,11 +898,11 @@ telemetry: [EndpointTelemetry]
     The telemetry attributes of the endpoint. Telemetry variables are associated through the digital twin model used by the endpoint.
 ```
 
-### EndpointProperty
+### EndpointProperty<a id="endpointproperty"></a>
 
 Data field that represents a state of the endpoint. No historical values. [(DTDL Property)](https://learn.microsoft.com/en-us/azure/digital-twins/concepts-models#:~:text=the%20following%20fields%3A-,Property,-%2D%20Properties%20are%20data).
 
-#### Properties
+**Properties**
 
 ```
 name: str
@@ -746,21 +918,21 @@ timestamp: str
     Timestamp (in milliseconds) that the current value was written.
 ```
 
-### EndpointTelemetry
+### EndpointTelemetry<a id="endpointtelemetry"></a>
 
 Data field representing measurements or events. Values are stored in a time series database. Telemetry values must be queried for separately (queryByTimeRange, listEndpointLastValues). [(DTDL Telemetry)](https://learn.microsoft.com/en-us/azure/digital-twins/concepts-models#:~:text=and%20telemetry%20below.-,Telemetry,-%2D%20Telemetry%20fields%20represent).
 
-#### Properties
+**Properties**
 
 ```
 name: str
-    Name of the property.
+    Name of the telemetry.
 description: str
 schemaType: str : "integer", "double", "string", "boolean", "dateTime", "duration"
     The type of the variable.
 ```
 
-## Development
+## Development<a id="development"></a>
 
 lone the repository with command `git clone https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk.git`.
 
@@ -768,7 +940,7 @@ Use VS Code with the Python extension to utilize formatting and code completion.
 
 Deployment related code is in the root directory and the package code is found in `src/avista_digital_exchange_sdk`.
 
-## Deployment
+## Deployment<a id="deployment"></a>
 
 Follow the steps below to build and push the new package version to PyPi. [(Python packaging reference used)](https://packaging.python.org/en/latest/tutorials/packaging-projects/)
 
@@ -788,7 +960,7 @@ Follow the steps below to build and push the new package version to PyPi. [(Pyth
 5. Merge changes to `main`.
 6. Create a release branch from main with the name `release/YYYY_MM_DD_vXX.XX.XX` where XX.XX.XX is the new version number, and YYYY_MM_DD is the date the version was deployed.
 
-## Resources
+## Resources<a id="resources"></a>
 
 1. [Avista Digital Exchange](https://energy.collaboratives.io/)
 2. [PyPi SDK project listing](https://pypi.org/project/avista-digital-exchange-sdk/)

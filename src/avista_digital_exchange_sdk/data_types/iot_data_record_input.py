@@ -2,12 +2,20 @@ from ..exceptions import *
 from .. import globals
 from .iot_attribute_value_input import IotAttributeValueInput
 import time
+from datetime import datetime
 
 
 class IotDataRecordInput:
     def __init__(self, timestamp, timeUnit, attributes):
-        self.timestamp = timestamp
-        self.timeUnit = timeUnit
+        if timeUnit == "ISO8601":
+            self.timeUnit = "MILLISECONDS"
+            date = datetime.strptime(
+                timestamp, '%Y-%m-%dT%H:%M:%S.%fZ')
+            self.timestamp = f'{int((date - datetime(1970, 1, 1)).total_seconds()*1000)}'
+        else:
+            self.timestamp = timestamp
+            self.timeUnit = timeUnit
+
         self.attributes = []
         if attributes:
             self.addAttributes(attributes)

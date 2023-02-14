@@ -42,7 +42,7 @@ class DataStoreDirectory(DataStoreObject):
         self.dataStoreDirectoryId = dict['dataStoreDirectoryId']
         self.dataStoreId = dict['dataStoreId']
         self.name = dict['name']
-        self.owner = User(dict['owner'], self._client, self._debug)
+        self.ownerUserId = dict['ownerUserId']
         self.homeDirectory = dict['homeDirectory']
         self.parentDirectoryId = dict['parentDirectoryId']
         self.directories = []
@@ -67,7 +67,7 @@ class DataStoreDirectory(DataStoreObject):
 {tabStr}dataStoreDirectoryId
 {tabStr}dataStoreId
 {tabStr}name
-{tabStr}{f"owner {User.getQueryString(tabs + 1, subobjectsRemaining - 1)}" if subobjectsRemaining > 0 else ""}
+{tabStr}ownerUserId
 {tabStr}homeDirectory
 {tabStr}parentDirectoryId
 {tabStr}{f"contents {DataStoreObject.getQueryString(tabs + 1, subobjectsRemaining - 1)}" if subobjectsRemaining > 0 else ""}

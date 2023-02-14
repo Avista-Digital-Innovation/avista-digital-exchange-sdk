@@ -1,10 +1,13 @@
 
 from .endpointUtil import *
+from .exceptions import *
 
 from .graphql_mutations.iot_publish import iot_publish
 from .graphql_mutations.iot_updateEndpointProperties import iot_updateEndpointProperties
 from .graphql_mutations.iot_generateQueryResultExport import iot_generateQueryResultExport
 from .graphql_mutations.iot_cancelQuery import iot_cancelQuery
+from .graphql_mutations.iot_createEndpoint import iot_createEndpoint
+from .graphql_mutations.iot_createModel import iot_createModel
 from .graphql_queries.iot_getEndpoint import iot_getEndpoint
 from .graphql_queries.iot_listEndpointLastValues import iot_listEndpointLastValues
 from .graphql_queries.iot_queryByTimeRange import iot_queryByTimeRange
@@ -13,6 +16,8 @@ from .data_types.iot_data_record_input import IotDataRecordInput
 from .data_types.iot_attribute_value_input import IotAttributeValueInput
 from .data_types.endpoint_property_input import EndpointPropertyInput
 from .data_types.endpoint_query_filter_input import EndpointQueryFilterInput
+from .data_types.model_property_input import ModelPropertyInput
+from .data_types.model_telemetry_input import ModelTelemetryInput
 import time
 import signal
 import datetime
@@ -151,5 +156,54 @@ class IoTUtil(object):
     def _generateQueryResultFile(self, queryId, fileFormat="CSV"):
         mutation = iot_generateQueryResultExport(
             self._client, self._debug, queryId, fileFormat)
+        result = mutation.performMutation()
+        return result
+
+    def createEndpoint(self, iotHubId, modelId, name, description=None):
+        mutation = iot_createEndpoint(
+            self._client, self._debug, iotHubId, modelId, name, description)
+        result = mutation.performMutation()
+        return result
+
+    def createModel(self, name, description, properties, telemetry):
+        propertyObjects = []
+        telemetryObjects = []
+        index = 0
+
+        if not name.isalnum():
+            raise InvalidParameterException(
+                "Model name must contain only alphanumeric characters")
+        dtmiSegment = name
+
+        for prop in properties:
+            writable = None
+            if "writable" in prop:
+                if prop["writable"]:
+                    writable = "true"
+                else:
+                    writable = "false"
+
+            propertyObjects.append(
+                ModelPropertyInput(
+                    prop["name"],
+                    prop["description"] if "description" in prop else None,
+                    prop["schemaType"],
+                    prop["defaultValue"] if "defaultValue" in prop else None,
+                    writable,
+                    index))
+            index = index + 1
+
+        index = 0
+        for telem in telemetry:
+            telemetryObjects.append(
+                ModelTelemetryInput(
+                    telem["name"],
+                    telem["description"] if "description" in telem else None,
+                    telem["schemaType"],
+                    index))
+            index = index + 1
+
+        mutation = iot_createModel(
+            self._client, self._debug, name, dtmiSegment, description, propertyObjects, telemetryObjects)
         result = mutation.performMutation()
         return result

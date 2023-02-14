@@ -28,7 +28,7 @@ class AvistaDigitalExchange(object):
         print("SDK initialized!")
 
     def getUserInfo(self) -> User:
-        """Retrieves the user information of the user associated with the authentication token in use."""
+        """Retrieves user information associated with the authentication token."""
         query = user_getUserSession(self._client, self._debug)
         result = query.performQuery()
         return result

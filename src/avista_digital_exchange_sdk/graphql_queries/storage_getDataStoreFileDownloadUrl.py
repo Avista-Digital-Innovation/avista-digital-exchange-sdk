@@ -18,7 +18,7 @@ class storage_getDataStoreFileDownloadUrl(Query):
         self.dataStoreFileId = dataStoreFileId
 
     def _getQueryString(self):
-        return f'query {self.queryName} {{ {self.queryName}(dataStoreId: "{self.dataStoreId}", dataStoreFileId: "{self.dataStoreFileId}") {self.resultType.getQueryString()} }}'
+        return f'query {self.queryName} {{ {self.queryName}(dataStoreFileId: "{self.dataStoreFileId}") {self.resultType.getQueryString()} }}'
 
     def performQuery(self) -> str:
         print('Retrieving file download url...')

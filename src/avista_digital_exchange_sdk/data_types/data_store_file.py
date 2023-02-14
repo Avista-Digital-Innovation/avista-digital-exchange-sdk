@@ -33,7 +33,7 @@ class DataStoreFile(DataStoreObject):
         self.dataStoreId = dict['dataStoreId']
         self.name = dict['name']
         self.description = dict['description'] if 'description' in dict else ''
-        self.owner = User(dict['owner'], self._client, self._debug)
+        self.ownerUserId = dict['ownerUserId']
         self.fileExtension = dict['fileExtension']
         self.storageSizeBytes = dict['storageSizeBytes']
         self.dataStoreDirectoryId = dict['dataStoreDirectoryId']
@@ -54,7 +54,7 @@ class DataStoreFile(DataStoreObject):
 {tabStr}fileExtension
 {tabStr}description
 {tabStr}storageSizeBytes
-{tabStr}{f"owner {User.getQueryString(tabs + 1, subobjectsRemaining - 1)}" if subobjectsRemaining > 0 else ""}
+{tabStr}ownerUserId
 {tabStr}s3ConfirmedUpload
 {tabStr}lastModified
 {tabStr}contentType
