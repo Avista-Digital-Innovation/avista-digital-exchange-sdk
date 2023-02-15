@@ -21,7 +21,7 @@ class iot_createEndpoint(Mutation):
 {tabStr}    iotHubId: "{self.iotHubId}", 
 {tabStr}    modelId: "{self.modelId}", 
 {tabStr}    name: "{self.name}", 
-{tabStr}{'    description: "{self.description}"' if self.description != None else ''}) {self.resultType.getQueryString(tabs+1)} 
+{tabStr}{f'    description: "{self.description}"' if self.description != None else ''}) {self.resultType.getQueryString(tabs+1)} 
 }}"""
 
     def performMutation(self):
