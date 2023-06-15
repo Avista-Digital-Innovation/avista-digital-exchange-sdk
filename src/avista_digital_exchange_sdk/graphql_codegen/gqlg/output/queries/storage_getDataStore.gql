@@ -1,0 +1,9 @@
+query storage_getDataStore($dataStoreId: ID!){
+    storage_getDataStore(dataStoreId: $dataStoreId){
+        dataStoreId
+        description
+        homeDirectoryId
+        name
+        ownerUserId
+    }
+}

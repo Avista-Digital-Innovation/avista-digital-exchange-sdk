@@ -1,0 +1,16 @@
+query storage_getDataStoreFile($dataStoreFileId: ID!){
+    storage_getDataStoreFile(dataStoreFileId: $dataStoreFileId){
+        contentType
+        dataStoreDirectoryId
+        dataStoreFileId
+        dataStoreId
+        dataViewIds
+        description
+        fileExtension
+        lastModified
+        name
+        ownerUserId
+        s3ConfirmedUpload
+        storageSizeBytes
+    }
+}

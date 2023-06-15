@@ -1,0 +1,17 @@
+query platformAdmin_getUser($userId: ID!){
+    platformAdmin_getUser(userId: $userId){
+        email
+        firstName
+        lastActive
+        lastName
+        mobile
+        organization{
+            hostOrganization
+            name
+            organizationId
+        }
+        userAccountState
+        userId
+        userRoles
+    }
+}

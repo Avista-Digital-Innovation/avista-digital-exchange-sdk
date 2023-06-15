@@ -1,0 +1,7 @@
+mutation platformAdmin_updateOrganization($name: String, $organizationId: ID!){
+    platformAdmin_updateOrganization(name: $name, organizationId: $organizationId){
+        hostOrganization
+        name
+        organizationId
+    }
+}

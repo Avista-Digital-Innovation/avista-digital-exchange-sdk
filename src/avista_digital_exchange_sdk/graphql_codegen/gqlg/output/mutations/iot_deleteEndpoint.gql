@@ -1,0 +1,27 @@
+mutation iot_deleteEndpoint($iotEndpointId: ID!){
+    iot_deleteEndpoint(iotEndpointId: $iotEndpointId){
+        description
+        iotEndpointId
+        iotHubId
+        modelId
+        name
+        ownerUserId
+        properties{
+            attributeType
+            defaultValue
+            description
+            name
+            schemaType
+            timestamp
+            value
+            writable
+        }
+        telemetry{
+            attributeType
+            description
+            index
+            name
+            schemaType
+        }
+    }
+}

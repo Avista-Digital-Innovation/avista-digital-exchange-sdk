@@ -1,0 +1,17 @@
+mutation platformAdmin_updateUser($firstName: String, $lastName: String, $userAccountState: UserAccountState, $userId: ID!, $userRoles: [UserRole]){
+    platformAdmin_updateUser(firstName: $firstName, lastName: $lastName, userAccountState: $userAccountState, userId: $userId, userRoles: $userRoles){
+        email
+        firstName
+        lastActive
+        lastName
+        mobile
+        organization{
+            hostOrganization
+            name
+            organizationId
+        }
+        userAccountState
+        userId
+        userRoles
+    }
+}

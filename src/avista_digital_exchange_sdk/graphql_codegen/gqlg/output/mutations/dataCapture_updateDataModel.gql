@@ -1,0 +1,22 @@
+mutation dataCapture_updateDataModel($captureId: ID!, $dataModel: DataCaptureDataModelInput!){
+    dataCapture_updateDataModel(captureId: $captureId, dataModel: $dataModel){
+        dateCreated
+        dateUpdated
+        errors
+        items{
+            attributes{
+                attributeType
+                description
+                displayName
+                schemaType
+                unit
+                userDefinedId
+            }
+            description
+            displayName
+            userDefinedId
+        }
+        state
+        version
+    }
+}

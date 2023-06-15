@@ -1,0 +1,11 @@
+query dataCapture_listAttachments($captureId: ID!, $limit: Int, $nextToken: String){
+    dataCapture_listAttachments(captureId: $captureId, limit: $limit, nextToken: $nextToken){
+        attachmentId
+        attachmentType
+        dateCreated
+        dateUpdated
+        description
+        name
+        ownerUserId
+    }
+}

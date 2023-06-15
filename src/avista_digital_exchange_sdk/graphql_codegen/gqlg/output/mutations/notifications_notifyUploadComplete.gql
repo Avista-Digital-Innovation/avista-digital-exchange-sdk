@@ -1,0 +1,7 @@
+mutation notifications_notifyUploadComplete($uploadId: ID!){
+    notifications_notifyUploadComplete(uploadId: $uploadId){
+        errorMessage
+        httpStatusCode
+        uploadId
+    }
+}

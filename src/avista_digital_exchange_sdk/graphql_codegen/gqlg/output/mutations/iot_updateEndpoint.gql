@@ -1,0 +1,27 @@
+mutation iot_updateEndpoint($description: String, $iotEndpointId: ID!, $name: String){
+    iot_updateEndpoint(description: $description, iotEndpointId: $iotEndpointId, name: $name){
+        description
+        iotEndpointId
+        iotHubId
+        modelId
+        name
+        ownerUserId
+        properties{
+            attributeType
+            defaultValue
+            description
+            name
+            schemaType
+            timestamp
+            value
+            writable
+        }
+        telemetry{
+            attributeType
+            description
+            index
+            name
+            schemaType
+        }
+    }
+}

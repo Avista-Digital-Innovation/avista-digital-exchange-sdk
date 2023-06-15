@@ -1,0 +1,17 @@
+mutation platformAdmin_deleteUser($userId: ID!){
+    platformAdmin_deleteUser(userId: $userId){
+        email
+        firstName
+        lastActive
+        lastName
+        mobile
+        organization{
+            hostOrganization
+            name
+            organizationId
+        }
+        userAccountState
+        userId
+        userRoles
+    }
+}

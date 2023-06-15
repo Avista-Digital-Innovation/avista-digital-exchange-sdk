@@ -1,12 +1,11 @@
 import requests
 from . import globals
-import json
-import base64
-import websocket
 from .subscriptionClient import Subscription
+from .graphql_codegen.ariadne.graphql_client.client import Client as AriadneGraphqlClient
 
 
 class Client:
+    updatedGqlClient: AriadneGraphqlClient
 
     def __init__(self, token, stage, debug):
         APPSYNC_API_ENDPOINT_URL_dev = 'https://annsvlcb4vew7msipwjyzzvyhi.appsync-api.us-west-2.amazonaws.com/graphql'
@@ -18,7 +17,17 @@ class Client:
             self.APPSYNC_API_ENDPOINT_URL = APPSYNC_API_ENDPOINT_URL_prod
         else:
             self.APPSYNC_API_ENDPOINT_URL = APPSYNC_API_ENDPOINT_URL_dev
+        self.setupUpdatedGqlClient()
         return
+
+    def setupUpdatedGqlClient(self):
+        import httpx
+        headers = {'Accept': 'application/json',
+                   'Content-Type': 'application/json',
+                   'Authorization': self.token}
+        self.updatedGqlClient = AriadneGraphqlClient(url=self.APPSYNC_API_ENDPOINT_URL,
+                                                     headers=headers,
+                                                     http_client=httpx.AsyncClient(headers=headers, timeout=60))
 
     def performQuery(self, queryString):
         if self._debug:
@@ -39,7 +48,7 @@ class Client:
             raise e
         return response.json()
 
-    def performMutation(self, mutationString):
+    def performMutation(self, mutationString, jsonResult=True):
         if self._debug:
             print(f'DEBUG - {mutationString}')
         response = None
@@ -57,7 +66,10 @@ class Client:
                 )
         except Exception as error:
             raise error
-        return response.json()
+        if jsonResult:
+            return response.json()
+        else:
+            return response
 
     def getSubscriptionClient(self, subscriptionName, subscriptionQueryString, subscriptionMessageQueue, subscriptionErrorQueue):
         if self._debug:

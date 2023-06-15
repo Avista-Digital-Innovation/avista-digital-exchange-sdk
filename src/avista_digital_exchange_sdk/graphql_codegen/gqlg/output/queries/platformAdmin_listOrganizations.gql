@@ -1,0 +1,7 @@
+query platformAdmin_listOrganizations{
+    platformAdmin_listOrganizations{
+        hostOrganization
+        name
+        organizationId
+    }
+}

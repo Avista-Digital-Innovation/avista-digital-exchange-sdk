@@ -1,0 +1,10 @@
+mutation timeSeriesDb_deleteDatabase($timeSeriesDbId: ID!){
+    timeSeriesDb_deleteDatabase(timeSeriesDbId: $timeSeriesDbId){
+        databaseName
+        description
+        name
+        ownerUserId
+        tableName
+        timeSeriesDbId
+    }
+}

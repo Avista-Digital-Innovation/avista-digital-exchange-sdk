@@ -1,0 +1,28 @@
+mutation iot_publish($data: [IotDataRecordInput]!, $iotEndpointId: ID!){
+    iot_publish(data: $data, iotEndpointId: $iotEndpointId){
+        failedRecords{
+            errors{
+                errorMessage
+                errorType
+            }
+            record{
+                attributes{
+                    name
+                    schemaType
+                    value
+                }
+                iotEndpointId
+                timestamp
+            }
+        }
+        recordsWritten{
+            attributes{
+                name
+                schemaType
+                value
+            }
+            iotEndpointId
+            timestamp
+        }
+    }
+}

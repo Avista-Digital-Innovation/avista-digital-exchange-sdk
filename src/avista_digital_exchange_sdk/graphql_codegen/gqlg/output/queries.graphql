@@ -1,0 +1,3635 @@
+mutation collaborative_updateCollaborativeMemberOrganization($collaborativeId: ID!, $memberState: CollaborativeMemberOrganizationState!, $organizationId: ID!){
+    collaborative_updateCollaborativeMemberOrganization(collaborativeId: $collaborativeId, memberState: $memberState, organizationId: $organizationId){
+        accessApprovedByUserId
+        collaborativeId
+        memberState
+        organization{
+            hostOrganization
+            name
+            organizationId
+        }
+        submittedByUser{
+            email
+            firstName
+            lastActive
+            lastName
+            mobile
+            organization{
+                hostOrganization
+                name
+                organizationId
+            }
+            userAccountState
+            userId
+            userRoles
+        }
+        submittedTimestamp
+        usersInCollaborative{
+            permission
+            user{
+                email
+                firstName
+                lastActive
+                lastName
+                mobile
+                organization{
+                    hostOrganization
+                    name
+                    organizationId
+                }
+                userAccountState
+                userId
+                userRoles
+            }
+        }
+    }
+}
+
+mutation collaborative_addServiceToCollaborative($collaborativeId: ID!, $serviceId: ID!, $serviceType: ServiceType!){
+    collaborative_addServiceToCollaborative(collaborativeId: $collaborativeId, serviceId: $serviceId, serviceType: $serviceType){
+        dataCapture{
+            captureId
+            captureType
+            dataModel{
+                dateCreated
+                dateUpdated
+                errors
+                items{
+                    attributes{
+                        attributeType
+                        description
+                        displayName
+                        schemaType
+                        unit
+                        userDefinedId
+                    }
+                    description
+                    displayName
+                    userDefinedId
+                }
+                state
+                version
+            }
+            dateCreated
+            dateUpdated
+            description
+            displayName
+            ownerUserId
+            state
+            stateHistory{
+                dateCreated
+                message
+                newState
+            }
+            timeSettings{
+                actualStartTime
+                actualStopTime
+                errors
+                scheduledStartTime
+                scheduledStopTime
+                startTimeType
+                state
+                stopTimeType
+            }
+        }
+        dataStore{
+            dataStoreId
+            description
+            homeDirectoryId
+            name
+            ownerUserId
+        }
+        iotEndpointGroup{
+            description
+            endpoints{
+                description
+                iotEndpointId
+                iotHubId
+                modelId
+                name
+                ownerUserId
+                properties{
+                    attributeType
+                    defaultValue
+                    description
+                    name
+                    schemaType
+                    timestamp
+                    value
+                    writable
+                }
+                telemetry{
+                    attributeType
+                    description
+                    index
+                    name
+                    schemaType
+                }
+            }
+            iotEndpointIds
+            iotGroupId
+            iotHubId
+            name
+            ownerUserId
+        }
+        ocsAdapter{
+            ocsAdapterId
+        }
+        serviceId
+        serviceType
+        timeSeriesDb{
+            databaseName
+            description
+            name
+            ownerUserId
+            tableName
+            timeSeriesDbId
+        }
+    }
+}
+
+mutation iot_createHub($description: String, $name: String!){
+    iot_createHub(description: $description, name: $name){
+        description
+        iotHubId
+        name
+        ownerUserId
+    }
+}
+
+mutation iot_generateQueryResultExport($fileFormat: ExportFileFormat, $queryId: ID!){
+    iot_generateQueryResultExport(fileFormat: $fileFormat, queryId: $queryId){
+        fileFormat
+        queryId
+    }
+}
+
+mutation storage_deleteDataStoreFileDataView($dataStoreFileId: ID!, $dataViewId: ID!){
+    storage_deleteDataStoreFileDataView(dataStoreFileId: $dataStoreFileId, dataViewId: $dataViewId){
+        contentType
+        dataStoreDirectoryId
+        dataStoreFileId
+        dataStoreId
+        dataViewIds
+        description
+        fileExtension
+        lastModified
+        name
+        ownerUserId
+        s3ConfirmedUpload
+        storageSizeBytes
+    }
+}
+
+mutation collaborative_removeServiceFromCollaborative($collaborativeId: ID!, $serviceId: ID!, $serviceType: ServiceType!){
+    collaborative_removeServiceFromCollaborative(collaborativeId: $collaborativeId, serviceId: $serviceId, serviceType: $serviceType){
+        dataCapture{
+            captureId
+            captureType
+            dataModel{
+                dateCreated
+                dateUpdated
+                errors
+                items{
+                    attributes{
+                        attributeType
+                        description
+                        displayName
+                        schemaType
+                        unit
+                        userDefinedId
+                    }
+                    description
+                    displayName
+                    userDefinedId
+                }
+                state
+                version
+            }
+            dateCreated
+            dateUpdated
+            description
+            displayName
+            ownerUserId
+            state
+            stateHistory{
+                dateCreated
+                message
+                newState
+            }
+            timeSettings{
+                actualStartTime
+                actualStopTime
+                errors
+                scheduledStartTime
+                scheduledStopTime
+                startTimeType
+                state
+                stopTimeType
+            }
+        }
+        dataStore{
+            dataStoreId
+            description
+            homeDirectoryId
+            name
+            ownerUserId
+        }
+        iotEndpointGroup{
+            description
+            endpoints{
+                description
+                iotEndpointId
+                iotHubId
+                modelId
+                name
+                ownerUserId
+                properties{
+                    attributeType
+                    defaultValue
+                    description
+                    name
+                    schemaType
+                    timestamp
+                    value
+                    writable
+                }
+                telemetry{
+                    attributeType
+                    description
+                    index
+                    name
+                    schemaType
+                }
+            }
+            iotEndpointIds
+            iotGroupId
+            iotHubId
+            name
+            ownerUserId
+        }
+        ocsAdapter{
+            ocsAdapterId
+        }
+        serviceId
+        serviceType
+        timeSeriesDb{
+            databaseName
+            description
+            name
+            ownerUserId
+            tableName
+            timeSeriesDbId
+        }
+    }
+}
+
+mutation iot_updateHub($description: String, $iotHubId: ID!, $name: String){
+    iot_updateHub(description: $description, iotHubId: $iotHubId, name: $name){
+        description
+        iotHubId
+        name
+        ownerUserId
+    }
+}
+
+mutation platformAdmin_createUser($email: String!, $firstName: String!, $lastName: String!, $mobile: String, $organizationId: ID!, $userRoles: [UserRole!]){
+    platformAdmin_createUser(email: $email, firstName: $firstName, lastName: $lastName, mobile: $mobile, organizationId: $organizationId, userRoles: $userRoles){
+        email
+        firstName
+        lastActive
+        lastName
+        mobile
+        organization{
+            hostOrganization
+            name
+            organizationId
+        }
+        userAccountState
+        userId
+        userRoles
+    }
+}
+
+mutation notifications_notifyUploadComplete($uploadId: ID!){
+    notifications_notifyUploadComplete(uploadId: $uploadId){
+        errorMessage
+        httpStatusCode
+        uploadId
+    }
+}
+
+mutation iot_createModel($description: String, $displayName: String!, $dtmiSegment: String!, $properties: [ModelPropertyInput], $telemetry: [ModelTelemetryInput]){
+    iot_createModel(description: $description, displayName: $displayName, dtmiSegment: $dtmiSegment, properties: $properties, telemetry: $telemetry){
+        description
+        displayName
+        dtmi
+        modelId
+        ownerUserId
+        properties{
+            attributeType
+            defaultValue
+            description
+            index
+            name
+            schemaType
+            writable
+        }
+        telemetry{
+            attributeType
+            description
+            index
+            name
+            schemaType
+        }
+    }
+}
+
+mutation storage_updateDataStore($dataStoreId: ID!, $description: String, $name: String){
+    storage_updateDataStore(dataStoreId: $dataStoreId, description: $description, name: $name){
+        dataStoreId
+        description
+        homeDirectoryId
+        name
+        ownerUserId
+    }
+}
+
+mutation iot_deleteHub($iotHubId: ID!){
+    iot_deleteHub(iotHubId: $iotHubId){
+        description
+        iotHubId
+        name
+        ownerUserId
+    }
+}
+
+mutation user_deleteAuthenticationToken($tokenId: ID!){
+    user_deleteAuthenticationToken(tokenId: $tokenId){
+        dateCreated
+        dateExpires
+        lastActive
+        name
+        scope
+        tokenId
+        tokenType
+        tokenValue
+        userId
+    }
+}
+
+mutation iot_addEndpointsToGroup($iotEndpointIds: [ID]!, $iotGroupId: ID!){
+    iot_addEndpointsToGroup(iotEndpointIds: $iotEndpointIds, iotGroupId: $iotGroupId){
+        description
+        endpoints{
+            description
+            iotEndpointId
+            iotHubId
+            modelId
+            name
+            ownerUserId
+            properties{
+                attributeType
+                defaultValue
+                description
+                name
+                schemaType
+                timestamp
+                value
+                writable
+            }
+            telemetry{
+                attributeType
+                description
+                index
+                name
+                schemaType
+            }
+        }
+        iotEndpointIds
+        iotGroupId
+        iotHubId
+        name
+        ownerUserId
+    }
+}
+
+mutation platformAdmin_createCollaborative($description: String, $name: String!){
+    platformAdmin_createCollaborative(description: $description, name: $name){
+        collaborativeId
+        description
+        hostOrganizationId
+        memberOrganizations{
+            accessApprovedByUserId
+            collaborativeId
+            memberState
+            organization{
+                hostOrganization
+                name
+                organizationId
+            }
+            submittedByUser{
+                email
+                firstName
+                lastActive
+                lastName
+                mobile
+                organization{
+                    hostOrganization
+                    name
+                    organizationId
+                }
+                userAccountState
+                userId
+                userRoles
+            }
+            submittedTimestamp
+            usersInCollaborative{
+                permission
+                user{
+                    email
+                    firstName
+                    lastActive
+                    lastName
+                    mobile
+                    organization{
+                        hostOrganization
+                        name
+                        organizationId
+                    }
+                    userAccountState
+                    userId
+                    userRoles
+                }
+            }
+        }
+        name
+    }
+}
+
+mutation iot_updateEndpoint($description: String, $iotEndpointId: ID!, $name: String){
+    iot_updateEndpoint(description: $description, iotEndpointId: $iotEndpointId, name: $name){
+        description
+        iotEndpointId
+        iotHubId
+        modelId
+        name
+        ownerUserId
+        properties{
+            attributeType
+            defaultValue
+            description
+            name
+            schemaType
+            timestamp
+            value
+            writable
+        }
+        telemetry{
+            attributeType
+            description
+            index
+            name
+            schemaType
+        }
+    }
+}
+
+mutation storage_deleteDataStoreFile($dataStoreFileId: ID!){
+    storage_deleteDataStoreFile(dataStoreFileId: $dataStoreFileId){
+        contentType
+        dataStoreDirectoryId
+        dataStoreFileId
+        dataStoreId
+        dataViewIds
+        description
+        fileExtension
+        lastModified
+        name
+        ownerUserId
+        s3ConfirmedUpload
+        storageSizeBytes
+    }
+}
+
+mutation iot_updateGroup($description: String, $iotGroupId: ID!, $name: String){
+    iot_updateGroup(description: $description, iotGroupId: $iotGroupId, name: $name){
+        description
+        endpoints{
+            description
+            iotEndpointId
+            iotHubId
+            modelId
+            name
+            ownerUserId
+            properties{
+                attributeType
+                defaultValue
+                description
+                name
+                schemaType
+                timestamp
+                value
+                writable
+            }
+            telemetry{
+                attributeType
+                description
+                index
+                name
+                schemaType
+            }
+        }
+        iotEndpointIds
+        iotGroupId
+        iotHubId
+        name
+        ownerUserId
+    }
+}
+
+mutation iot_deleteModel($modelId: ID!){
+    iot_deleteModel(modelId: $modelId){
+        description
+        displayName
+        dtmi
+        modelId
+        ownerUserId
+        properties{
+            attributeType
+            defaultValue
+            description
+            index
+            name
+            schemaType
+            writable
+        }
+        telemetry{
+            attributeType
+            description
+            index
+            name
+            schemaType
+        }
+    }
+}
+
+mutation storage_createDataStoreFileDataView($dataStoreFileId: ID!){
+    storage_createDataStoreFileDataView(dataStoreFileId: $dataStoreFileId){
+        contentType
+        dataStoreDirectoryId
+        dataStoreFileId
+        dataStoreId
+        dataViewIds
+        description
+        fileExtension
+        lastModified
+        name
+        ownerUserId
+        s3ConfirmedUpload
+        storageSizeBytes
+    }
+}
+
+mutation storage_createDataStore($description: String, $name: String!){
+    storage_createDataStore(description: $description, name: $name){
+        dataStoreId
+        description
+        homeDirectoryId
+        name
+        ownerUserId
+    }
+}
+
+mutation platformAdmin_migrateUsersServicesOwnership($currentOwnerUserId: ID!, $transferToUserId: ID!){
+    platformAdmin_migrateUsersServicesOwnership(currentOwnerUserId: $currentOwnerUserId, transferToUserId: $transferToUserId){
+        dataCapture{
+            captureId
+            captureType
+            dataModel{
+                dateCreated
+                dateUpdated
+                errors
+                items{
+                    attributes{
+                        attributeType
+                        description
+                        displayName
+                        schemaType
+                        unit
+                        userDefinedId
+                    }
+                    description
+                    displayName
+                    userDefinedId
+                }
+                state
+                version
+            }
+            dateCreated
+            dateUpdated
+            description
+            displayName
+            ownerUserId
+            state
+            stateHistory{
+                dateCreated
+                message
+                newState
+            }
+            timeSettings{
+                actualStartTime
+                actualStopTime
+                errors
+                scheduledStartTime
+                scheduledStopTime
+                startTimeType
+                state
+                stopTimeType
+            }
+        }
+        dataStore{
+            dataStoreId
+            description
+            homeDirectoryId
+            name
+            ownerUserId
+        }
+        iotEndpointGroup{
+            description
+            endpoints{
+                description
+                iotEndpointId
+                iotHubId
+                modelId
+                name
+                ownerUserId
+                properties{
+                    attributeType
+                    defaultValue
+                    description
+                    name
+                    schemaType
+                    timestamp
+                    value
+                    writable
+                }
+                telemetry{
+                    attributeType
+                    description
+                    index
+                    name
+                    schemaType
+                }
+            }
+            iotEndpointIds
+            iotGroupId
+            iotHubId
+            name
+            ownerUserId
+        }
+        ocsAdapter{
+            ocsAdapterId
+        }
+        serviceId
+        serviceType
+        timeSeriesDb{
+            databaseName
+            description
+            name
+            ownerUserId
+            tableName
+            timeSeriesDbId
+        }
+    }
+}
+
+mutation dataCapture_regenerateAuthenticationToken($captureId: ID!){
+    dataCapture_regenerateAuthenticationToken(captureId: $captureId){
+        dateCreated
+        dateExpires
+        lastActive
+        name
+        scope
+        tokenId
+        tokenType
+        tokenValue
+        userId
+    }
+}
+
+mutation platformAdmin_migrateUsersCollaborativesOwnership($currentOwnerUserId: ID!, $transferToUserId: ID!){
+    platformAdmin_migrateUsersCollaborativesOwnership(currentOwnerUserId: $currentOwnerUserId, transferToUserId: $transferToUserId){
+        collaborativeId
+        description
+        hostOrganizationId
+        memberOrganizations{
+            accessApprovedByUserId
+            collaborativeId
+            memberState
+            organization{
+                hostOrganization
+                name
+                organizationId
+            }
+            submittedByUser{
+                email
+                firstName
+                lastActive
+                lastName
+                mobile
+                organization{
+                    hostOrganization
+                    name
+                    organizationId
+                }
+                userAccountState
+                userId
+                userRoles
+            }
+            submittedTimestamp
+            usersInCollaborative{
+                permission
+                user{
+                    email
+                    firstName
+                    lastActive
+                    lastName
+                    mobile
+                    organization{
+                        hostOrganization
+                        name
+                        organizationId
+                    }
+                    userAccountState
+                    userId
+                    userRoles
+                }
+            }
+        }
+        name
+    }
+}
+
+mutation iot_regenerateEndpointToken($iotEndpointId: ID!){
+    iot_regenerateEndpointToken(iotEndpointId: $iotEndpointId){
+        dateCreated
+        dateExpires
+        lastActive
+        name
+        scope
+        tokenId
+        tokenType
+        tokenValue
+        userId
+    }
+}
+
+mutation timeSeriesDb_publishToDatabase($assetId: ID!, $data: TimeSeriesDbDataInput!, $timeSeriesDbId: ID!){
+    timeSeriesDb_publishToDatabase(assetId: $assetId, data: $data, timeSeriesDbId: $timeSeriesDbId){
+        assetId
+        attributes{
+            attributeType
+            data{
+                timestamp
+                value
+            }
+            lastValue
+            lastValueTime
+            name
+        }
+        name
+    }
+}
+
+mutation platformAdmin_updateCollaborativeMember($collaborativeId: ID!, $permission: CollaborativeMemberPermission!, $userId: ID!){
+    platformAdmin_updateCollaborativeMember(collaborativeId: $collaborativeId, permission: $permission, userId: $userId){
+        collaborativeId
+        description
+        hostOrganizationId
+        memberOrganizations{
+            accessApprovedByUserId
+            collaborativeId
+            memberState
+            organization{
+                hostOrganization
+                name
+                organizationId
+            }
+            submittedByUser{
+                email
+                firstName
+                lastActive
+                lastName
+                mobile
+                organization{
+                    hostOrganization
+                    name
+                    organizationId
+                }
+                userAccountState
+                userId
+                userRoles
+            }
+            submittedTimestamp
+            usersInCollaborative{
+                permission
+                user{
+                    email
+                    firstName
+                    lastActive
+                    lastName
+                    mobile
+                    organization{
+                        hostOrganization
+                        name
+                        organizationId
+                    }
+                    userAccountState
+                    userId
+                    userRoles
+                }
+            }
+        }
+        name
+    }
+}
+
+mutation timeSeriesDb_generateQueryResultExportFile($fileFormat: TimeSeriesQueryOutputFileType, $queryId: String!, $timeSeriesDbId: ID!){
+    timeSeriesDb_generateQueryResultExportFile(fileFormat: $fileFormat, queryId: $queryId, timeSeriesDbId: $timeSeriesDbId){
+        fileFormat
+        queryId
+        timeSeriesDbId
+    }
+}
+
+mutation user_createAuthenticationToken($daysBeforeExpiration: Int!, $name: String!){
+    user_createAuthenticationToken(daysBeforeExpiration: $daysBeforeExpiration, name: $name){
+        dateCreated
+        dateExpires
+        lastActive
+        name
+        scope
+        tokenId
+        tokenType
+        tokenValue
+        userId
+    }
+}
+
+mutation iot_publish($data: [IotDataRecordInput]!, $iotEndpointId: ID!){
+    iot_publish(data: $data, iotEndpointId: $iotEndpointId){
+        failedRecords{
+            errors{
+                errorMessage
+                errorType
+            }
+            record{
+                attributes{
+                    name
+                    schemaType
+                    value
+                }
+                iotEndpointId
+                timestamp
+            }
+        }
+        recordsWritten{
+            attributes{
+                name
+                schemaType
+                value
+            }
+            iotEndpointId
+            timestamp
+        }
+    }
+}
+
+mutation dataCapture_notifyCaptureComplete($captureId: ID!){
+    dataCapture_notifyCaptureComplete(captureId: $captureId){
+        captureId
+        captureType
+        dataModel{
+            dateCreated
+            dateUpdated
+            errors
+            items{
+                attributes{
+                    attributeType
+                    description
+                    displayName
+                    schemaType
+                    unit
+                    userDefinedId
+                }
+                description
+                displayName
+                userDefinedId
+            }
+            state
+            version
+        }
+        dateCreated
+        dateUpdated
+        description
+        displayName
+        ownerUserId
+        state
+        stateHistory{
+            dateCreated
+            message
+            newState
+        }
+        timeSettings{
+            actualStartTime
+            actualStopTime
+            errors
+            scheduledStartTime
+            scheduledStopTime
+            startTimeType
+            state
+            stopTimeType
+        }
+    }
+}
+
+mutation iot_createEndpoint($description: String, $iotHubId: ID!, $modelId: ID!, $name: String!){
+    iot_createEndpoint(description: $description, iotHubId: $iotHubId, modelId: $modelId, name: $name){
+        description
+        iotEndpointId
+        iotHubId
+        modelId
+        name
+        ownerUserId
+        properties{
+            attributeType
+            defaultValue
+            description
+            name
+            schemaType
+            timestamp
+            value
+            writable
+        }
+        telemetry{
+            attributeType
+            description
+            index
+            name
+            schemaType
+        }
+    }
+}
+
+mutation iot_updateEndpointProperties($iotEndpointId: ID!, $properties: [EndpointPropertyInput]!){
+    iot_updateEndpointProperties(iotEndpointId: $iotEndpointId, properties: $properties){
+        description
+        iotEndpointId
+        iotHubId
+        modelId
+        name
+        ownerUserId
+        properties{
+            attributeType
+            defaultValue
+            description
+            name
+            schemaType
+            timestamp
+            value
+            writable
+        }
+        telemetry{
+            attributeType
+            description
+            index
+            name
+            schemaType
+        }
+    }
+}
+
+mutation iot_createGroup($description: String, $iotEndpointIds: [ID], $iotHubId: ID!, $name: String!){
+    iot_createGroup(description: $description, iotEndpointIds: $iotEndpointIds, iotHubId: $iotHubId, name: $name){
+        description
+        endpoints{
+            description
+            iotEndpointId
+            iotHubId
+            modelId
+            name
+            ownerUserId
+            properties{
+                attributeType
+                defaultValue
+                description
+                name
+                schemaType
+                timestamp
+                value
+                writable
+            }
+            telemetry{
+                attributeType
+                description
+                index
+                name
+                schemaType
+            }
+        }
+        iotEndpointIds
+        iotGroupId
+        iotHubId
+        name
+        ownerUserId
+    }
+}
+
+mutation platformAdmin_resendUserInvitation($userId: ID!){
+    platformAdmin_resendUserInvitation(userId: $userId){
+        email
+        firstName
+        lastActive
+        lastName
+        mobile
+        organization{
+            hostOrganization
+            name
+            organizationId
+        }
+        userAccountState
+        userId
+        userRoles
+    }
+}
+
+mutation dataCapture_handleCompletion($captureId: ID!){
+    dataCapture_handleCompletion(captureId: $captureId){
+        captureId
+        captureType
+        dataModel{
+            dateCreated
+            dateUpdated
+            errors
+            items{
+                attributes{
+                    attributeType
+                    description
+                    displayName
+                    schemaType
+                    unit
+                    userDefinedId
+                }
+                description
+                displayName
+                userDefinedId
+            }
+            state
+            version
+        }
+        dateCreated
+        dateUpdated
+        description
+        displayName
+        ownerUserId
+        state
+        stateHistory{
+            dateCreated
+            message
+            newState
+        }
+        timeSettings{
+            actualStartTime
+            actualStopTime
+            errors
+            scheduledStartTime
+            scheduledStopTime
+            startTimeType
+            state
+            stopTimeType
+        }
+    }
+}
+
+mutation iot_deleteEndpoint($iotEndpointId: ID!){
+    iot_deleteEndpoint(iotEndpointId: $iotEndpointId){
+        description
+        iotEndpointId
+        iotHubId
+        modelId
+        name
+        ownerUserId
+        properties{
+            attributeType
+            defaultValue
+            description
+            name
+            schemaType
+            timestamp
+            value
+            writable
+        }
+        telemetry{
+            attributeType
+            description
+            index
+            name
+            schemaType
+        }
+    }
+}
+
+mutation dataCapture_stopCapture($captureId: ID!){
+    dataCapture_stopCapture(captureId: $captureId){
+        captureId
+        captureType
+        dataModel{
+            dateCreated
+            dateUpdated
+            errors
+            items{
+                attributes{
+                    attributeType
+                    description
+                    displayName
+                    schemaType
+                    unit
+                    userDefinedId
+                }
+                description
+                displayName
+                userDefinedId
+            }
+            state
+            version
+        }
+        dateCreated
+        dateUpdated
+        description
+        displayName
+        ownerUserId
+        state
+        stateHistory{
+            dateCreated
+            message
+            newState
+        }
+        timeSettings{
+            actualStartTime
+            actualStopTime
+            errors
+            scheduledStartTime
+            scheduledStopTime
+            startTimeType
+            state
+            stopTimeType
+        }
+    }
+}
+
+mutation platformAdmin_updateCollaborative($collaborativeId: ID!, $description: String, $name: String){
+    platformAdmin_updateCollaborative(collaborativeId: $collaborativeId, description: $description, name: $name){
+        collaborativeId
+        description
+        hostOrganizationId
+        memberOrganizations{
+            accessApprovedByUserId
+            collaborativeId
+            memberState
+            organization{
+                hostOrganization
+                name
+                organizationId
+            }
+            submittedByUser{
+                email
+                firstName
+                lastActive
+                lastName
+                mobile
+                organization{
+                    hostOrganization
+                    name
+                    organizationId
+                }
+                userAccountState
+                userId
+                userRoles
+            }
+            submittedTimestamp
+            usersInCollaborative{
+                permission
+                user{
+                    email
+                    firstName
+                    lastActive
+                    lastName
+                    mobile
+                    organization{
+                        hostOrganization
+                        name
+                        organizationId
+                    }
+                    userAccountState
+                    userId
+                    userRoles
+                }
+            }
+        }
+        name
+    }
+}
+
+mutation platformAdmin_deleteUsersServices($userId: ID!){
+    platformAdmin_deleteUsersServices(userId: $userId){
+        dataCapture{
+            captureId
+            captureType
+            dataModel{
+                dateCreated
+                dateUpdated
+                errors
+                items{
+                    attributes{
+                        attributeType
+                        description
+                        displayName
+                        schemaType
+                        unit
+                        userDefinedId
+                    }
+                    description
+                    displayName
+                    userDefinedId
+                }
+                state
+                version
+            }
+            dateCreated
+            dateUpdated
+            description
+            displayName
+            ownerUserId
+            state
+            stateHistory{
+                dateCreated
+                message
+                newState
+            }
+            timeSettings{
+                actualStartTime
+                actualStopTime
+                errors
+                scheduledStartTime
+                scheduledStopTime
+                startTimeType
+                state
+                stopTimeType
+            }
+        }
+        dataStore{
+            dataStoreId
+            description
+            homeDirectoryId
+            name
+            ownerUserId
+        }
+        iotEndpointGroup{
+            description
+            endpoints{
+                description
+                iotEndpointId
+                iotHubId
+                modelId
+                name
+                ownerUserId
+                properties{
+                    attributeType
+                    defaultValue
+                    description
+                    name
+                    schemaType
+                    timestamp
+                    value
+                    writable
+                }
+                telemetry{
+                    attributeType
+                    description
+                    index
+                    name
+                    schemaType
+                }
+            }
+            iotEndpointIds
+            iotGroupId
+            iotHubId
+            name
+            ownerUserId
+        }
+        ocsAdapter{
+            ocsAdapterId
+        }
+        serviceId
+        serviceType
+        timeSeriesDb{
+            databaseName
+            description
+            name
+            ownerUserId
+            tableName
+            timeSeriesDbId
+        }
+    }
+}
+
+mutation timeSeriesDb_cancelDatabaseQuery($queryId: String!, $timeSeriesDbId: ID!){
+    timeSeriesDb_cancelDatabaseQuery(queryId: $queryId, timeSeriesDbId: $timeSeriesDbId){
+        errorMessage
+        httpStatusCode
+    }
+}
+
+mutation storage_deleteDataStoreDirectory($dataStoreDirectoryId: ID!){
+    storage_deleteDataStoreDirectory(dataStoreDirectoryId: $dataStoreDirectoryId){
+        contents{
+            dataStoreDirectory{
+                contents{
+                    dataStoreFile{
+                        contentType
+                        dataStoreDirectoryId
+                        dataStoreFileId
+                        dataStoreId
+                        dataViewIds
+                        description
+                        fileExtension
+                        lastModified
+                        name
+                        ownerUserId
+                        s3ConfirmedUpload
+                        storageSizeBytes
+                    }
+                    objectType
+                }
+                dataStoreDirectoryId
+                dataStoreId
+                homeDirectory
+                name
+                ownerUserId
+                parentDirectoryId
+            }
+            objectType
+        }
+        dataStoreDirectoryId
+        dataStoreId
+        homeDirectory
+        name
+        ownerUserId
+        parentDirectoryId
+    }
+}
+
+mutation iot_deleteGroup($iotGroupId: ID!){
+    iot_deleteGroup(iotGroupId: $iotGroupId){
+        description
+        endpoints{
+            description
+            iotEndpointId
+            iotHubId
+            modelId
+            name
+            ownerUserId
+            properties{
+                attributeType
+                defaultValue
+                description
+                name
+                schemaType
+                timestamp
+                value
+                writable
+            }
+            telemetry{
+                attributeType
+                description
+                index
+                name
+                schemaType
+            }
+        }
+        iotEndpointIds
+        iotGroupId
+        iotHubId
+        name
+        ownerUserId
+    }
+}
+
+mutation dataCapture_startCapture($captureId: ID!){
+    dataCapture_startCapture(captureId: $captureId){
+        captureId
+        captureType
+        dataModel{
+            dateCreated
+            dateUpdated
+            errors
+            items{
+                attributes{
+                    attributeType
+                    description
+                    displayName
+                    schemaType
+                    unit
+                    userDefinedId
+                }
+                description
+                displayName
+                userDefinedId
+            }
+            state
+            version
+        }
+        dateCreated
+        dateUpdated
+        description
+        displayName
+        ownerUserId
+        state
+        stateHistory{
+            dateCreated
+            message
+            newState
+        }
+        timeSettings{
+            actualStartTime
+            actualStopTime
+            errors
+            scheduledStartTime
+            scheduledStopTime
+            startTimeType
+            state
+            stopTimeType
+        }
+    }
+}
+
+mutation iot_cancelQuery($queryId: ID!){
+    iot_cancelQuery(queryId: $queryId){
+        errorMessage
+        httpStatusCode
+    }
+}
+
+mutation iot_updateModel($description: String, $displayName: String, $dtmiSegment: String, $modelId: ID!){
+    iot_updateModel(description: $description, displayName: $displayName, dtmiSegment: $dtmiSegment, modelId: $modelId){
+        description
+        displayName
+        dtmi
+        modelId
+        ownerUserId
+        properties{
+            attributeType
+            defaultValue
+            description
+            index
+            name
+            schemaType
+            writable
+        }
+        telemetry{
+            attributeType
+            description
+            index
+            name
+            schemaType
+        }
+    }
+}
+
+mutation timeSeriesDb_createDatabase($description: String, $name: String!){
+    timeSeriesDb_createDatabase(description: $description, name: $name){
+        databaseName
+        description
+        name
+        ownerUserId
+        tableName
+        timeSeriesDbId
+    }
+}
+
+mutation iot_notifyQueryExportComplete($fileFormat: ExportFileFormat, $queryId: String!){
+    iot_notifyQueryExportComplete(fileFormat: $fileFormat, queryId: $queryId){
+        fileFormat
+        fileSizeBytes
+        queryId
+        url
+    }
+}
+
+mutation timeSeriesDb_deleteDatabase($timeSeriesDbId: ID!){
+    timeSeriesDb_deleteDatabase(timeSeriesDbId: $timeSeriesDbId){
+        databaseName
+        description
+        name
+        ownerUserId
+        tableName
+        timeSeriesDbId
+    }
+}
+
+mutation storage_createDataStoreDirectory($dataStoreId: ID!, $name: String!, $parentDirectoryId: ID!){
+    storage_createDataStoreDirectory(dataStoreId: $dataStoreId, name: $name, parentDirectoryId: $parentDirectoryId){
+        contents{
+            dataStoreDirectory{
+                contents{
+                    dataStoreFile{
+                        contentType
+                        dataStoreDirectoryId
+                        dataStoreFileId
+                        dataStoreId
+                        dataViewIds
+                        description
+                        fileExtension
+                        lastModified
+                        name
+                        ownerUserId
+                        s3ConfirmedUpload
+                        storageSizeBytes
+                    }
+                    objectType
+                }
+                dataStoreDirectoryId
+                dataStoreId
+                homeDirectory
+                name
+                ownerUserId
+                parentDirectoryId
+            }
+            objectType
+        }
+        dataStoreDirectoryId
+        dataStoreId
+        homeDirectory
+        name
+        ownerUserId
+        parentDirectoryId
+    }
+}
+
+mutation platformAdmin_deleteUser($userId: ID!){
+    platformAdmin_deleteUser(userId: $userId){
+        email
+        firstName
+        lastActive
+        lastName
+        mobile
+        organization{
+            hostOrganization
+            name
+            organizationId
+        }
+        userAccountState
+        userId
+        userRoles
+    }
+}
+
+mutation storage_deleteDataStore($dataStoreId: ID!){
+    storage_deleteDataStore(dataStoreId: $dataStoreId){
+        dataStoreId
+        description
+        homeDirectoryId
+        name
+        ownerUserId
+    }
+}
+
+mutation timeSeriesDb_notifyTimeSeriesQueryExportComplete($fileFormat: TimeSeriesQueryOutputFileType, $queryId: String!){
+    timeSeriesDb_notifyTimeSeriesQueryExportComplete(fileFormat: $fileFormat, queryId: $queryId){
+        fileSizeBytes
+        fileType
+        queryId
+        url
+    }
+}
+
+mutation platformAdmin_deleteUsersCollaboratives($userId: ID!){
+    platformAdmin_deleteUsersCollaboratives(userId: $userId){
+        collaborativeId
+        description
+        hostOrganizationId
+        memberOrganizations{
+            accessApprovedByUserId
+            collaborativeId
+            memberState
+            organization{
+                hostOrganization
+                name
+                organizationId
+            }
+            submittedByUser{
+                email
+                firstName
+                lastActive
+                lastName
+                mobile
+                organization{
+                    hostOrganization
+                    name
+                    organizationId
+                }
+                userAccountState
+                userId
+                userRoles
+            }
+            submittedTimestamp
+            usersInCollaborative{
+                permission
+                user{
+                    email
+                    firstName
+                    lastActive
+                    lastName
+                    mobile
+                    organization{
+                        hostOrganization
+                        name
+                        organizationId
+                    }
+                    userAccountState
+                    userId
+                    userRoles
+                }
+            }
+        }
+        name
+    }
+}
+
+mutation iot_updateModelUsedByEndpoint($iotEndpointId: ID!, $modelId: ID!){
+    iot_updateModelUsedByEndpoint(iotEndpointId: $iotEndpointId, modelId: $modelId){
+        description
+        iotEndpointId
+        iotHubId
+        modelId
+        name
+        ownerUserId
+        properties{
+            attributeType
+            defaultValue
+            description
+            name
+            schemaType
+            timestamp
+            value
+            writable
+        }
+        telemetry{
+            attributeType
+            description
+            index
+            name
+            schemaType
+        }
+    }
+}
+
+mutation platformAdmin_addCollaborativeMember($collaborativeId: ID!, $permission: CollaborativeMemberPermission, $userId: ID!){
+    platformAdmin_addCollaborativeMember(collaborativeId: $collaborativeId, permission: $permission, userId: $userId){
+        collaborativeId
+        description
+        hostOrganizationId
+        memberOrganizations{
+            accessApprovedByUserId
+            collaborativeId
+            memberState
+            organization{
+                hostOrganization
+                name
+                organizationId
+            }
+            submittedByUser{
+                email
+                firstName
+                lastActive
+                lastName
+                mobile
+                organization{
+                    hostOrganization
+                    name
+                    organizationId
+                }
+                userAccountState
+                userId
+                userRoles
+            }
+            submittedTimestamp
+            usersInCollaborative{
+                permission
+                user{
+                    email
+                    firstName
+                    lastActive
+                    lastName
+                    mobile
+                    organization{
+                        hostOrganization
+                        name
+                        organizationId
+                    }
+                    userAccountState
+                    userId
+                    userRoles
+                }
+            }
+        }
+        name
+    }
+}
+
+mutation storage_updateDataStoreFile($dataStoreDirectoryId: ID, $dataStoreFileId: ID!, $description: String, $name: String){
+    storage_updateDataStoreFile(dataStoreDirectoryId: $dataStoreDirectoryId, dataStoreFileId: $dataStoreFileId, description: $description, name: $name){
+        contentType
+        dataStoreDirectoryId
+        dataStoreFileId
+        dataStoreId
+        dataViewIds
+        description
+        fileExtension
+        lastModified
+        name
+        ownerUserId
+        s3ConfirmedUpload
+        storageSizeBytes
+    }
+}
+
+mutation platformAdmin_updateOrganization($name: String, $organizationId: ID!){
+    platformAdmin_updateOrganization(name: $name, organizationId: $organizationId){
+        hostOrganization
+        name
+        organizationId
+    }
+}
+
+mutation dataCapture_updateDataModel($captureId: ID!, $dataModel: DataCaptureDataModelInput!){
+    dataCapture_updateDataModel(captureId: $captureId, dataModel: $dataModel){
+        dateCreated
+        dateUpdated
+        errors
+        items{
+            attributes{
+                attributeType
+                description
+                displayName
+                schemaType
+                unit
+                userDefinedId
+            }
+            description
+            displayName
+            userDefinedId
+        }
+        state
+        version
+    }
+}
+
+mutation dataCapture_attachFile($captureId: ID!, $description: String, $fileName: String!){
+    dataCapture_attachFile(captureId: $captureId, description: $description, fileName: $fileName){
+        itemId
+        uploadId
+        url
+    }
+}
+
+mutation dataCapture_deleteCapture($captureId: ID!){
+    dataCapture_deleteCapture(captureId: $captureId){
+        captureId
+        captureType
+        dataModel{
+            dateCreated
+            dateUpdated
+            errors
+            items{
+                attributes{
+                    attributeType
+                    description
+                    displayName
+                    schemaType
+                    unit
+                    userDefinedId
+                }
+                description
+                displayName
+                userDefinedId
+            }
+            state
+            version
+        }
+        dateCreated
+        dateUpdated
+        description
+        displayName
+        ownerUserId
+        state
+        stateHistory{
+            dateCreated
+            message
+            newState
+        }
+        timeSettings{
+            actualStartTime
+            actualStopTime
+            errors
+            scheduledStartTime
+            scheduledStopTime
+            startTimeType
+            state
+            stopTimeType
+        }
+    }
+}
+
+mutation dataCapture_createCapture($captureType: DataCaptureType!, $description: String, $displayName: String!){
+    dataCapture_createCapture(captureType: $captureType, description: $description, displayName: $displayName){
+        captureId
+        captureType
+        dataModel{
+            dateCreated
+            dateUpdated
+            errors
+            items{
+                attributes{
+                    attributeType
+                    description
+                    displayName
+                    schemaType
+                    unit
+                    userDefinedId
+                }
+                description
+                displayName
+                userDefinedId
+            }
+            state
+            version
+        }
+        dateCreated
+        dateUpdated
+        description
+        displayName
+        ownerUserId
+        state
+        stateHistory{
+            dateCreated
+            message
+            newState
+        }
+        timeSettings{
+            actualStartTime
+            actualStopTime
+            errors
+            scheduledStartTime
+            scheduledStopTime
+            startTimeType
+            state
+            stopTimeType
+        }
+    }
+}
+
+mutation storage_updateDataStoreDirectory($dataStoreDirectoryId: ID!, $name: String, $parentDirectoryId: ID){
+    storage_updateDataStoreDirectory(dataStoreDirectoryId: $dataStoreDirectoryId, name: $name, parentDirectoryId: $parentDirectoryId){
+        contents{
+            dataStoreDirectory{
+                contents{
+                    dataStoreFile{
+                        contentType
+                        dataStoreDirectoryId
+                        dataStoreFileId
+                        dataStoreId
+                        dataViewIds
+                        description
+                        fileExtension
+                        lastModified
+                        name
+                        ownerUserId
+                        s3ConfirmedUpload
+                        storageSizeBytes
+                    }
+                    objectType
+                }
+                dataStoreDirectoryId
+                dataStoreId
+                homeDirectory
+                name
+                ownerUserId
+                parentDirectoryId
+            }
+            objectType
+        }
+        dataStoreDirectoryId
+        dataStoreId
+        homeDirectory
+        name
+        ownerUserId
+        parentDirectoryId
+    }
+}
+
+mutation dataCapture_publishData($captureId: ID!, $data: [DataCaptureDataRecordInput]!){
+    dataCapture_publishData(captureId: $captureId, data: $data){
+        captureId
+        dataWritten{
+            timestamp
+            userDefinedId
+            value
+        }
+        failedRecords{
+            attributeIndex
+            errorType
+            message
+            recordIndex
+        }
+        logs{
+            error
+            message
+        }
+    }
+}
+
+mutation platformAdmin_createOrganization($hostOrganization: Boolean, $name: String!){
+    platformAdmin_createOrganization(hostOrganization: $hostOrganization, name: $name){
+        hostOrganization
+        name
+        organizationId
+    }
+}
+
+mutation platformAdmin_deleteOrganization($comment: String, $organizationId: ID!){
+    platformAdmin_deleteOrganization(comment: $comment, organizationId: $organizationId){
+        hostOrganization
+        name
+        organizationId
+    }
+}
+
+mutation iot_removeEndpointsFromGroup($iotEndpointIds: [ID]!, $iotGroupId: ID!){
+    iot_removeEndpointsFromGroup(iotEndpointIds: $iotEndpointIds, iotGroupId: $iotGroupId){
+        description
+        endpoints{
+            description
+            iotEndpointId
+            iotHubId
+            modelId
+            name
+            ownerUserId
+            properties{
+                attributeType
+                defaultValue
+                description
+                name
+                schemaType
+                timestamp
+                value
+                writable
+            }
+            telemetry{
+                attributeType
+                description
+                index
+                name
+                schemaType
+            }
+        }
+        iotEndpointIds
+        iotGroupId
+        iotHubId
+        name
+        ownerUserId
+    }
+}
+
+mutation dataCapture_deleteAttachment($attachmentId: ID!, $captureId: ID!){
+    dataCapture_deleteAttachment(attachmentId: $attachmentId, captureId: $captureId){
+        attachmentId
+        attachmentType
+        dateCreated
+        dateUpdated
+        description
+        name
+        ownerUserId
+    }
+}
+
+mutation dataCapture_uploadDataModelFile($captureId: ID!, $fileName: String!){
+    dataCapture_uploadDataModelFile(captureId: $captureId, fileName: $fileName){
+        itemId
+        uploadId
+        url
+    }
+}
+
+mutation platformAdmin_updateUser($firstName: String, $lastName: String, $userAccountState: UserAccountState, $userId: ID!, $userRoles: [UserRole]){
+    platformAdmin_updateUser(firstName: $firstName, lastName: $lastName, userAccountState: $userAccountState, userId: $userId, userRoles: $userRoles){
+        email
+        firstName
+        lastActive
+        lastName
+        mobile
+        organization{
+            hostOrganization
+            name
+            organizationId
+        }
+        userAccountState
+        userId
+        userRoles
+    }
+}
+
+mutation platformAdmin_removeCollaborativeMember($collaborativeId: ID!, $userId: ID!){
+    platformAdmin_removeCollaborativeMember(collaborativeId: $collaborativeId, userId: $userId){
+        collaborativeId
+        description
+        hostOrganizationId
+        memberOrganizations{
+            accessApprovedByUserId
+            collaborativeId
+            memberState
+            organization{
+                hostOrganization
+                name
+                organizationId
+            }
+            submittedByUser{
+                email
+                firstName
+                lastActive
+                lastName
+                mobile
+                organization{
+                    hostOrganization
+                    name
+                    organizationId
+                }
+                userAccountState
+                userId
+                userRoles
+            }
+            submittedTimestamp
+            usersInCollaborative{
+                permission
+                user{
+                    email
+                    firstName
+                    lastActive
+                    lastName
+                    mobile
+                    organization{
+                        hostOrganization
+                        name
+                        organizationId
+                    }
+                    userAccountState
+                    userId
+                    userRoles
+                }
+            }
+        }
+        name
+    }
+}
+
+mutation iot_createNewModelVersion($description: String, $displayName: String, $modelId: ID!, $properties: [ModelPropertyInput], $telemetry: [ModelTelemetryInput], $version: Int){
+    iot_createNewModelVersion(description: $description, displayName: $displayName, modelId: $modelId, properties: $properties, telemetry: $telemetry, version: $version){
+        description
+        displayName
+        dtmi
+        modelId
+        ownerUserId
+        properties{
+            attributeType
+            defaultValue
+            description
+            index
+            name
+            schemaType
+            writable
+        }
+        telemetry{
+            attributeType
+            description
+            index
+            name
+            schemaType
+        }
+    }
+}
+
+mutation storage_createDataStoreFile($dataStoreDirectoryId: ID!, $dataStoreId: ID!, $description: String, $fileExtension: String!, $name: String!){
+    storage_createDataStoreFile(dataStoreDirectoryId: $dataStoreDirectoryId, dataStoreId: $dataStoreId, description: $description, fileExtension: $fileExtension, name: $name){
+        itemId
+        uploadId
+        url
+    }
+}
+
+mutation platformAdmin_deleteCollaborative($collaborativeId: ID!, $comment: String){
+    platformAdmin_deleteCollaborative(collaborativeId: $collaborativeId, comment: $comment){
+        collaborativeId
+        description
+        hostOrganizationId
+        memberOrganizations{
+            accessApprovedByUserId
+            collaborativeId
+            memberState
+            organization{
+                hostOrganization
+                name
+                organizationId
+            }
+            submittedByUser{
+                email
+                firstName
+                lastActive
+                lastName
+                mobile
+                organization{
+                    hostOrganization
+                    name
+                    organizationId
+                }
+                userAccountState
+                userId
+                userRoles
+            }
+            submittedTimestamp
+            usersInCollaborative{
+                permission
+                user{
+                    email
+                    firstName
+                    lastActive
+                    lastName
+                    mobile
+                    organization{
+                        hostOrganization
+                        name
+                        organizationId
+                    }
+                    userAccountState
+                    userId
+                    userRoles
+                }
+            }
+        }
+        name
+    }
+}
+
+mutation timeSeriesDb_updateDatabase($description: String, $name: String, $timeSeriesDbId: ID!){
+    timeSeriesDb_updateDatabase(description: $description, name: $name, timeSeriesDbId: $timeSeriesDbId){
+        databaseName
+        description
+        name
+        ownerUserId
+        tableName
+        timeSeriesDbId
+    }
+}
+
+mutation dataCapture_updateCapture($captureId: ID!, $description: String, $displayName: String, $scheduledStartTime: String, $scheduledStopTime: String, $startTimeType: DataCaptureTimeConfigType, $stopTimeType: DataCaptureTimeConfigType, $updateDescription: Boolean!, $updateDisplayName: Boolean!, $updateScheduledStartTime: Boolean!, $updateScheduledStopTime: Boolean!, $updateStartTimeType: Boolean!, $updateStopTimeType: Boolean!){
+    dataCapture_updateCapture(captureId: $captureId, description: $description, displayName: $displayName, scheduledStartTime: $scheduledStartTime, scheduledStopTime: $scheduledStopTime, startTimeType: $startTimeType, stopTimeType: $stopTimeType, updateDescription: $updateDescription, updateDisplayName: $updateDisplayName, updateScheduledStartTime: $updateScheduledStartTime, updateScheduledStopTime: $updateScheduledStopTime, updateStartTimeType: $updateStartTimeType, updateStopTimeType: $updateStopTimeType){
+        captureId
+        captureType
+        dataModel{
+            dateCreated
+            dateUpdated
+            errors
+            items{
+                attributes{
+                    attributeType
+                    description
+                    displayName
+                    schemaType
+                    unit
+                    userDefinedId
+                }
+                description
+                displayName
+                userDefinedId
+            }
+            state
+            version
+        }
+        dateCreated
+        dateUpdated
+        description
+        displayName
+        ownerUserId
+        state
+        stateHistory{
+            dateCreated
+            message
+            newState
+        }
+        timeSettings{
+            actualStartTime
+            actualStopTime
+            errors
+            scheduledStartTime
+            scheduledStopTime
+            startTimeType
+            state
+            stopTimeType
+        }
+    }
+}
+
+query storage_getDataStoreFileDownloadUrl($dataStoreFileId: ID!){
+    storage_getDataStoreFileDownloadUrl(dataStoreFileId: $dataStoreFileId){
+        itemId
+        uploadId
+        url
+    }
+}
+
+query iot_listHubs{
+    iot_listHubs{
+        description
+        iotHubId
+        name
+        ownerUserId
+    }
+}
+
+query user_getUserSession{
+    user_getUserSession{
+        user{
+            email
+            firstName
+            lastActive
+            lastName
+            mobile
+            organization{
+                hostOrganization
+                name
+                organizationId
+            }
+            userAccountState
+            userId
+            userRoles
+        }
+    }
+}
+
+query timeSeriesDb_listAllAssetLastValues($clientToken: String, $nextToken: String, $timeSeriesDbId: ID!){
+    timeSeriesDb_listAllAssetLastValues(clientToken: $clientToken, nextToken: $nextToken, timeSeriesDbId: $timeSeriesDbId){
+        clientToken
+        data{
+            assetId
+            attributes{
+                attributeType
+                data{
+                    timestamp
+                    value
+                }
+                lastValue
+                lastValueTime
+                name
+            }
+            name
+        }
+        nextToken
+        queryId
+        queryProgressPercentage
+        resultChunkIndex
+    }
+}
+
+query iot_listGroups($includeEndpoints: Boolean, $iotHubId: ID!){
+    iot_listGroups(includeEndpoints: $includeEndpoints, iotHubId: $iotHubId){
+        description
+        endpoints{
+            description
+            iotEndpointId
+            iotHubId
+            modelId
+            name
+            ownerUserId
+            properties{
+                attributeType
+                defaultValue
+                description
+                name
+                schemaType
+                timestamp
+                value
+                writable
+            }
+            telemetry{
+                attributeType
+                description
+                index
+                name
+                schemaType
+            }
+        }
+        iotEndpointIds
+        iotGroupId
+        iotHubId
+        name
+        ownerUserId
+    }
+}
+
+query timeSeriesDb_queryDatabase($assets: [TimeSeriesQueryAssetInput]!, $clientToken: String, $endTime: String, $maxRows: Int, $nextToken: String, $queryString: String, $queryType: TimeSeriesDbQueryType!, $startTime: String, $timeSeriesDbId: ID!){
+    timeSeriesDb_queryDatabase(assets: $assets, clientToken: $clientToken, endTime: $endTime, maxRows: $maxRows, nextToken: $nextToken, queryString: $queryString, queryType: $queryType, startTime: $startTime, timeSeriesDbId: $timeSeriesDbId){
+        clientToken
+        nextToken
+        presignedUrl
+        queryId
+        queryProgressPercentage
+        queryString
+        resultChunkIndex
+    }
+}
+
+query dataCapture_getDataExportDownloadUrl($captureId: ID!){
+    dataCapture_getDataExportDownloadUrl(captureId: $captureId){
+        dateCompleted
+        dateStarted
+        errors
+        name
+        state
+        url
+    }
+}
+
+query iot_queryByTimeRange($clientToken: String, $endTime: String!, $endpointQueryFilters: [EndpointQueryFilter]!, $nextToken: String, $queryId: String, $queryString: String, $startTime: String!){
+    iot_queryByTimeRange(clientToken: $clientToken, endTime: $endTime, endpointQueryFilters: $endpointQueryFilters, nextToken: $nextToken, queryId: $queryId, queryString: $queryString, startTime: $startTime){
+        clientToken
+        endTime
+        nextToken
+        presignedUrl
+        queryId
+        queryString
+        resultChunkIndex
+        startTime
+    }
+}
+
+query collaborative_listCollaboratives{
+    collaborative_listCollaboratives{
+        collaborativeId
+        description
+        hostOrganizationId
+        memberOrganizations{
+            accessApprovedByUserId
+            collaborativeId
+            memberState
+            organization{
+                hostOrganization
+                name
+                organizationId
+            }
+            submittedByUser{
+                email
+                firstName
+                lastActive
+                lastName
+                mobile
+                organization{
+                    hostOrganization
+                    name
+                    organizationId
+                }
+                userAccountState
+                userId
+                userRoles
+            }
+            submittedTimestamp
+            usersInCollaborative{
+                permission
+                user{
+                    email
+                    firstName
+                    lastActive
+                    lastName
+                    mobile
+                    organization{
+                        hostOrganization
+                        name
+                        organizationId
+                    }
+                    userAccountState
+                    userId
+                    userRoles
+                }
+            }
+        }
+        name
+    }
+}
+
+query collaborative_listCollaborativesServiceSharedWith($serviceId: ID!, $serviceType: ServiceType!){
+    collaborative_listCollaborativesServiceSharedWith(serviceId: $serviceId, serviceType: $serviceType){
+        collaborativeId
+        description
+        hostOrganizationId
+        memberOrganizations{
+            accessApprovedByUserId
+            collaborativeId
+            memberState
+            organization{
+                hostOrganization
+                name
+                organizationId
+            }
+            submittedByUser{
+                email
+                firstName
+                lastActive
+                lastName
+                mobile
+                organization{
+                    hostOrganization
+                    name
+                    organizationId
+                }
+                userAccountState
+                userId
+                userRoles
+            }
+            submittedTimestamp
+            usersInCollaborative{
+                permission
+                user{
+                    email
+                    firstName
+                    lastActive
+                    lastName
+                    mobile
+                    organization{
+                        hostOrganization
+                        name
+                        organizationId
+                    }
+                    userAccountState
+                    userId
+                    userRoles
+                }
+            }
+        }
+        name
+    }
+}
+
+query storage_getDataStore($dataStoreId: ID!){
+    storage_getDataStore(dataStoreId: $dataStoreId){
+        dataStoreId
+        description
+        homeDirectoryId
+        name
+        ownerUserId
+    }
+}
+
+query iot_getEndpointToken($iotEndpointId: ID!){
+    iot_getEndpointToken(iotEndpointId: $iotEndpointId){
+        dateCreated
+        dateExpires
+        lastActive
+        name
+        scope
+        tokenId
+        tokenType
+        tokenValue
+        userId
+    }
+}
+
+query dataCapture_listAttachments($captureId: ID!, $limit: Int, $nextToken: String){
+    dataCapture_listAttachments(captureId: $captureId, limit: $limit, nextToken: $nextToken){
+        attachmentId
+        attachmentType
+        dateCreated
+        dateUpdated
+        description
+        name
+        ownerUserId
+    }
+}
+
+query iot_listEndpointLastValues($clientToken: String, $iotEndpointId: ID!, $nextToken: String, $queryId: String, $queryString: String){
+    iot_listEndpointLastValues(clientToken: $clientToken, iotEndpointId: $iotEndpointId, nextToken: $nextToken, queryId: $queryId, queryString: $queryString){
+        clientToken
+        data{
+            iotEndpointId
+            telemetryValues{
+                telemetryModel{
+                    attributeType
+                    description
+                    index
+                    name
+                    schemaType
+                }
+                timestamp
+                value
+            }
+        }
+        nextToken
+        presignedUrl
+        queryId
+        resultChunkIndex
+        resultStoredInS3
+    }
+}
+
+query dataCapture_getFileAttachmentDownloadUrl($attachmentId: ID!, $captureId: ID!){
+    dataCapture_getFileAttachmentDownloadUrl(attachmentId: $attachmentId, captureId: $captureId){
+        itemId
+        uploadId
+        url
+    }
+}
+
+query dataCapture_listCaptures($includeDataModels: Boolean, $limit: Int, $nextToken: String){
+    dataCapture_listCaptures(includeDataModels: $includeDataModels, limit: $limit, nextToken: $nextToken){
+        captures{
+            captureId
+            captureType
+            dataModel{
+                dateCreated
+                dateUpdated
+                errors
+                items{
+                    attributes{
+                        attributeType
+                        description
+                        displayName
+                        schemaType
+                        unit
+                        userDefinedId
+                    }
+                    description
+                    displayName
+                    userDefinedId
+                }
+                state
+                version
+            }
+            dateCreated
+            dateUpdated
+            description
+            displayName
+            ownerUserId
+            state
+            stateHistory{
+                dateCreated
+                message
+                newState
+            }
+            timeSettings{
+                actualStartTime
+                actualStopTime
+                errors
+                scheduledStartTime
+                scheduledStopTime
+                startTimeType
+                state
+                stopTimeType
+            }
+        }
+        nextToken
+    }
+}
+
+query dataCapture_getDataModelExport($captureId: ID!){
+    dataCapture_getDataModelExport(captureId: $captureId){
+        captureId
+        contents
+        fileName
+    }
+}
+
+query platformAdmin_getUser($userId: ID!){
+    platformAdmin_getUser(userId: $userId){
+        email
+        firstName
+        lastActive
+        lastName
+        mobile
+        organization{
+            hostOrganization
+            name
+            organizationId
+        }
+        userAccountState
+        userId
+        userRoles
+    }
+}
+
+query iot_getModelInDTDLFormat($modelId: ID!){
+    iot_getModelInDTDLFormat(modelId: $modelId)
+}
+
+query collaborative_listCollaborativeMemberOrganizationRequests($collaborativeId: ID, $includeApprovedRequests: Boolean, $includeDeniedRequests: Boolean){
+    collaborative_listCollaborativeMemberOrganizationRequests(collaborativeId: $collaborativeId, includeApprovedRequests: $includeApprovedRequests, includeDeniedRequests: $includeDeniedRequests){
+        collaborativeId
+        description
+        hostOrganizationId
+        memberOrganizations{
+            accessApprovedByUserId
+            collaborativeId
+            memberState
+            organization{
+                hostOrganization
+                name
+                organizationId
+            }
+            submittedByUser{
+                email
+                firstName
+                lastActive
+                lastName
+                mobile
+                organization{
+                    hostOrganization
+                    name
+                    organizationId
+                }
+                userAccountState
+                userId
+                userRoles
+            }
+            submittedTimestamp
+            usersInCollaborative{
+                permission
+                user{
+                    email
+                    firstName
+                    lastActive
+                    lastName
+                    mobile
+                    organization{
+                        hostOrganization
+                        name
+                        organizationId
+                    }
+                    userAccountState
+                    userId
+                    userRoles
+                }
+            }
+        }
+        name
+    }
+}
+
+query iot_getEndpoint($iotEndpointId: ID!){
+    iot_getEndpoint(iotEndpointId: $iotEndpointId){
+        description
+        iotEndpointId
+        iotHubId
+        modelId
+        name
+        ownerUserId
+        properties{
+            attributeType
+            defaultValue
+            description
+            name
+            schemaType
+            timestamp
+            value
+            writable
+        }
+        telemetry{
+            attributeType
+            description
+            index
+            name
+            schemaType
+        }
+    }
+}
+
+query collaborative_getCollaborative($collaborativeId: ID!){
+    collaborative_getCollaborative(collaborativeId: $collaborativeId){
+        collaborativeId
+        description
+        hostOrganizationId
+        memberOrganizations{
+            accessApprovedByUserId
+            collaborativeId
+            memberState
+            organization{
+                hostOrganization
+                name
+                organizationId
+            }
+            submittedByUser{
+                email
+                firstName
+                lastActive
+                lastName
+                mobile
+                organization{
+                    hostOrganization
+                    name
+                    organizationId
+                }
+                userAccountState
+                userId
+                userRoles
+            }
+            submittedTimestamp
+            usersInCollaborative{
+                permission
+                user{
+                    email
+                    firstName
+                    lastActive
+                    lastName
+                    mobile
+                    organization{
+                        hostOrganization
+                        name
+                        organizationId
+                    }
+                    userAccountState
+                    userId
+                    userRoles
+                }
+            }
+        }
+        name
+    }
+}
+
+query dataCapture_getPythonSDKSample($captureId: ID!){
+    dataCapture_getPythonSDKSample(captureId: $captureId)
+}
+
+query collaborative_listCollaborativeServices($collaborativeId: ID!){
+    collaborative_listCollaborativeServices(collaborativeId: $collaborativeId){
+        dataCapture{
+            captureId
+            captureType
+            dataModel{
+                dateCreated
+                dateUpdated
+                errors
+                items{
+                    attributes{
+                        attributeType
+                        description
+                        displayName
+                        schemaType
+                        unit
+                        userDefinedId
+                    }
+                    description
+                    displayName
+                    userDefinedId
+                }
+                state
+                version
+            }
+            dateCreated
+            dateUpdated
+            description
+            displayName
+            ownerUserId
+            state
+            stateHistory{
+                dateCreated
+                message
+                newState
+            }
+            timeSettings{
+                actualStartTime
+                actualStopTime
+                errors
+                scheduledStartTime
+                scheduledStopTime
+                startTimeType
+                state
+                stopTimeType
+            }
+        }
+        dataStore{
+            dataStoreId
+            description
+            homeDirectoryId
+            name
+            ownerUserId
+        }
+        iotEndpointGroup{
+            description
+            endpoints{
+                description
+                iotEndpointId
+                iotHubId
+                modelId
+                name
+                ownerUserId
+                properties{
+                    attributeType
+                    defaultValue
+                    description
+                    name
+                    schemaType
+                    timestamp
+                    value
+                    writable
+                }
+                telemetry{
+                    attributeType
+                    description
+                    index
+                    name
+                    schemaType
+                }
+            }
+            iotEndpointIds
+            iotGroupId
+            iotHubId
+            name
+            ownerUserId
+        }
+        ocsAdapter{
+            ocsAdapterId
+        }
+        serviceId
+        serviceType
+        timeSeriesDb{
+            databaseName
+            description
+            name
+            ownerUserId
+            tableName
+            timeSeriesDbId
+        }
+    }
+}
+
+query platformAdmin_listOrganizations{
+    platformAdmin_listOrganizations{
+        hostOrganization
+        name
+        organizationId
+    }
+}
+
+query platformAdmin_listUsers($organizationId: ID){
+    platformAdmin_listUsers(organizationId: $organizationId){
+        email
+        firstName
+        lastActive
+        lastName
+        mobile
+        organization{
+            hostOrganization
+            name
+            organizationId
+        }
+        userAccountState
+        userId
+        userRoles
+    }
+}
+
+query iot_listHubsEndpointsLastValues($clientToken: String, $iotHubId: ID!, $nextToken: String, $queryId: String, $queryString: String){
+    iot_listHubsEndpointsLastValues(clientToken: $clientToken, iotHubId: $iotHubId, nextToken: $nextToken, queryId: $queryId, queryString: $queryString){
+        clientToken
+        data{
+            iotEndpointId
+            telemetryValues{
+                telemetryModel{
+                    attributeType
+                    description
+                    index
+                    name
+                    schemaType
+                }
+                timestamp
+                value
+            }
+        }
+        nextToken
+        presignedUrl
+        queryId
+        resultChunkIndex
+        resultStoredInS3
+    }
+}
+
+query storage_getDataStoreFile($dataStoreFileId: ID!){
+    storage_getDataStoreFile(dataStoreFileId: $dataStoreFileId){
+        contentType
+        dataStoreDirectoryId
+        dataStoreFileId
+        dataStoreId
+        dataViewIds
+        description
+        fileExtension
+        lastModified
+        name
+        ownerUserId
+        s3ConfirmedUpload
+        storageSizeBytes
+    }
+}
+
+query platformAdmin_listCollaboratives($includeMemberOrganizations: Boolean){
+    platformAdmin_listCollaboratives(includeMemberOrganizations: $includeMemberOrganizations){
+        collaborativeId
+        description
+        hostOrganizationId
+        memberOrganizations{
+            accessApprovedByUserId
+            collaborativeId
+            memberState
+            organization{
+                hostOrganization
+                name
+                organizationId
+            }
+            submittedByUser{
+                email
+                firstName
+                lastActive
+                lastName
+                mobile
+                organization{
+                    hostOrganization
+                    name
+                    organizationId
+                }
+                userAccountState
+                userId
+                userRoles
+            }
+            submittedTimestamp
+            usersInCollaborative{
+                permission
+                user{
+                    email
+                    firstName
+                    lastActive
+                    lastName
+                    mobile
+                    organization{
+                        hostOrganization
+                        name
+                        organizationId
+                    }
+                    userAccountState
+                    userId
+                    userRoles
+                }
+            }
+        }
+        name
+    }
+}
+
+query iot_getModel($modelId: ID!){
+    iot_getModel(modelId: $modelId){
+        description
+        displayName
+        dtmi
+        modelId
+        ownerUserId
+        properties{
+            attributeType
+            defaultValue
+            description
+            index
+            name
+            schemaType
+            writable
+        }
+        telemetry{
+            attributeType
+            description
+            index
+            name
+            schemaType
+        }
+    }
+}
+
+query timeSeriesDb_queryDatabaseWithTimestreamQuery($clientToken: String, $maxRows: Int, $nextToken: String, $queryString: String!, $timeSeriesDbId: ID!){
+    timeSeriesDb_queryDatabaseWithTimestreamQuery(clientToken: $clientToken, maxRows: $maxRows, nextToken: $nextToken, queryString: $queryString, timeSeriesDbId: $timeSeriesDbId){
+        clientToken
+        resultJSONString
+    }
+}
+
+query timeSeriesDb_listDatabases{
+    timeSeriesDb_listDatabases{
+        databaseName
+        description
+        name
+        ownerUserId
+        tableName
+        timeSeriesDbId
+    }
+}
+
+query storage_getDataStoreZipDownloadUrl($dataStoreObjectIds: [DataStoreObjectIdInput]!){
+    storage_getDataStoreZipDownloadUrl(dataStoreObjectIds: $dataStoreObjectIds){
+        itemId
+        uploadId
+        url
+    }
+}
+
+query platformAdmin_getCollaborative($collaborativeId: ID!, $includeMemberOrganizations: Boolean){
+    platformAdmin_getCollaborative(collaborativeId: $collaborativeId, includeMemberOrganizations: $includeMemberOrganizations){
+        collaborativeId
+        description
+        hostOrganizationId
+        memberOrganizations{
+            accessApprovedByUserId
+            collaborativeId
+            memberState
+            organization{
+                hostOrganization
+                name
+                organizationId
+            }
+            submittedByUser{
+                email
+                firstName
+                lastActive
+                lastName
+                mobile
+                organization{
+                    hostOrganization
+                    name
+                    organizationId
+                }
+                userAccountState
+                userId
+                userRoles
+            }
+            submittedTimestamp
+            usersInCollaborative{
+                permission
+                user{
+                    email
+                    firstName
+                    lastActive
+                    lastName
+                    mobile
+                    organization{
+                        hostOrganization
+                        name
+                        organizationId
+                    }
+                    userAccountState
+                    userId
+                    userRoles
+                }
+            }
+        }
+        name
+    }
+}
+
+query user_listAuthenticationTokens{
+    user_listAuthenticationTokens{
+        dateCreated
+        dateExpires
+        lastActive
+        name
+        scope
+        tokenId
+        tokenType
+        tokenValue
+        userId
+    }
+}
+
+query platformAdmin_getOrganization($organizationId: ID!){
+    platformAdmin_getOrganization(organizationId: $organizationId){
+        hostOrganization
+        name
+        organizationId
+    }
+}
+
+query storage_listDataStores($organizationId: ID, $userId: ID){
+    storage_listDataStores(organizationId: $organizationId, userId: $userId){
+        dataStoreId
+        description
+        homeDirectoryId
+        name
+        ownerUserId
+    }
+}
+
+query iot_listEndpointsInHub($iotHubId: ID!){
+    iot_listEndpointsInHub(iotHubId: $iotHubId){
+        description
+        iotEndpointId
+        iotHubId
+        modelId
+        name
+        ownerUserId
+        properties{
+            attributeType
+            defaultValue
+            description
+            name
+            schemaType
+            timestamp
+            value
+            writable
+        }
+        telemetry{
+            attributeType
+            description
+            index
+            name
+            schemaType
+        }
+    }
+}
+
+query dataCapture_getCapture($captureId: ID!, $includeDataModel: Boolean){
+    dataCapture_getCapture(captureId: $captureId, includeDataModel: $includeDataModel){
+        captureId
+        captureType
+        dataModel{
+            dateCreated
+            dateUpdated
+            errors
+            items{
+                attributes{
+                    attributeType
+                    description
+                    displayName
+                    schemaType
+                    unit
+                    userDefinedId
+                }
+                description
+                displayName
+                userDefinedId
+            }
+            state
+            version
+        }
+        dateCreated
+        dateUpdated
+        description
+        displayName
+        ownerUserId
+        state
+        stateHistory{
+            dateCreated
+            message
+            newState
+        }
+        timeSettings{
+            actualStartTime
+            actualStopTime
+            errors
+            scheduledStartTime
+            scheduledStopTime
+            startTimeType
+            state
+            stopTimeType
+        }
+    }
+}
+
+query iot_listModels{
+    iot_listModels{
+        description
+        displayName
+        dtmi
+        modelId
+        ownerUserId
+        properties{
+            attributeType
+            defaultValue
+            description
+            index
+            name
+            schemaType
+            writable
+        }
+        telemetry{
+            attributeType
+            description
+            index
+            name
+            schemaType
+        }
+    }
+}
+
+query storage_getDataStoreDirectory($dataStoreDirectoryId: ID!){
+    storage_getDataStoreDirectory(dataStoreDirectoryId: $dataStoreDirectoryId){
+        contents{
+            dataStoreDirectory{
+                contents{
+                    dataStoreFile{
+                        contentType
+                        dataStoreDirectoryId
+                        dataStoreFileId
+                        dataStoreId
+                        dataViewIds
+                        description
+                        fileExtension
+                        lastModified
+                        name
+                        ownerUserId
+                        s3ConfirmedUpload
+                        storageSizeBytes
+                    }
+                    objectType
+                }
+                dataStoreDirectoryId
+                dataStoreId
+                homeDirectory
+                name
+                ownerUserId
+                parentDirectoryId
+            }
+            objectType
+        }
+        dataStoreDirectoryId
+        dataStoreId
+        homeDirectory
+        name
+        ownerUserId
+        parentDirectoryId
+    }
+}
+
+query dataCapture_getCaptureAuthenticationToken($captureId: ID!){
+    dataCapture_getCaptureAuthenticationToken(captureId: $captureId){
+        dateCreated
+        dateExpires
+        lastActive
+        name
+        scope
+        tokenId
+        tokenType
+        tokenValue
+        userId
+    }
+}
+
+query timeSeriesDb_getDatabase($timeSeriesDbId: ID!){
+    timeSeriesDb_getDatabase(timeSeriesDbId: $timeSeriesDbId){
+        databaseName
+        description
+        name
+        ownerUserId
+        tableName
+        timeSeriesDbId
+    }
+}
+
+query iot_listGroupsEndpointsLastValues($clientToken: String, $iotGroupId: ID!, $nextToken: String, $queryId: String, $queryString: String){
+    iot_listGroupsEndpointsLastValues(clientToken: $clientToken, iotGroupId: $iotGroupId, nextToken: $nextToken, queryId: $queryId, queryString: $queryString){
+        clientToken
+        data{
+            iotEndpointId
+            telemetryValues{
+                telemetryModel{
+                    attributeType
+                    description
+                    index
+                    name
+                    schemaType
+                }
+                timestamp
+                value
+            }
+        }
+        nextToken
+        presignedUrl
+        queryId
+        resultChunkIndex
+        resultStoredInS3
+    }
+}
+
+query dataCapture_getDataModel($captureId: ID!){
+    dataCapture_getDataModel(captureId: $captureId){
+        dateCreated
+        dateUpdated
+        errors
+        items{
+            attributes{
+                attributeType
+                description
+                displayName
+                schemaType
+                unit
+                userDefinedId
+            }
+            description
+            displayName
+            userDefinedId
+        }
+        state
+        version
+    }
+}
+
+query iot_getGroup($includeEndpoints: Boolean, $iotGroupId: ID!){
+    iot_getGroup(includeEndpoints: $includeEndpoints, iotGroupId: $iotGroupId){
+        description
+        endpoints{
+            description
+            iotEndpointId
+            iotHubId
+            modelId
+            name
+            ownerUserId
+            properties{
+                attributeType
+                defaultValue
+                description
+                name
+                schemaType
+                timestamp
+                value
+                writable
+            }
+            telemetry{
+                attributeType
+                description
+                index
+                name
+                schemaType
+            }
+        }
+        iotEndpointIds
+        iotGroupId
+        iotHubId
+        name
+        ownerUserId
+    }
+}
+
+query iot_getHub($iotHubId: ID!){
+    iot_getHub(iotHubId: $iotHubId){
+        description
+        iotHubId
+        name
+        ownerUserId
+    }
+}
+
+subscription onIotPublish($iotEndpointId: ID!){
+    onIotPublish(iotEndpointId: $iotEndpointId){
+        failedRecords{
+            errors{
+                errorMessage
+                errorType
+            }
+            record{
+                attributes{
+                    name
+                    schemaType
+                    value
+                }
+                iotEndpointId
+                timestamp
+            }
+        }
+        recordsWritten{
+            attributes{
+                name
+                schemaType
+                value
+            }
+            iotEndpointId
+            timestamp
+        }
+    }
+}
+
+subscription onNotifyIotQueryExportComplete($queryId: String!){
+    onNotifyIotQueryExportComplete(queryId: $queryId){
+        fileFormat
+        fileSizeBytes
+        queryId
+        url
+    }
+}
+
+subscription onNotifyUploadComplete($uploadId: ID!){
+    onNotifyUploadComplete(uploadId: $uploadId){
+        errorMessage
+        httpStatusCode
+        uploadId
+    }
+}
+
+subscription onCapturePublishData($captureId: ID!){
+    onCapturePublishData(captureId: $captureId){
+        captureId
+        dataWritten{
+            timestamp
+            userDefinedId
+            value
+        }
+        failedRecords{
+            attributeIndex
+            errorType
+            message
+            recordIndex
+        }
+        logs{
+            error
+            message
+        }
+    }
+}
+
+subscription onTimeSeriesDbPublish($assetId: ID!, $timeSeriesDbId: ID!){
+    onTimeSeriesDbPublish(assetId: $assetId, timeSeriesDbId: $timeSeriesDbId){
+        assetId
+        attributes{
+            attributeType
+            data{
+                timestamp
+                value
+            }
+            lastValue
+            lastValueTime
+            name
+        }
+        name
+    }
+}
+
+subscription onStopCapture($captureId: ID!){
+    onStopCapture(captureId: $captureId){
+        captureId
+        captureType
+        dataModel{
+            dateCreated
+            dateUpdated
+            errors
+            items{
+                attributes{
+                    attributeType
+                    description
+                    displayName
+                    schemaType
+                    unit
+                    userDefinedId
+                }
+                description
+                displayName
+                userDefinedId
+            }
+            state
+            version
+        }
+        dateCreated
+        dateUpdated
+        description
+        displayName
+        ownerUserId
+        state
+        stateHistory{
+            dateCreated
+            message
+            newState
+        }
+        timeSettings{
+            actualStartTime
+            actualStopTime
+            errors
+            scheduledStartTime
+            scheduledStopTime
+            startTimeType
+            state
+            stopTimeType
+        }
+    }
+}
+
+subscription onNotifyTimeSeriesQueryExportComplete($queryId: String!){
+    onNotifyTimeSeriesQueryExportComplete(queryId: $queryId){
+        fileSizeBytes
+        fileType
+        queryId
+        url
+    }
+}
+
+subscription onStartCapture($captureId: ID!){
+    onStartCapture(captureId: $captureId){
+        captureId
+        captureType
+        dataModel{
+            dateCreated
+            dateUpdated
+            errors
+            items{
+                attributes{
+                    attributeType
+                    description
+                    displayName
+                    schemaType
+                    unit
+                    userDefinedId
+                }
+                description
+                displayName
+                userDefinedId
+            }
+            state
+            version
+        }
+        dateCreated
+        dateUpdated
+        description
+        displayName
+        ownerUserId
+        state
+        stateHistory{
+            dateCreated
+            message
+            newState
+        }
+        timeSettings{
+            actualStartTime
+            actualStopTime
+            errors
+            scheduledStartTime
+            scheduledStopTime
+            startTimeType
+            state
+            stopTimeType
+        }
+    }
+}
+
+subscription onNotifyCaptureComplete($captureId: ID!){
+    onNotifyCaptureComplete(captureId: $captureId){
+        captureId
+        captureType
+        dataModel{
+            dateCreated
+            dateUpdated
+            errors
+            items{
+                attributes{
+                    attributeType
+                    description
+                    displayName
+                    schemaType
+                    unit
+                    userDefinedId
+                }
+                description
+                displayName
+                userDefinedId
+            }
+            state
+            version
+        }
+        dateCreated
+        dateUpdated
+        description
+        displayName
+        ownerUserId
+        state
+        stateHistory{
+            dateCreated
+            message
+            newState
+        }
+        timeSettings{
+            actualStartTime
+            actualStopTime
+            errors
+            scheduledStartTime
+            scheduledStopTime
+            startTimeType
+            state
+            stopTimeType
+        }
+    }
+}
+

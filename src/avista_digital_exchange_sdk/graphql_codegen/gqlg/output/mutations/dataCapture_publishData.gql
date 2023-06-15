@@ -1,0 +1,20 @@
+mutation dataCapture_publishData($captureId: ID!, $data: [DataCaptureDataRecordInput]!){
+    dataCapture_publishData(captureId: $captureId, data: $data){
+        captureId
+        dataWritten{
+            timestamp
+            userDefinedId
+            value
+        }
+        failedRecords{
+            attributeIndex
+            errorType
+            message
+            recordIndex
+        }
+        logs{
+            error
+            message
+        }
+    }
+}

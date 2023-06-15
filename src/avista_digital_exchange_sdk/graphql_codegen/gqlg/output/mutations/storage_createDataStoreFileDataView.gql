@@ -1,0 +1,16 @@
+mutation storage_createDataStoreFileDataView($dataStoreFileId: ID!){
+    storage_createDataStoreFileDataView(dataStoreFileId: $dataStoreFileId){
+        contentType
+        dataStoreDirectoryId
+        dataStoreFileId
+        dataStoreId
+        dataViewIds
+        description
+        fileExtension
+        lastModified
+        name
+        ownerUserId
+        s3ConfirmedUpload
+        storageSizeBytes
+    }
+}

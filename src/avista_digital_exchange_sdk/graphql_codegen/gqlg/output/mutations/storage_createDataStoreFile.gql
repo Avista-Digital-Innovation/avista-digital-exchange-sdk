@@ -1,0 +1,7 @@
+mutation storage_createDataStoreFile($dataStoreDirectoryId: ID!, $dataStoreId: ID!, $description: String, $fileExtension: String!, $name: String!){
+    storage_createDataStoreFile(dataStoreDirectoryId: $dataStoreDirectoryId, dataStoreId: $dataStoreId, description: $description, fileExtension: $fileExtension, name: $name){
+        itemId
+        uploadId
+        url
+    }
+}

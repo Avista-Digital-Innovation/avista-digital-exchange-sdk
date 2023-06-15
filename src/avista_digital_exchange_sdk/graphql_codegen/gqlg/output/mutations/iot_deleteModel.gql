@@ -1,0 +1,25 @@
+mutation iot_deleteModel($modelId: ID!){
+    iot_deleteModel(modelId: $modelId){
+        description
+        displayName
+        dtmi
+        modelId
+        ownerUserId
+        properties{
+            attributeType
+            defaultValue
+            description
+            index
+            name
+            schemaType
+            writable
+        }
+        telemetry{
+            attributeType
+            description
+            index
+            name
+            schemaType
+        }
+    }
+}

@@ -1,0 +1,17 @@
+mutation platformAdmin_resendUserInvitation($userId: ID!){
+    platformAdmin_resendUserInvitation(userId: $userId){
+        email
+        firstName
+        lastActive
+        lastName
+        mobile
+        organization{
+            hostOrganization
+            name
+            organizationId
+        }
+        userAccountState
+        userId
+        userRoles
+    }
+}

@@ -1,0 +1,8 @@
+mutation iot_notifyQueryExportComplete($fileFormat: ExportFileFormat, $queryId: String!){
+    iot_notifyQueryExportComplete(fileFormat: $fileFormat, queryId: $queryId){
+        fileFormat
+        fileSizeBytes
+        queryId
+        url
+    }
+}

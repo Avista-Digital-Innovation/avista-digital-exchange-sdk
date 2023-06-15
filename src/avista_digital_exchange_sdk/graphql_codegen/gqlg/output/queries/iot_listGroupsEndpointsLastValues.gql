@@ -1,0 +1,24 @@
+query iot_listGroupsEndpointsLastValues($clientToken: String, $iotGroupId: ID!, $nextToken: String, $queryId: String, $queryString: String){
+    iot_listGroupsEndpointsLastValues(clientToken: $clientToken, iotGroupId: $iotGroupId, nextToken: $nextToken, queryId: $queryId, queryString: $queryString){
+        clientToken
+        data{
+            iotEndpointId
+            telemetryValues{
+                telemetryModel{
+                    attributeType
+                    description
+                    index
+                    name
+                    schemaType
+                }
+                timestamp
+                value
+            }
+        }
+        nextToken
+        presignedUrl
+        queryId
+        resultChunkIndex
+        resultStoredInS3
+    }
+}

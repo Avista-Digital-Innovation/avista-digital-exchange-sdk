@@ -1,0 +1,9 @@
+mutation storage_createDataStore($description: String, $name: String!){
+    storage_createDataStore(description: $description, name: $name){
+        dataStoreId
+        description
+        homeDirectoryId
+        name
+        ownerUserId
+    }
+}

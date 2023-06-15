@@ -1,0 +1,17 @@
+mutation platformAdmin_createUser($email: String!, $firstName: String!, $lastName: String!, $mobile: String, $organizationId: ID!, $userRoles: [UserRole!]){
+    platformAdmin_createUser(email: $email, firstName: $firstName, lastName: $lastName, mobile: $mobile, organizationId: $organizationId, userRoles: $userRoles){
+        email
+        firstName
+        lastActive
+        lastName
+        mobile
+        organization{
+            hostOrganization
+            name
+            organizationId
+        }
+        userAccountState
+        userId
+        userRoles
+    }
+}

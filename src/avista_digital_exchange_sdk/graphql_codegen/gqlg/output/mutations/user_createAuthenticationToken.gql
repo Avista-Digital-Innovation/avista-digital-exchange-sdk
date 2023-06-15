@@ -1,0 +1,13 @@
+mutation user_createAuthenticationToken($daysBeforeExpiration: Int!, $name: String!){
+    user_createAuthenticationToken(daysBeforeExpiration: $daysBeforeExpiration, name: $name){
+        dateCreated
+        dateExpires
+        lastActive
+        name
+        scope
+        tokenId
+        tokenType
+        tokenValue
+        userId
+    }
+}

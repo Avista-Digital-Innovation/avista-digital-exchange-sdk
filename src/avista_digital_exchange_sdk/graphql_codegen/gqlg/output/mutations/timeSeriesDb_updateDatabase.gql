@@ -1,0 +1,10 @@
+mutation timeSeriesDb_updateDatabase($description: String, $name: String, $timeSeriesDbId: ID!){
+    timeSeriesDb_updateDatabase(description: $description, name: $name, timeSeriesDbId: $timeSeriesDbId){
+        databaseName
+        description
+        name
+        ownerUserId
+        tableName
+        timeSeriesDbId
+    }
+}

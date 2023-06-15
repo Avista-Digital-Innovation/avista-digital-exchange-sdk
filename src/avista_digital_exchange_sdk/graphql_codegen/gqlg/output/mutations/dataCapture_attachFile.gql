@@ -1,0 +1,7 @@
+mutation dataCapture_attachFile($captureId: ID!, $description: String, $fileName: String!){
+    dataCapture_attachFile(captureId: $captureId, description: $description, fileName: $fileName){
+        itemId
+        uploadId
+        url
+    }
+}

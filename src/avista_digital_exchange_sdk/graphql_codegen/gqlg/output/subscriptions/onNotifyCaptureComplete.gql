@@ -1,0 +1,47 @@
+subscription onNotifyCaptureComplete($captureId: ID!){
+    onNotifyCaptureComplete(captureId: $captureId){
+        captureId
+        captureType
+        dataModel{
+            dateCreated
+            dateUpdated
+            errors
+            items{
+                attributes{
+                    attributeType
+                    description
+                    displayName
+                    schemaType
+                    unit
+                    userDefinedId
+                }
+                description
+                displayName
+                userDefinedId
+            }
+            state
+            version
+        }
+        dateCreated
+        dateUpdated
+        description
+        displayName
+        ownerUserId
+        state
+        stateHistory{
+            dateCreated
+            message
+            newState
+        }
+        timeSettings{
+            actualStartTime
+            actualStopTime
+            errors
+            scheduledStartTime
+            scheduledStopTime
+            startTimeType
+            state
+            stopTimeType
+        }
+    }
+}

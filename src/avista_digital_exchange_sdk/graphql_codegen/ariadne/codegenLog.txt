@@ -1,0 +1,158 @@
+Selected strategy: Strategy.CLIENT
+Using schema from '../input/schema.graphql'.
+Reading queries from '../gqlg/output/queries.graphql'.
+Using 'graphql_client' as package name.
+Generating package into '/Users/Justin/repositories/avista-digital-exchange/avista-digital-exchange-sdk/src/avista_digital_exchange_sdk/graphql_codegen/ariadne'.
+Using 'Client' as client name.
+Using 'AsyncBaseClient' as base client class.
+Coping base client class from '/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/ariadne_codegen/client_generators/dependencies/async_base_client.py'.
+Generating enums into 'enums.py'.
+Generating inputs into 'input_types.py'.
+Generating fragments into 'fragments.py'.
+Including comments.
+Converting fields and arguments name to snake case.
+Generating async client.
+No files to copy.
+No plugin is being used.
+
+Generated files:
+  __init__.py
+  async_base_client.py
+  base_model.py
+  client.py
+  collaborative_add_service_to_collaborative.py
+  collaborative_get_collaborative.py
+  collaborative_list_collaborative_member_organization_requests.py
+  collaborative_list_collaborative_services.py
+  collaborative_list_collaboratives.py
+  collaborative_list_collaboratives_service_shared_with.py
+  collaborative_remove_service_from_collaborative.py
+  collaborative_update_collaborative_member_organization.py
+  data_capture_attach_file.py
+  data_capture_create_capture.py
+  data_capture_delete_attachment.py
+  data_capture_delete_capture.py
+  data_capture_get_capture.py
+  data_capture_get_capture_authentication_token.py
+  data_capture_get_data_export_download_url.py
+  data_capture_get_data_model.py
+  data_capture_get_data_model_export.py
+  data_capture_get_file_attachment_download_url.py
+  data_capture_get_python_s_d_k_sample.py
+  data_capture_handle_completion.py
+  data_capture_list_attachments.py
+  data_capture_list_captures.py
+  data_capture_notify_capture_complete.py
+  data_capture_publish_data.py
+  data_capture_regenerate_authentication_token.py
+  data_capture_start_capture.py
+  data_capture_stop_capture.py
+  data_capture_update_capture.py
+  data_capture_update_data_model.py
+  data_capture_upload_data_model_file.py
+  enums.py
+  exceptions.py
+  input_types.py
+  iot_add_endpoints_to_group.py
+  iot_cancel_query.py
+  iot_create_endpoint.py
+  iot_create_group.py
+  iot_create_hub.py
+  iot_create_model.py
+  iot_create_new_model_version.py
+  iot_delete_endpoint.py
+  iot_delete_group.py
+  iot_delete_hub.py
+  iot_delete_model.py
+  iot_generate_query_result_export.py
+  iot_get_endpoint.py
+  iot_get_endpoint_token.py
+  iot_get_group.py
+  iot_get_hub.py
+  iot_get_model.py
+  iot_get_model_in_d_t_d_l_format.py
+  iot_list_endpoint_last_values.py
+  iot_list_endpoints_in_hub.py
+  iot_list_groups.py
+  iot_list_groups_endpoints_last_values.py
+  iot_list_hubs.py
+  iot_list_hubs_endpoints_last_values.py
+  iot_list_models.py
+  iot_notify_query_export_complete.py
+  iot_publish.py
+  iot_query_by_time_range.py
+  iot_regenerate_endpoint_token.py
+  iot_remove_endpoints_from_group.py
+  iot_update_endpoint.py
+  iot_update_endpoint_properties.py
+  iot_update_group.py
+  iot_update_hub.py
+  iot_update_model.py
+  iot_update_model_used_by_endpoint.py
+  notifications_notify_upload_complete.py
+  on_capture_publish_data.py
+  on_iot_publish.py
+  on_notify_capture_complete.py
+  on_notify_iot_query_export_complete.py
+  on_notify_time_series_query_export_complete.py
+  on_notify_upload_complete.py
+  on_start_capture.py
+  on_stop_capture.py
+  on_time_series_db_publish.py
+  platform_admin_add_collaborative_member.py
+  platform_admin_create_collaborative.py
+  platform_admin_create_organization.py
+  platform_admin_create_user.py
+  platform_admin_delete_collaborative.py
+  platform_admin_delete_organization.py
+  platform_admin_delete_user.py
+  platform_admin_delete_users_collaboratives.py
+  platform_admin_delete_users_services.py
+  platform_admin_get_collaborative.py
+  platform_admin_get_organization.py
+  platform_admin_get_user.py
+  platform_admin_list_collaboratives.py
+  platform_admin_list_organizations.py
+  platform_admin_list_users.py
+  platform_admin_migrate_users_collaboratives_ownership.py
+  platform_admin_migrate_users_services_ownership.py
+  platform_admin_remove_collaborative_member.py
+  platform_admin_resend_user_invitation.py
+  platform_admin_update_collaborative.py
+  platform_admin_update_collaborative_member.py
+  platform_admin_update_organization.py
+  platform_admin_update_user.py
+  scalars.py
+  storage_create_data_store.py
+  storage_create_data_store_directory.py
+  storage_create_data_store_file.py
+  storage_create_data_store_file_data_view.py
+  storage_delete_data_store.py
+  storage_delete_data_store_directory.py
+  storage_delete_data_store_file.py
+  storage_delete_data_store_file_data_view.py
+  storage_get_data_store.py
+  storage_get_data_store_directory.py
+  storage_get_data_store_file.py
+  storage_get_data_store_file_download_url.py
+  storage_get_data_store_zip_download_url.py
+  storage_list_data_stores.py
+  storage_update_data_store.py
+  storage_update_data_store_directory.py
+  storage_update_data_store_file.py
+  time_series_db_cancel_database_query.py
+  time_series_db_create_database.py
+  time_series_db_delete_database.py
+  time_series_db_generate_query_result_export_file.py
+  time_series_db_get_database.py
+  time_series_db_list_all_asset_last_values.py
+  time_series_db_list_databases.py
+  time_series_db_notify_time_series_query_export_complete.py
+  time_series_db_publish_to_database.py
+  time_series_db_query_database.py
+  time_series_db_query_database_with_timestream_query.py
+  time_series_db_update_database.py
+  user_create_authentication_token.py
+  user_delete_authentication_token.py
+  user_get_user_session.py
+  user_list_authentication_tokens.py

@@ -1,0 +1,8 @@
+subscription onNotifyTimeSeriesQueryExportComplete($queryId: String!){
+    onNotifyTimeSeriesQueryExportComplete(queryId: $queryId){
+        fileSizeBytes
+        fileType
+        queryId
+        url
+    }
+}

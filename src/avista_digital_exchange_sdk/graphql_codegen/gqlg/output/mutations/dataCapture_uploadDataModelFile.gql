@@ -1,0 +1,7 @@
+mutation dataCapture_uploadDataModelFile($captureId: ID!, $fileName: String!){
+    dataCapture_uploadDataModelFile(captureId: $captureId, fileName: $fileName){
+        itemId
+        uploadId
+        url
+    }
+}

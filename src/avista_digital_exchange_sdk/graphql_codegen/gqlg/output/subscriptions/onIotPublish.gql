@@ -1,0 +1,28 @@
+subscription onIotPublish($iotEndpointId: ID!){
+    onIotPublish(iotEndpointId: $iotEndpointId){
+        failedRecords{
+            errors{
+                errorMessage
+                errorType
+            }
+            record{
+                attributes{
+                    name
+                    schemaType
+                    value
+                }
+                iotEndpointId
+                timestamp
+            }
+        }
+        recordsWritten{
+            attributes{
+                name
+                schemaType
+                value
+            }
+            iotEndpointId
+            timestamp
+        }
+    }
+}

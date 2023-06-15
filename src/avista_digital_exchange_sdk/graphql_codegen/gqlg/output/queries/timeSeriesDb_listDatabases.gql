@@ -1,0 +1,10 @@
+query timeSeriesDb_listDatabases{
+    timeSeriesDb_listDatabases{
+        databaseName
+        description
+        name
+        ownerUserId
+        tableName
+        timeSeriesDbId
+    }
+}

@@ -1,0 +1,47 @@
+mutation dataCapture_updateCapture($captureId: ID!, $description: String, $displayName: String, $scheduledStartTime: String, $scheduledStopTime: String, $startTimeType: DataCaptureTimeConfigType, $stopTimeType: DataCaptureTimeConfigType, $updateDescription: Boolean!, $updateDisplayName: Boolean!, $updateScheduledStartTime: Boolean!, $updateScheduledStopTime: Boolean!, $updateStartTimeType: Boolean!, $updateStopTimeType: Boolean!){
+    dataCapture_updateCapture(captureId: $captureId, description: $description, displayName: $displayName, scheduledStartTime: $scheduledStartTime, scheduledStopTime: $scheduledStopTime, startTimeType: $startTimeType, stopTimeType: $stopTimeType, updateDescription: $updateDescription, updateDisplayName: $updateDisplayName, updateScheduledStartTime: $updateScheduledStartTime, updateScheduledStopTime: $updateScheduledStopTime, updateStartTimeType: $updateStartTimeType, updateStopTimeType: $updateStopTimeType){
+        captureId
+        captureType
+        dataModel{
+            dateCreated
+            dateUpdated
+            errors
+            items{
+                attributes{
+                    attributeType
+                    description
+                    displayName
+                    schemaType
+                    unit
+                    userDefinedId
+                }
+                description
+                displayName
+                userDefinedId
+            }
+            state
+            version
+        }
+        dateCreated
+        dateUpdated
+        description
+        displayName
+        ownerUserId
+        state
+        stateHistory{
+            dateCreated
+            message
+            newState
+        }
+        timeSettings{
+            actualStartTime
+            actualStopTime
+            errors
+            scheduledStartTime
+            scheduledStopTime
+            startTimeType
+            state
+            stopTimeType
+        }
+    }
+}

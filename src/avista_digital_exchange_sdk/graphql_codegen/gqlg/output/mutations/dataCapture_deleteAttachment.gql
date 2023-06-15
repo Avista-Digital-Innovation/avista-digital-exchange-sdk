@@ -1,0 +1,11 @@
+mutation dataCapture_deleteAttachment($attachmentId: ID!, $captureId: ID!){
+    dataCapture_deleteAttachment(attachmentId: $attachmentId, captureId: $captureId){
+        attachmentId
+        attachmentType
+        dateCreated
+        dateUpdated
+        description
+        name
+        ownerUserId
+    }
+}

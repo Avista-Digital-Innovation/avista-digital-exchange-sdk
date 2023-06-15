@@ -1,0 +1,27 @@
+mutation iot_createEndpoint($description: String, $iotHubId: ID!, $modelId: ID!, $name: String!){
+    iot_createEndpoint(description: $description, iotHubId: $iotHubId, modelId: $modelId, name: $name){
+        description
+        iotEndpointId
+        iotHubId
+        modelId
+        name
+        ownerUserId
+        properties{
+            attributeType
+            defaultValue
+            description
+            name
+            schemaType
+            timestamp
+            value
+            writable
+        }
+        telemetry{
+            attributeType
+            description
+            index
+            name
+            schemaType
+        }
+    }
+}

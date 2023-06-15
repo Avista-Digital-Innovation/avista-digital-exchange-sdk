@@ -1,0 +1,13 @@
+mutation user_deleteAuthenticationToken($tokenId: ID!){
+    user_deleteAuthenticationToken(tokenId: $tokenId){
+        dateCreated
+        dateExpires
+        lastActive
+        name
+        scope
+        tokenId
+        tokenType
+        tokenValue
+        userId
+    }
+}

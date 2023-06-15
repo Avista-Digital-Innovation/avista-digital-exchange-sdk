@@ -1,0 +1,38 @@
+mutation storage_deleteDataStoreDirectory($dataStoreDirectoryId: ID!){
+    storage_deleteDataStoreDirectory(dataStoreDirectoryId: $dataStoreDirectoryId){
+        contents{
+            dataStoreDirectory{
+                contents{
+                    dataStoreFile{
+                        contentType
+                        dataStoreDirectoryId
+                        dataStoreFileId
+                        dataStoreId
+                        dataViewIds
+                        description
+                        fileExtension
+                        lastModified
+                        name
+                        ownerUserId
+                        s3ConfirmedUpload
+                        storageSizeBytes
+                    }
+                    objectType
+                }
+                dataStoreDirectoryId
+                dataStoreId
+                homeDirectory
+                name
+                ownerUserId
+                parentDirectoryId
+            }
+            objectType
+        }
+        dataStoreDirectoryId
+        dataStoreId
+        homeDirectory
+        name
+        ownerUserId
+        parentDirectoryId
+    }
+}

@@ -1,0 +1,35 @@
+query iot_getGroup($includeEndpoints: Boolean, $iotGroupId: ID!){
+    iot_getGroup(includeEndpoints: $includeEndpoints, iotGroupId: $iotGroupId){
+        description
+        endpoints{
+            description
+            iotEndpointId
+            iotHubId
+            modelId
+            name
+            ownerUserId
+            properties{
+                attributeType
+                defaultValue
+                description
+                name
+                schemaType
+                timestamp
+                value
+                writable
+            }
+            telemetry{
+                attributeType
+                description
+                index
+                name
+                schemaType
+            }
+        }
+        iotEndpointIds
+        iotGroupId
+        iotHubId
+        name
+        ownerUserId
+    }
+}

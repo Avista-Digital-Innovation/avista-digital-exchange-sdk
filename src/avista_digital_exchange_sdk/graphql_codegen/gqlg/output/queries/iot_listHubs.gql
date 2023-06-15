@@ -1,0 +1,8 @@
+query iot_listHubs{
+    iot_listHubs{
+        description
+        iotHubId
+        name
+        ownerUserId
+    }
+}

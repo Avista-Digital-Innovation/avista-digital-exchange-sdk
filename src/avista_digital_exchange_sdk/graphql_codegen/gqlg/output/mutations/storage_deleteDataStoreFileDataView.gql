@@ -1,0 +1,16 @@
+mutation storage_deleteDataStoreFileDataView($dataStoreFileId: ID!, $dataViewId: ID!){
+    storage_deleteDataStoreFileDataView(dataStoreFileId: $dataStoreFileId, dataViewId: $dataViewId){
+        contentType
+        dataStoreDirectoryId
+        dataStoreFileId
+        dataStoreId
+        dataViewIds
+        description
+        fileExtension
+        lastModified
+        name
+        ownerUserId
+        s3ConfirmedUpload
+        storageSizeBytes
+    }
+}

@@ -1,0 +1,16 @@
+mutation storage_updateDataStoreFile($dataStoreDirectoryId: ID, $dataStoreFileId: ID!, $description: String, $name: String){
+    storage_updateDataStoreFile(dataStoreDirectoryId: $dataStoreDirectoryId, dataStoreFileId: $dataStoreFileId, description: $description, name: $name){
+        contentType
+        dataStoreDirectoryId
+        dataStoreFileId
+        dataStoreId
+        dataViewIds
+        description
+        fileExtension
+        lastModified
+        name
+        ownerUserId
+        s3ConfirmedUpload
+        storageSizeBytes
+    }
+}

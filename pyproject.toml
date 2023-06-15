@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools>=61.0","websocket-client","requests"] # , "pip-system-certs"
+requires = ["setuptools>=61.0","websocket-client","requests", "py-graphql-mapper", "ariadne-codegen"] # , "pip-system-certs"
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "avista_digital_exchange_sdk"
-version = "0.2.1"
+version = "0.3.0"
 authors = [
   { name="Justin Whicker", email="jwhicker@urbanova.org"},
   {  name="Jon Thompson", email="jon.thompson@avistacorp.com" }

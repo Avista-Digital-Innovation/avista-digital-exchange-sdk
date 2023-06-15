@@ -33,6 +33,10 @@ This package allows you to access the Avista Digital Exchange and perform a subs
       - [queryByTimeRange](#querybytimerange)
       - [publish](#publish)
       - [updateEndpointProperties](#updateendpointproperties)
+    - [dataCapture](#datacapture)
+      - [publishData](#publishdata)
+      - [startCapture](#startcapture)
+      - [stopCapture](#stopcapture)
   - [Types](#types)
     - [User](#user)
     - [Organization](#organization)
@@ -54,8 +58,16 @@ This package allows you to access the Avista Digital Exchange and perform a subs
     - [IotEndpoint](#iotendpoint)
     - [EndpointProperty](#endpointproperty)
     - [EndpointTelemetry](#endpointtelemetry)
+    - [DxTypes.CaptureDataRecordInput](#dxtypescapturedatarecordinput)
+    - [DxTypes.PublishCaptureDataResult](#dxtypespublishcapturedataresult)
+    - [DxTypes.PublishCaptureDataSuccessfulRecord](#dxtypespublishcapturedatasuccessfulrecord)
+    - [DxTypes.PublishCaptureDataFailedRecord](#dxtypespublishcapturedatafailedrecord)
+    - [DxTypes.StartCaptureResult](#dxtypesstartcaptureresult)
+    - [DxTypes.StopCaptureResult](#dxtypesstopcaptureresult)
   - [Development](#development)
   - [Deployment](#deployment)
+  - [Generating Python types and GraphQL Client from GraphQL Schema](#generating-python-types-and-graphql-client-from-graphql-schema)
+  - [Fix for py-graphql-mapper module](#fix-for-py-graphql-mapper-module)
   - [Resources](#resources)
 
 ## Getting Started<a id="getting-started"></a>
@@ -497,7 +509,7 @@ result = digitalExchange.iot.queryByTimeRange(
     "./")
 ```
 
-#### publish<a id="publish"></a>
+#### publish<a id="iotpublish"></a>
 
 Publish telemetry values for an endpoint.  One or more data records can be written at one time.
 
@@ -606,10 +618,171 @@ properties = {
     'moving': False
 }
 
-instance.iot.updateEndpointProperties(
+digitalExchange.iot.updateEndpointProperties(
      "iotEndpointId.1234",
      properties)
 ```
+
+---
+
+### dataCapture<a id="datacapture"></a>
+
+#### publishData<a id="publishdata"></a>
+
+Publish attribute values to an active Data Capture.
+
+**Parameters**
+
+```
+captureId :  str, required
+    The id of the Data Capture.
+data :  [DxTypes.CaptureDataRecordInput], required
+    Array of data records to write.  Each dict should contain the record's timestamp, timeUnit ("MILLISECONDS"), and a dicitonary of attributeId, value pairs. Example shown below.
+```
+
+**Return Type**
+
+[DxTypes.PublishCaptureDataResult](#dxtypespublishcapturedataresult)
+
+
+**Example**
+
+```
+# captureDataPublishSample.py
+import asyncio
+import time
+from avista_digital_exchange_sdk import AvistaDigitalExchange, DxTypes
+
+# Create an instance of the AvistaDigitalExchange SDK
+# You may use a user authentication token or the authentication token of the Data Capture
+digitalExchange = AvistaDigitalExchange(AUTHENTICATION_TOKEN_VALUE)
+print("Instantiated AvistaDigitalExchange instance with authentication token")
+
+# Specify the capture you are publishing data to.
+# NOTE: The capture must be in Capturing state to accept data
+captureId = YOUR_CAPTURE_ID
+
+def getCurrentMilliseconds():
+    return int(f'{time.time() * 1000}'.split('.')[0])
+
+async def publishDataExample():
+    # Prepare the data to be published
+    # Replace ATTRIBUTE_ID and ATTRIBUTE_VALUE
+    attributeValueMap = {
+        ATTRIBUTE_ID: ATTRIBUTE_VALUE,
+        ATTRIBUTE_ID: ATTRIBUTE_VALUE,
+        ATTRIBUTE_ID: ATTRIBUTE_VALUE,
+    }
+
+    data = [DxTypes.CaptureDataRecordInput(
+            timestamp=f'{getCurrentMilliseconds()}',
+            timeUnit="MILLISECONDS",
+            attributeValues=attributeValueMap)]
+    try:
+        print("Calling dataCapture.publishData")
+        result = await digitalExchange.dataCapture.publishData(
+            captureId=captureId, data=data)
+    except:
+        print("dataCapture.publishData failed")
+
+asyncio.run(publishDataExample())
+```
+
+#### startCapture<a id="startcapture"></a>
+
+Commands a Data Capture to begin collecting data. Capture must be in 'Ready' state for startCapture to succeed.
+
+**Parameters**
+
+```
+captureId :  str, required
+    The id of the Data Capture.
+```
+
+**Return Type**
+
+[DxTypes.StartCaptureResult](#dxtypesstartcaptureresult)
+
+
+**Example**
+
+```
+# captureDataPublishSample.py
+import asyncio
+import time
+from avista_digital_exchange_sdk import AvistaDigitalExchange, DxTypes
+
+# Create an instance of the AvistaDigitalExchange SDK
+# You may use a user authentication token or the authentication token of the Data Capture
+digitalExchange = AvistaDigitalExchange(AUTHENTICATION_TOKEN_VALUE)
+print("Instantiated AvistaDigitalExchange instance with authentication token")
+
+# Specify the capture you are starting.
+# NOTE: The capture must be in 'READY' state to accept data
+captureId = YOUR_CAPTURE_ID
+
+def getCurrentMilliseconds():
+    return int(f'{time.time() * 1000}'.split('.')[0])
+
+async def startCaptureExample():
+    try:
+        print("Calling dataCapture.startCapture")
+        result = await digitalExchange.dataCapture.startCapture(
+            captureId=captureId)
+    except:
+        print("dataCapture.startCapture failed")
+
+asyncio.run(startCaptureExample())
+```
+
+
+#### stopCapture<a id="stopcapture"></a>
+
+Commands a Data Capture to stop collecting data. Capture must be in 'CAPTURING' state for stopCapture to succeed.
+
+**Parameters**
+
+```
+captureId :  str, required
+    The id of the Data Capture.
+```
+
+**Return Type**
+
+[DxTypes.StopCaptureResult](#dxtypesstopcaptureresult)
+
+
+**Example**
+
+```
+# captureDataPublishSample.py
+import asyncio
+import time
+from avista_digital_exchange_sdk import AvistaDigitalExchange, DxTypes
+
+# Create an instance of the AvistaDigitalExchange SDK
+# You may use a user authentication token or the authentication token of the Data Capture
+digitalExchange = AvistaDigitalExchange(AUTHENTICATION_TOKEN_VALUE)
+print("Instantiated AvistaDigitalExchange instance with authentication token")
+
+# Specify the capture you are stopping.
+# NOTE: The capture must be in 'CAPTURING' state to be stopped.
+captureId = YOUR_CAPTURE_ID
+
+def getCurrentMilliseconds():
+    return int(f'{time.time() * 1000}'.split('.')[0])
+
+async def stopCaptureExample():
+    try:
+        print("Calling dataCapture.stopCapture")
+        result = await digitalExchange.dataCapture.stopCapture(
+            captureId=captureId)
+    except:
+        print("dataCapture.stopCapture failed")
+
+asyncio.run(stopCaptureExample())
+```
+
 
 
 ---
@@ -932,6 +1105,109 @@ schemaType: str : "integer", "double", "string", "boolean", "dateTime", "duratio
     The type of the variable.
 ```
 
+### DxTypes.CaptureDataRecordInput<a id="dxtypescapturedatarecordinput"></a>
+
+A data record that is to be published to a Data Capture.
+
+**Properties**
+
+```
+timestamp: str
+    The timestamp of the data record
+timeUnit: str
+    The format of the timestamp
+attributeValues: dict
+    A dictionary containing the data to be written for the given timestmap. Key values should be attributeIds that map to the relevant attribute values. 
+```
+
+### DxTypes.PublishCaptureDataResult<a id="dxtypespublishcapturedataresult"></a>
+
+Result object for the DataCapture.publishData operation.
+
+**Properties**
+
+```
+success: bool
+    Indicates if the action was successful
+captureId: str
+    The captureId of the Data Capture published to.
+recordsWritten: [DxTypes.PublishCaptureDataSuccessfulRecord] | None
+    An array of input data records that were successfully written.
+recordsFailed: [DxTypes.PublishCaptureDataFailedRecord] | None    
+    An array of input data records that were not written.
+error: str | None
+    An error message if a problem was encountered.
+```
+
+### DxTypes.PublishCaptureDataSuccessfulRecord<a id="dxtypespublishcapturedatasuccessfulrecord"></a>
+
+A record that was published and written to a Data Capture.
+
+**Properties**
+
+```
+timestamp: str
+    The timestamp of the data record
+timeUnit: str
+    The format of the timestamp
+attributeId: str
+attributeValue: str
+```
+
+### DxTypes.PublishCaptureDataFailedRecord<a id="dxtypespublishcapturedatafailedrecord"></a>
+
+A record that was published but not written to a Data Capture.
+
+**Properties**
+
+```
+timestamp: str
+    The timestamp of the data record
+timeUnit: str
+    The format of the timestamp
+attributeId: str
+attributeValue: str
+message: str
+    Explains why the data record failed.
+```
+
+
+### DxTypes.StartCaptureResult<a id="dxtypesstartcaptureresult"></a>
+
+Result object for the DataCapture.startCapture operation.
+
+**Properties**
+
+```
+success: bool
+    Indicates if the action was successful
+captureId: str
+    The captureId of the Data Capture being started.
+startedAt: str | None
+    The timestamp at which the Data Capture was started (if successful).
+error: str | None
+    An error message if a problem was encountered.
+```
+
+
+### DxTypes.StopCaptureResult<a id="dxtypesstopcaptureresult"></a>
+
+Result object for the DataCapture.stopCapture operation.
+
+**Properties**
+
+```
+success: bool
+    Indicates if the action was successful
+captureId: str
+    The captureId of the Data Capture being stopped.
+stoppedAt: str | None
+    The timestamp at which the Data Capture was stopped (if successful).
+error: str | None
+    An error message if a problem was encountered.
+```
+
+
 ## Development<a id="development"></a>
 
 lone the repository with command `git clone https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk.git`.
@@ -946,7 +1222,7 @@ Follow the steps below to build and push the new package version to PyPi. [(Pyth
 
 **Steps**
 
-1. Update `CHANGELOG.md` with new release notes.queryTimeSeriesDatabaseWithFilters
+1. Update `CHANGELOG.md` with new release notes.
 2. Update `README.md` if necessary.
 3. PyPi deployment
    1. Update the package version in `pyproject.toml`. Follow [this versioning method](https://py-pkgs.org/07-releasing-versioning.html#version-numbering)
@@ -959,6 +1235,23 @@ Follow the steps below to build and push the new package version to PyPi. [(Pyth
 4. Push changes to git.
 5. Merge changes to `main`.
 6. Create a release branch from main with the name `release/YYYY_MM_DD_vXX.XX.XX` where XX.XX.XX is the new version number, and YYYY_MM_DD is the date the version was deployed.
+
+## Generating Python types and GraphQL Client from GraphQL Schema
+
+See instructions in src/avista_digital_exchange_sdk/graphql_codegen/README.md
+
+## Fix for py-graphql-mapper module
+
+The plugin was failing to assign the correct type for attributes of a schema type that were lists of other custom schema types (ie. IotEndpoint contains array of Properties and Telemetry).
+
+I edited the function _init_type(obj, fieldType, fieldName) in the file gql_init.py from commit bc0888b. There are conditions for different fieldTypes. I edited the condition if the field is a list. Changed
+'''
+    elif fieldType == list or (hasattr(fieldType, '__origin__') and fieldType.__origin__ == list):
+'''
+to
+'''
+    elif fieldType == list or (hasattr(fieldType, '__origin__') and fieldType.__origin__ == list) or "gql_types.list_" in str(fieldType):
+'''
 
 ## Resources<a id="resources"></a>
 

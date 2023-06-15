@@ -1,0 +1,13 @@
+mutation iot_regenerateEndpointToken($iotEndpointId: ID!){
+    iot_regenerateEndpointToken(iotEndpointId: $iotEndpointId){
+        dateCreated
+        dateExpires
+        lastActive
+        name
+        scope
+        tokenId
+        tokenType
+        tokenValue
+        userId
+    }
+}

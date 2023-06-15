@@ -1,0 +1,38 @@
+mutation storage_updateDataStoreDirectory($dataStoreDirectoryId: ID!, $name: String, $parentDirectoryId: ID){
+    storage_updateDataStoreDirectory(dataStoreDirectoryId: $dataStoreDirectoryId, name: $name, parentDirectoryId: $parentDirectoryId){
+        contents{
+            dataStoreDirectory{
+                contents{
+                    dataStoreFile{
+                        contentType
+                        dataStoreDirectoryId
+                        dataStoreFileId
+                        dataStoreId
+                        dataViewIds
+                        description
+                        fileExtension
+                        lastModified
+                        name
+                        ownerUserId
+                        s3ConfirmedUpload
+                        storageSizeBytes
+                    }
+                    objectType
+                }
+                dataStoreDirectoryId
+                dataStoreId
+                homeDirectory
+                name
+                ownerUserId
+                parentDirectoryId
+            }
+            objectType
+        }
+        dataStoreDirectoryId
+        dataStoreId
+        homeDirectory
+        name
+        ownerUserId
+        parentDirectoryId
+    }
+}

@@ -1,0 +1,8 @@
+mutation iot_updateHub($description: String, $iotHubId: ID!, $name: String){
+    iot_updateHub(description: $description, iotHubId: $iotHubId, name: $name){
+        description
+        iotHubId
+        name
+        ownerUserId
+    }
+}

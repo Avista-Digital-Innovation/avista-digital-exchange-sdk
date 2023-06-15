@@ -88,13 +88,15 @@ class IoTUtil(object):
             self._client, self._debug, endpointFilterInput, startTime, endTime)
         result = query.performQuery()
         queryId = result.queryId
-        print(
-            f'received query result chunk {result.resultChunkIndex}')
+        if self._debug:
+            print(
+                f'received query result chunk {result.resultChunkIndex}')
 
         def quitHandler(signum, frame):
             # Stop query
             if queryId is not None:
-                print("Cancelling query....")
+                if self._debug:
+                    print("Cancelling query....")
                 mutation = iot_cancelQuery(
                     self._client, self._debug, queryId)
                 cancelResult = mutation.performMutation()
@@ -106,8 +108,9 @@ class IoTUtil(object):
             query = iot_queryByTimeRange(
                 self._client, self._debug, endpointFilterInput, startTime, endTime, result.nextToken, result.clientToken, result.queryString, result.queryId)
             result = query.performQuery()
-            print(
-                f'received query result chunk {result.resultChunkIndex}')
+            if self._debug:
+                print(
+                    f'received query result chunk {result.resultChunkIndex}')
 
         # get onNotifyObject
         subscription = self._getSubscriptionToQueryExportFileCompletion(

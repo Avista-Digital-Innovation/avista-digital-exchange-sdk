@@ -1,0 +1,10 @@
+query timeSeriesDb_getDatabase($timeSeriesDbId: ID!){
+    timeSeriesDb_getDatabase(timeSeriesDbId: $timeSeriesDbId){
+        databaseName
+        description
+        name
+        ownerUserId
+        tableName
+        timeSeriesDbId
+    }
+}

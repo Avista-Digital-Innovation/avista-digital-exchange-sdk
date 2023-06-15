@@ -1,0 +1,19 @@
+query user_getUserSession{
+    user_getUserSession{
+        user{
+            email
+            firstName
+            lastActive
+            lastName
+            mobile
+            organization{
+                hostOrganization
+                name
+                organizationId
+            }
+            userAccountState
+            userId
+            userRoles
+        }
+    }
+}

@@ -1,0 +1,47 @@
+mutation dataCapture_createCapture($captureType: DataCaptureType!, $description: String, $displayName: String!){
+    dataCapture_createCapture(captureType: $captureType, description: $description, displayName: $displayName){
+        captureId
+        captureType
+        dataModel{
+            dateCreated
+            dateUpdated
+            errors
+            items{
+                attributes{
+                    attributeType
+                    description
+                    displayName
+                    schemaType
+                    unit
+                    userDefinedId
+                }
+                description
+                displayName
+                userDefinedId
+            }
+            state
+            version
+        }
+        dateCreated
+        dateUpdated
+        description
+        displayName
+        ownerUserId
+        state
+        stateHistory{
+            dateCreated
+            message
+            newState
+        }
+        timeSettings{
+            actualStartTime
+            actualStopTime
+            errors
+            scheduledStartTime
+            scheduledStopTime
+            startTimeType
+            state
+            stopTimeType
+        }
+    }
+}

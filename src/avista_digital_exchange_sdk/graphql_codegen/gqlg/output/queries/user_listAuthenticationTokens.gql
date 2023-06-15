@@ -1,0 +1,13 @@
+query user_listAuthenticationTokens{
+    user_listAuthenticationTokens{
+        dateCreated
+        dateExpires
+        lastActive
+        name
+        scope
+        tokenId
+        tokenType
+        tokenValue
+        userId
+    }
+}

@@ -1,0 +1,13 @@
+query dataCapture_getCaptureAuthenticationToken($captureId: ID!){
+    dataCapture_getCaptureAuthenticationToken(captureId: $captureId){
+        dateCreated
+        dateExpires
+        lastActive
+        name
+        scope
+        tokenId
+        tokenType
+        tokenValue
+        userId
+    }
+}

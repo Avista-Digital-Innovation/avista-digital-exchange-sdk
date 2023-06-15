@@ -1,0 +1,16 @@
+subscription onTimeSeriesDbPublish($assetId: ID!, $timeSeriesDbId: ID!){
+    onTimeSeriesDbPublish(assetId: $assetId, timeSeriesDbId: $timeSeriesDbId){
+        assetId
+        attributes{
+            attributeType
+            data{
+                timestamp
+                value
+            }
+            lastValue
+            lastValueTime
+            name
+        }
+        name
+    }
+}

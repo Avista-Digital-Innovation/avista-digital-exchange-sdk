@@ -1,0 +1,8 @@
+query iot_getHub($iotHubId: ID!){
+    iot_getHub(iotHubId: $iotHubId){
+        description
+        iotHubId
+        name
+        ownerUserId
+    }
+}

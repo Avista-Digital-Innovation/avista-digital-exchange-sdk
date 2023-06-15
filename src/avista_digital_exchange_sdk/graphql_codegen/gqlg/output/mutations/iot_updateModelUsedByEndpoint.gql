@@ -1,0 +1,27 @@
+mutation iot_updateModelUsedByEndpoint($iotEndpointId: ID!, $modelId: ID!){
+    iot_updateModelUsedByEndpoint(iotEndpointId: $iotEndpointId, modelId: $modelId){
+        description
+        iotEndpointId
+        iotHubId
+        modelId
+        name
+        ownerUserId
+        properties{
+            attributeType
+            defaultValue
+            description
+            name
+            schemaType
+            timestamp
+            value
+            writable
+        }
+        telemetry{
+            attributeType
+            description
+            index
+            name
+            schemaType
+        }
+    }
+}

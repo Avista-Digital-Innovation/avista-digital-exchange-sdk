@@ -1,0 +1,25 @@
+mutation iot_createNewModelVersion($description: String, $displayName: String, $modelId: ID!, $properties: [ModelPropertyInput], $telemetry: [ModelTelemetryInput], $version: Int){
+    iot_createNewModelVersion(description: $description, displayName: $displayName, modelId: $modelId, properties: $properties, telemetry: $telemetry, version: $version){
+        description
+        displayName
+        dtmi
+        modelId
+        ownerUserId
+        properties{
+            attributeType
+            defaultValue
+            description
+            index
+            name
+            schemaType
+            writable
+        }
+        telemetry{
+            attributeType
+            description
+            index
+            name
+            schemaType
+        }
+    }
+}

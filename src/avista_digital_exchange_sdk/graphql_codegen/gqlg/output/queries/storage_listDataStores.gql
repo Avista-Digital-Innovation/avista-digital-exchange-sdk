@@ -1,0 +1,9 @@
+query storage_listDataStores($organizationId: ID, $userId: ID){
+    storage_listDataStores(organizationId: $organizationId, userId: $userId){
+        dataStoreId
+        description
+        homeDirectoryId
+        name
+        ownerUserId
+    }
+}

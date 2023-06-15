@@ -1,0 +1,7 @@
+mutation timeSeriesDb_generateQueryResultExportFile($fileFormat: TimeSeriesQueryOutputFileType, $queryId: String!, $timeSeriesDbId: ID!){
+    timeSeriesDb_generateQueryResultExportFile(fileFormat: $fileFormat, queryId: $queryId, timeSeriesDbId: $timeSeriesDbId){
+        fileFormat
+        queryId
+        timeSeriesDbId
+    }
+}
