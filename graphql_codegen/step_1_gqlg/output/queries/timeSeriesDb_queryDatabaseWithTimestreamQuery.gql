@@ -1,6 +1,0 @@
-query timeSeriesDb_queryDatabaseWithTimestreamQuery($clientToken: String, $maxRows: Int, $nextToken: String, $queryString: String!, $timeSeriesDbId: ID!){
-    timeSeriesDb_queryDatabaseWithTimestreamQuery(clientToken: $clientToken, maxRows: $maxRows, nextToken: $nextToken, queryString: $queryString, timeSeriesDbId: $timeSeriesDbId){
-        clientToken
-        resultJSONString
-    }
-}

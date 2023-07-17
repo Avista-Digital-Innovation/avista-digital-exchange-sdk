@@ -1,3 +1,0 @@
-query dataCapture_getPythonSDKSample($captureId: ID!){
-    dataCapture_getPythonSDKSample(captureId: $captureId)
-}

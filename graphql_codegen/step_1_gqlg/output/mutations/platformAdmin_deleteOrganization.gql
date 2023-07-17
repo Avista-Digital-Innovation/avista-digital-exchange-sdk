@@ -1,7 +1,0 @@
-mutation platformAdmin_deleteOrganization($comment: String, $organizationId: ID!){
-    platformAdmin_deleteOrganization(comment: $comment, organizationId: $organizationId){
-        hostOrganization
-        name
-        organizationId
-    }
-}

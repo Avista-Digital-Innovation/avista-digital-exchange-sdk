@@ -1,8 +1,0 @@
-mutation iot_deleteHub($iotHubId: ID!){
-    iot_deleteHub(iotHubId: $iotHubId){
-        description
-        iotHubId
-        name
-        ownerUserId
-    }
-}

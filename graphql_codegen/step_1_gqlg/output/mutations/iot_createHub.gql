@@ -1,8 +1,0 @@
-mutation iot_createHub($description: String, $name: String!){
-    iot_createHub(description: $description, name: $name){
-        description
-        iotHubId
-        name
-        ownerUserId
-    }
-}

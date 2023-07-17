@@ -1,3 +1,0 @@
-query iot_getModelInDTDLFormat($modelId: ID!){
-    iot_getModelInDTDLFormat(modelId: $modelId)
-}

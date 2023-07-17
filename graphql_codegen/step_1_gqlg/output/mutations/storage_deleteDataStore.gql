@@ -1,9 +1,0 @@
-mutation storage_deleteDataStore($dataStoreId: ID!){
-    storage_deleteDataStore(dataStoreId: $dataStoreId){
-        dataStoreId
-        description
-        homeDirectoryId
-        name
-        ownerUserId
-    }
-}

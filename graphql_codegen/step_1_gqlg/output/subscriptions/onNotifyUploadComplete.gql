@@ -1,7 +1,0 @@
-subscription onNotifyUploadComplete($uploadId: ID!){
-    onNotifyUploadComplete(uploadId: $uploadId){
-        errorMessage
-        httpStatusCode
-        uploadId
-    }
-}

@@ -1,7 +1,0 @@
-query dataCapture_getDataModelExport($captureId: ID!){
-    dataCapture_getDataModelExport(captureId: $captureId){
-        captureId
-        contents
-        fileName
-    }
-}

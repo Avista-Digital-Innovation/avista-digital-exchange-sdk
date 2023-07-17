@@ -1,6 +1,0 @@
-mutation timeSeriesDb_cancelDatabaseQuery($queryId: String!, $timeSeriesDbId: ID!){
-    timeSeriesDb_cancelDatabaseQuery(queryId: $queryId, timeSeriesDbId: $timeSeriesDbId){
-        errorMessage
-        httpStatusCode
-    }
-}

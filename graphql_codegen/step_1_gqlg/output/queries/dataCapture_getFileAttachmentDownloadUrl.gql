@@ -1,7 +1,0 @@
-query dataCapture_getFileAttachmentDownloadUrl($attachmentId: ID!, $captureId: ID!){
-    dataCapture_getFileAttachmentDownloadUrl(attachmentId: $attachmentId, captureId: $captureId){
-        itemId
-        uploadId
-        url
-    }
-}

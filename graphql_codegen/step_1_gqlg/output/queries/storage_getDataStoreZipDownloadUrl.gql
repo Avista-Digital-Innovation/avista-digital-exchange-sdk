@@ -1,7 +1,0 @@
-query storage_getDataStoreZipDownloadUrl($dataStoreObjectIds: [DataStoreObjectIdInput]!){
-    storage_getDataStoreZipDownloadUrl(dataStoreObjectIds: $dataStoreObjectIds){
-        itemId
-        uploadId
-        url
-    }
-}

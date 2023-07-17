@@ -1,6 +1,0 @@
-mutation iot_cancelQuery($queryId: ID!){
-    iot_cancelQuery(queryId: $queryId){
-        errorMessage
-        httpStatusCode
-    }
-}

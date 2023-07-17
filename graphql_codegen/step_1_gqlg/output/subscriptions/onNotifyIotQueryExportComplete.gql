@@ -1,8 +1,0 @@
-subscription onNotifyIotQueryExportComplete($queryId: String!){
-    onNotifyIotQueryExportComplete(queryId: $queryId){
-        fileFormat
-        fileSizeBytes
-        queryId
-        url
-    }
-}

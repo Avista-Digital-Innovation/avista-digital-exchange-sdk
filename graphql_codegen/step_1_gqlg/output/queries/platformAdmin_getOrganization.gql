@@ -1,7 +1,0 @@
-query platformAdmin_getOrganization($organizationId: ID!){
-    platformAdmin_getOrganization(organizationId: $organizationId){
-        hostOrganization
-        name
-        organizationId
-    }
-}

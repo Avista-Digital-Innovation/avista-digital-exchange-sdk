@@ -1,8 +1,0 @@
-mutation timeSeriesDb_notifyTimeSeriesQueryExportComplete($fileFormat: TimeSeriesQueryOutputFileType, $queryId: String!){
-    timeSeriesDb_notifyTimeSeriesQueryExportComplete(fileFormat: $fileFormat, queryId: $queryId){
-        fileSizeBytes
-        fileType
-        queryId
-        url
-    }
-}

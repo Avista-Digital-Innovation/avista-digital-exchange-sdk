@@ -1,7 +1,0 @@
-query storage_getDataStoreFileDownloadUrl($dataStoreFileId: ID!){
-    storage_getDataStoreFileDownloadUrl(dataStoreFileId: $dataStoreFileId){
-        itemId
-        uploadId
-        url
-    }
-}

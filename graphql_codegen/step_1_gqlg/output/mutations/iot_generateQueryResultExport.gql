@@ -1,6 +1,0 @@
-mutation iot_generateQueryResultExport($fileFormat: ExportFileFormat, $queryId: ID!){
-    iot_generateQueryResultExport(fileFormat: $fileFormat, queryId: $queryId){
-        fileFormat
-        queryId
-    }
-}

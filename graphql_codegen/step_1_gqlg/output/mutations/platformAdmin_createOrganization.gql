@@ -1,7 +1,0 @@
-mutation platformAdmin_createOrganization($hostOrganization: Boolean, $name: String!){
-    platformAdmin_createOrganization(hostOrganization: $hostOrganization, name: $name){
-        hostOrganization
-        name
-        organizationId
-    }
-}

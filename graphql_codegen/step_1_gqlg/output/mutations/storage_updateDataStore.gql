@@ -1,9 +1,0 @@
-mutation storage_updateDataStore($dataStoreId: ID!, $description: String, $name: String){
-    storage_updateDataStore(dataStoreId: $dataStoreId, description: $description, name: $name){
-        dataStoreId
-        description
-        homeDirectoryId
-        name
-        ownerUserId
-    }
-}
