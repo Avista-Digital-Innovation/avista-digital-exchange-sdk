@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=61.0","websockets","requests", "py-graphql-mapper", "ariadne-codegen","requests", "httpx", "pydantic==1.10.8", "certifi"] # , "pip-system-certs"
+requires = ["setuptools>=61.0","requests","requests", "httpx", "pydantic==1.10.8", "certifi", "websockets"] #  "py-graphql-mapper", "pip-system-certs"
 build-backend = "setuptools.build_meta"
 
 [project]

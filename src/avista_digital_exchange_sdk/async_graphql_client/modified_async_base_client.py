@@ -139,7 +139,7 @@ class AsyncBaseClient:
 
         async with ws_connect(
             self.ws_url,
-            subprotocols=[Subprotocol(GRAPHQL_TRANSPORT_WS)],
+            subprotocols=["graphql-ws"],
             origin=self.ws_origin,
             extra_headers=self.ws_headers,
         ) as websocket:
@@ -147,12 +147,12 @@ class AsyncBaseClient:
                 # Stop subscription on terminate
                 print("Cancelling data subscription....")
                 self._send_stop(websocket=websocket, operation_id=operation_id)
+                exit()
 
             signal.signal(signal.SIGINT, quitHandler)
 
-            print("sending connect init")
             await self._send_connection_init(websocket)
-            print("sending subscribe")
+
             await self._send_subscribe(
                 websocket,
                 operation_id=operation_id,
@@ -161,9 +161,7 @@ class AsyncBaseClient:
             )
 
             async for message in websocket:
-                print("Handling message in execute_ws...")
                 data = await self._handle_ws_message(message, websocket)
-                print("_handle_ws_message result")
                 print(data)
                 if data:
                     yield data
@@ -235,9 +233,6 @@ class AsyncBaseClient:
 
         type_ = message_dict.get("type")
         payload = message_dict.get("payload", {})
-        print("_handle_ws_message")
-        print(type_)
-        print(payload)
 
         if not type_ or type_ not in {t.value for t in GraphQLTransportWSMessageType}:
             raise GraphQLClientInvalidMessageFormat(message=message)
