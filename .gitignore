@@ -157,3 +157,4 @@ cython_debug/
 
 # Codegen
 ./graphql_codegen/input/schema.graphql
+./graphql_codegen/step_1_gqlg/output/
