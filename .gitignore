@@ -154,3 +154,6 @@ dmypy.json
 cython_debug/
 
 *.DS_Store
+
+# Codegen
+./graphql_codegen/input/schema.graphql
