@@ -156,5 +156,5 @@ cython_debug/
 *.DS_Store
 
 # Codegen
-./graphql_codegen/input/schema.graphql
-./graphql_codegen/step_1_gqlg/output/
+graphql_codegen/input/schema.graphql
+graphql_codegen/step_1_gqlg/output/
