@@ -1,6 +1,0 @@
-[tool.ariadne-codegen]
-schema_path = "../input/schema.graphql"
-queries_path = "../gqlg/output/queries.graphql"
-target_file_path = "example_schema.py"
-schema_variable_name = "example_schema"
-type_map_variable_name = "example_type_map"

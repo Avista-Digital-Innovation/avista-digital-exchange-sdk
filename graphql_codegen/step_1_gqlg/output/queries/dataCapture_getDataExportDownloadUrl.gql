@@ -1,0 +1,11 @@
+query dataCapture_getDataExportDownloadUrl($captureId: ID!){
+    dataCapture_getDataExportDownloadUrl(captureId: $captureId){
+        dateCompleted
+        dateStarted
+        exportType
+        logs
+        name
+        state
+        url
+    }
+}

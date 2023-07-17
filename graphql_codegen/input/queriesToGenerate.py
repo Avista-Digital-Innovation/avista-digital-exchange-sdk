@@ -1,0 +1,10 @@
+
+queriesToGenerate = [
+    ""
+]
+mutationsToGenerate = [
+    ""
+]
+subscriptionsToGenerate = [
+    ""
+]

@@ -1,7 +1,7 @@
 
 from logging import Logger
 from typing import List
-from .graphql_codegen.ariadne.graphql_client import exceptions, input_types
+from .async_graphql_client import exceptions, input_types
 from .client import Client as DxClient
 from . import DxTypes
 
@@ -15,6 +15,14 @@ class DataCaptureUtil(object):
         self._debug = debug
         self._client = client
         self._logger = logger
+
+    async def listenForCaptureData(self, captureId: str):
+        print("Subscribing to capture data....")
+        async for item in self._client.updatedGqlClient.on_capture_publish_data(
+                capture_id=captureId):
+            print("In for loop...")
+            print("Subscription item....")
+            print(item)
 
     async def publishData(self, captureId: str, data: List[DxTypes.CaptureDataRecordInput]) -> DxTypes.PublishCaptureDataResult:
         if self._debug:

@@ -100,7 +100,6 @@ class IoTUtil(object):
                 mutation = iot_cancelQuery(
                     self._client, self._debug, queryId)
                 cancelResult = mutation.performMutation()
-            exit(1)
 
         signal.signal(signal.SIGINT, quitHandler)
 

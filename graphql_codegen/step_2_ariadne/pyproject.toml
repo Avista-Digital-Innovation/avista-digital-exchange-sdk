@@ -1,0 +1,12 @@
+[tool.ariadne-codegen]
+schema_path = "../input/schema.graphql"
+queries_path = "../step_1_gqlg/output/queries.graphql"
+target_package_name = "async_graphql_client"
+target_package_path = "../../src/avista_digital_exchange_sdk/"
+base_client_file_path = "./src/modified_async_base_client.py"
+base_client_name = "AsyncBaseClient"
+files_to_include = ["./src/exceptions.py"]
+
+target_file_path = "example_schema.py"
+schema_variable_name = "example_schema"
+type_map_variable_name = "example_type_map"

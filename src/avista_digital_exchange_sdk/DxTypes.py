@@ -3,7 +3,7 @@ from enum import Enum
 import json
 from typing import List
 
-from .graphql_codegen.ariadne.graphql_client.data_capture_publish_data import DataCapturePublishDataDataCapturePublishData
+from .async_graphql_client.data_capture_publish_data import DataCapturePublishDataDataCapturePublishData
 
 
 class TimeUnitEnum(Enum):
