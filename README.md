@@ -64,6 +64,7 @@ This package allows you to access the Avista Digital Exchange and perform a subs
     - [DxTypes.PublishCaptureDataFailedRecord](#dxtypespublishcapturedatafailedrecord)
     - [DxTypes.StartCaptureResult](#dxtypesstartcaptureresult)
     - [DxTypes.StopCaptureResult](#dxtypesstopcaptureresult)
+  - [Troubleshooting](#troubleshooting)
   - [Development](#development)
   - [Deployment](#deployment)
   - [Generating Python types and GraphQL Client from GraphQL Schema](#generating-python-types-and-graphql-client-from-graphql-schema)
@@ -1209,9 +1210,13 @@ error: str | None
 ```
 
 
+## Troubleshooting<a id="troubleshooting"></a>
+
+
+
 ## Development<a id="development"></a>
 
-lone the repository with command `git clone https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk.git`.
+Clone the repository with command `git clone https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk.git`.
 
 Use VS Code with the Python extension to utilize formatting and code completion.
 
