@@ -141,12 +141,13 @@ class IoTUtil(object):
             self._client, self._debug, iotEndpointId)
         result = query.performQuery()
         resultArray = []
-        for entry in result.data[0].telemetryValues:
-            resultArray.append({
-                "attributeName": entry.telemetryModel.name,
-                "lastValue": entry.value,
-                "timestamp": entry.timestamp
-            })
+        if len(result.data) > 0:
+            for entry in result.data[0].telemetryValues:
+                resultArray.append({
+                    "attributeName": entry.telemetryModel.name,
+                    "lastValue": entry.value,
+                    "timestamp": entry.timestamp
+                })
         return resultArray
 
     def _getSubscriptionToQueryExportFileCompletion(self, queryId):

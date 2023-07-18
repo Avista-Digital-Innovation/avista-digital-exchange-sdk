@@ -1,17 +1,17 @@
 [build-system]
-requires = ["setuptools>=61.0","requests","requests", "httpx", "pydantic==1.10.8", "certifi", "websockets"] #  "py-graphql-mapper", "pip-system-certs"
+requires = ["setuptools>=61.0","requests", "httpx", "pydantic==1.10.8", "certifi", "websockets"] #  "py-graphql-mapper", "pip-system-certs"
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "avista_digital_exchange_sdk"
-version = "0.3.0"
+version = "0.3.4"
 authors = [
   { name="Justin Whicker", email="jwhicker@urbanova.org"},
   {  name="Jon Thompson", email="jon.thompson@avistacorp.com" }
 ]
 description = "SDK to programmatically access the Avista Digital Exchange"
 readme = "README.md"
-
+dependencies=["requests","pydantic==1.10.8","httpx","websockets", "certifi", "pip-system-certs"]
 
 license = { file="LICENSE" }
 requires-python = ">=3.7"

@@ -18,14 +18,15 @@ async def main():
     print("Instantiated AvistaDigitalExchange object with authentication token")
 
     # Specify the capture you are publishing data to
-    captureId = "dataCapture.71dcb979-d96c-4595-9d94-4c5edb7ff02c"
+    captureId = "dataCapture.68877650-42f8-4381-9b63-c70b550c3632"
 
     # Start Data Capture
     try:
         print("Calling dataCapture.listenForCaptureData")
-        result = await digitalExchange.dataCapture.listenForCaptureData(
-            captureId=captureId)
-        print(f"dataCapture.listenForCaptureData result: {result}")
+        async for result in digitalExchange.dataCapture.listenForCaptureData(
+                captureId=captureId):
+            print("DataCapture.listenForCaptureData: Data received.")
+
     except Exception as error:
         print(f"dataCapture.listenForCaptureData failed with error: {error}")
         raise error

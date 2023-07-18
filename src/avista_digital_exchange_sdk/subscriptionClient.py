@@ -5,7 +5,7 @@ from datetime import datetime
 # from lib2to3.pgen2 import token
 from uuid import uuid4
 
-import websocket
+from .websocketclient.websocket import WebSocketApp
 import threading
 
 import json
@@ -81,17 +81,18 @@ class Subscription:
         # websocket.enableTrace(True)
         if self._debug:
             print('Connecting to: ' + self.connectionUrl)
-        self.ws = websocket.WebSocketApp(self.connectionUrl,
-                                         subprotocols=['graphql-ws'],
-                                         on_open=self.onOpen,
-                                         on_message=self.onMessage,
-                                         on_error=self.onError,
-                                         on_close=self.onClose)
+        self.ws = WebSocketApp(self.connectionUrl,
+                               subprotocols=['graphql-ws'],
+                               on_open=self.onOpen,
+                               on_message=self.onMessage,
+                               on_error=self.onError,
+                               on_close=self.onClose)
         # ws.run_forever(sslopt={"cert_reqs": ssl.CERT_NONE})
         self.ws.run_forever(sslopt={"cert_reqs": ssl.CERT_NONE})
 
     def stop(self):
-        self.ws.close()
+        if self.ws:
+            self.ws.close()
 
     def onMessage(self, ws, message):
         """Socket Event Callbacks, used in WebSocketApp Constructor"""

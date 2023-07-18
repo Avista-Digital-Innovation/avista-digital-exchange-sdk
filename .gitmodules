@@ -1,0 +1,3 @@
+[submodule "src/avista_digital_exchange_sdk/websocket-client"]
+	path = src/avista_digital_exchange_sdk/websocketclient
+	url = https://github.com/websocket-client/websocket-client.git

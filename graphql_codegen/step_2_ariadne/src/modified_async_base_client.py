@@ -45,11 +45,9 @@ GRAPHQL_TRANSPORT_WS = "graphql-ws"
 
 class GraphQLTransportWSMessageType(str, enum.Enum):
     CONNECTION_INIT = "connection_init"
+    CONNECTION_ERROR = "connection_error"
     CONNECTION_ACK = "connection_ack"
-    PING = "ping"
-    PONG = "pong"
     SUBSCRIBE = "subscribe"
-    NEXT = "next"
     ERROR = "error"
     COMPLETE = "complete"
     KA = "ka"
@@ -143,14 +141,12 @@ class AsyncBaseClient:
         ) as websocket:
             def quitHandler(signum, frame):
                 # Stop subscription on terminate
-                print("Cancelling data subscription....")
-                self._send_stop(webscoket=websocket, operation_id=operation_id)
+                self._send_stop(websocket=websocket, operation_id=operation_id)
 
             signal.signal(signal.SIGINT, quitHandler)
 
-            print("sending connect init")
             await self._send_connection_init(websocket)
-            print("sending subscribe")
+
             await self._send_subscribe(
                 websocket,
                 operation_id=operation_id,
@@ -159,10 +155,7 @@ class AsyncBaseClient:
             )
 
             async for message in websocket:
-                print("Handling message in execute_ws...")
                 data = await self._handle_ws_message(message, websocket)
-                print("_handle_ws_message result")
-                print(data)
                 if data:
                     yield data
 
@@ -233,34 +226,19 @@ class AsyncBaseClient:
 
         type_ = message_dict.get("type")
         payload = message_dict.get("payload", {})
-        print("_handle_ws_message")
-        print(type_)
-        print(payload)
-
         if not type_ or type_ not in {t.value for t in GraphQLTransportWSMessageType}:
             raise GraphQLClientInvalidMessageFormat(message=message)
 
         if type_ == GraphQLTransportWSMessageType.KA:
-            print("ka message received")
+            return None
         elif type_ == GraphQLTransportWSMessageType.DATA:
-            print("data message received")
             return cast(Dict[str, Any], payload["data"])
         elif type_ == GraphQLTransportWSMessageType.ERROR:
-            print("error message received")
             raise GraphQLClientGraphQLMultiError.from_errors_dicts(
                 errors_dicts=payload, data=message_dict
             )
-        return None
-        if type_ == GraphQLTransportWSMessageType.NEXT:
-            if "data" not in payload:
-                raise GraphQLClientInvalidMessageFormat(message=message)
-            return cast(Dict[str, Any], payload["data"])
-
-        if type_ == GraphQLTransportWSMessageType.COMPLETE:
-            await websocket.close()
-        elif type_ == GraphQLTransportWSMessageType.PING:
-            await websocket.send(
-                json.dumps({"type": GraphQLTransportWSMessageType.PONG.value})
+        elif type_ == GraphQLTransportWSMessageType.CONNECTION_ERROR:
+            raise GraphQLClientGraphQLMultiError.from_errors_dicts(
+                errors_dicts=payload, data=message_dict
             )
-
         return None

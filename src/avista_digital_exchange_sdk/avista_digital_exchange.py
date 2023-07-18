@@ -16,7 +16,7 @@ class AvistaDigitalExchange(object):
         if type(debug) is not bool:
             raise InvalidParameterException(
                 "AvistaDigitalExchange debug parameter must be a bool")
-        self._stage: str = "DEVELOPMENT"
+        self._stage: str = "PRODUCTION"
         self._debug: bool = debug
         self._token: str = token
         self._client: Client = Client(self._token, self._stage, self._debug)

@@ -25,6 +25,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.3] - 2023-07-18
+
+### Fixed
+
+- Fixed websocket package dependency issues.
+- Fixed other package dependencies.
+
+### Added
+
+- Added support for ariadne-codegen generated async graphql client. Modified the client to use the correct websocket protocol and get around some errors.
+- Added method for subscribing to data capture data updates.
+
 ## [0.3.0] - 2023-06-15
 
 ### Added
@@ -193,7 +205,8 @@ First Beta-ready release.
      - addServiceToCollaborative
      - removeServiceFromCollaborative
 
-[Unreleased]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2023_06_15_v0.3.0...HEAD
+[Unreleased]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2023_07_18_v0.3.3...HEAD
+[0.3.3]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2023_06_15_v0.3.0...release/2023_07_18_v0.3.3
 [0.3.0]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2023_02_15_v0.2.1...release/2023_06_15_v0.3.0
 [0.2.1]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2023_02_14_v0.2.0...release/2023_02_15_v0.2.1
 [0.2.0]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2022_12_25_v0.1.5...release/2023_02_14_v0.2.0

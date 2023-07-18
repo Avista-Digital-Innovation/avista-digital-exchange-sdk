@@ -68,6 +68,7 @@ This package allows you to access the Avista Digital Exchange and perform a subs
   - [Deployment](#deployment)
   - [Generating Python types and GraphQL Client from GraphQL Schema](#generating-python-types-and-graphql-client-from-graphql-schema)
   - [Fix for py-graphql-mapper module](#fix-for-py-graphql-mapper-module)
+  - [websocketclient / websocket-client submodule](#websocketclient--websocket-client-submodule)
   - [Resources](#resources)
 
 ## Getting Started<a id="getting-started"></a>
@@ -465,9 +466,9 @@ result = digitalExchange.iot.listEndpointLastValues(
 
 # Example iteration through result
 for entry in result:
-    attributeName = entry.attributeName
-    lastValue = entry.lastValue
-    timestamp = entry.timestamp
+    attributeName = entry["attributeName"]
+    lastValue = entry["lastValue"]
+    timestamp = entry["timestamp"]
 ```
 
 #### queryByTimeRange<a id="querybytimerange"></a>
@@ -1238,7 +1239,7 @@ Follow the steps below to build and push the new package version to PyPi. [(Pyth
 
 ## Generating Python types and GraphQL Client from GraphQL Schema
 
-See instructions in src/avista_digital_exchange_sdk/graphql_codegen/README.md
+See instructions in graphql_codegen/README.md
 
 ## Fix for py-graphql-mapper module
 
@@ -1252,6 +1253,10 @@ to
 '''
     elif fieldType == list or (hasattr(fieldType, '__origin__') and fieldType.__origin__ == list) or "gql_types.list_" in str(fieldType):
 '''
+
+## websocketclient / websocket-client submodule
+
+To mitigate an issue when using ```import websocket``` when both websocket and websocket-client packages are installed, we added a git submodule to reference websocket-client directly. Once the SDK moves away from the subscriptionClient.py usage, this can be removed.
 
 ## Resources<a id="resources"></a>
 
