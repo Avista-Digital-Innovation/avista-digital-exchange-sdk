@@ -91,7 +91,7 @@ pip3 install --upgrade avista-digital-exchange-sdk
 3. Import the module in your python script.
 4. Initialize the module with your authentication token.  The authentication token can be a user authentication token, or an iot endpoint authentication token.  If an endpoint token is used, only iot operations can be performed.
 
-```python
+```py
 from avista_digital_exchange_sdk import AvistaDigitalExchange
 
 digitalExchange = AvistaDigitalExchange("tokenvalue")
@@ -118,7 +118,7 @@ None
 
 **Example**
 
-```python
+```py
 user = digitalExchange.getUserInfo()
 ```
 
@@ -140,7 +140,7 @@ None
 
 **Example**
 
-```python
+```py
 dataStores = digitalExchange.dataStores.listDataStores()
 ```
 
@@ -161,7 +161,7 @@ dataStoreId :  str, required
 
 **Example**
 
-```python
+```py
 dataStore = digitalExchange.dataStores.getDataStore("dataStoreId.1234")
 
 dataStore.ls()
@@ -186,7 +186,7 @@ dataStoreDirectoryId :  str, required
 
 **Example**
 
-```python
+```py
 dir = digitalExchange.dataStores.getDataStoreDirectory("dataStoreDirectoryId.1234")
 ```
 
@@ -207,7 +207,7 @@ dataStoreFileId :  str, required
 
 **Example**
 
-```python
+```py
 file = digitalExchange.dataStores.getDataStoreFileMeta("dataStoreFileId.1234")
 ```
 
@@ -230,7 +230,7 @@ writeLocation :  str, required
 
 **Example**
 
-```python
+```py
 file = digitalExchange.dataStores.downloadDataStoreFile("dataStoreFileId.1234", "./")
 ```
 
@@ -259,7 +259,7 @@ description :  str, optional
 
 **Example**
 
-```python
+```py
 file = digitalExchange.dataStores.uploadFileToDataStore("dataStoreId.1234", "dataStoreDirectoryId.1234", "./testFile.txt")
 ```
 
@@ -280,7 +280,7 @@ dataStoreFileId :  str, required
 
 **Example**
 
-```python
+```py
 file = digitalExchange.dataStores.deleteDataStoreFile("dataStoreFileId.1234")
 ```
 
@@ -304,7 +304,7 @@ iotEndpointId :  str, required
 
 **Example**
 
-```python
+```py
 iotEndpointId = "iotEndpointId.1234"
 endpoint = digitalExchange.iot.getEndpoint(
      iotEndpointId)
@@ -338,7 +338,7 @@ description :  str, optional
 
 **Example**
 
-```python
+```py
 iotHubId = "iotHubId.1234"
 modelId = "modelId.4321"
 name = "Temperature Sensor"
@@ -395,7 +395,7 @@ telemetry :  [dict], required
 
 **Example**
 
-```python
+```py
 properties = [
     {
         "name": "Longitude",
@@ -462,7 +462,7 @@ resultFileWriteLocation :  str, optional
 
 **Example**
 
-```python
+```py
 iotEndpointId = "iotEndpointId.1234"
 result = digitalExchange.iot.listEndpointLastValues(
      iotEndpointId)
@@ -504,7 +504,7 @@ Bool indicating success or error
 
 **Example**
 
-```python
+```py
 result = digitalExchange.iot.queryByTimeRange(
     "iotEndpointId.1234", 
     ["SOC", "V", "V - Setpoint"], 
@@ -570,7 +570,7 @@ Dictionary shown below
 
 **Example**
 
-```python
+```py
 # Create the input data array
 inputData = [
     {
@@ -616,7 +616,7 @@ properties :  dict, required
 
 **Example**
 
-```python
+```py
 
 properties = {
     'moving': False
@@ -648,15 +648,9 @@ captureId :  str, required
 [DxTypes.StartCaptureResult](#dxtypesstartcaptureresult)
 
 
-**Example Code**
+**Example**
 
-[examples/dataCapture.startCapture.py](examples/dataCapture.startCapture.py)
-
-https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/blob/4e53e39b6356379a52a6029960c9257448071aea/examples/dataCapture.startCapture.py#L1-L30
-
-
-https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/blob/main/examples/dataCapture.startCapture.py#L1-L23
-```python
+```py
 import asyncio
 from avista_digital_exchange_sdk import AvistaDigitalExchange
 
@@ -702,7 +696,7 @@ captureId :  str, required
 
 **Example**
 
-```python
+```py
 import asyncio
 from avista_digital_exchange_sdk import AvistaDigitalExchange
 
@@ -750,20 +744,21 @@ data :  [DxTypes.CaptureDataRecordInput], required
 
 **Example**
 
-```python
-# captureDataPublishSample.py
+```py
 import asyncio
 import time
 from avista_digital_exchange_sdk import AvistaDigitalExchange, DxTypes
 
+authenticationToken = AUTHENTICATION_TOKEN_VALUE
+captureId = YOUR_CAPTURE_ID
+
 # Create an instance of the AvistaDigitalExchange SDK
 # You may use a user authentication token or the authentication token of the Data Capture
-digitalExchange = AvistaDigitalExchange(AUTHENTICATION_TOKEN_VALUE)
+digitalExchange = AvistaDigitalExchange(authenticationToken)
 print("Instantiated AvistaDigitalExchange instance with authentication token")
 
 # Specify the capture you are publishing data to.
 # NOTE: The capture must be in Capturing state to accept data
-captureId = YOUR_CAPTURE_ID
 
 def getCurrentMilliseconds():
     return int(f'{time.time() * 1000}'.split('.')[0])
@@ -808,7 +803,7 @@ AsyncIterator[[DxTypes.PublishCaptureDataResult](#dxtypespublishcapturedataresul
 
 **Example**
 
-```python
+```py
 import asyncio
 from avista_digital_exchange_sdk import AvistaDigitalExchange
 
