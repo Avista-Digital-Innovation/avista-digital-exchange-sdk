@@ -650,8 +650,10 @@ captureId :  str, required
 
 **Example**
 
-https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/blob/main/examples/dataCapture.startCapture.py#L1-L23
+https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/blob/4e53e39b6356379a52a6029960c9257448071aea/examples/dataCapture.startCapture.py#L1-L30
 
+
+https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/blob/main/examples/dataCapture.startCapture.py#L1-L23
 ```
 import asyncio
 from avista_digital_exchange_sdk import AvistaDigitalExchange
