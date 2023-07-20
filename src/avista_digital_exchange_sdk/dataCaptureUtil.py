@@ -16,13 +16,13 @@ class DataCaptureUtil(object):
         self._client = client
         self._logger = logger
 
-    async def listenForCaptureData(self, captureId: str) -> AsyncIterator[DxTypes.PublishCaptureDataResult]:
+    async def subscribeToData(self, captureId: str) -> AsyncIterator[DxTypes.PublishCaptureDataResult]:
         if self._debug:
             print("Subscribing to capture data....")
         async for item in self._client.updatedGqlClient.on_capture_publish_data(
                 capture_id=captureId):
             if self._debug:
-                print("DataCapture.listenForCaptureData: Data received.")
+                print("DataCapture.subscribeToData: Data received.")
             result = DxTypes.PublishCaptureDataResult.fromCapturePublishResult(
                 item.on_capture_publish_data)
             yield result

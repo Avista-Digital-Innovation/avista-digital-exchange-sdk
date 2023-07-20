@@ -34,9 +34,10 @@ This package allows you to access the Avista Digital Exchange and perform a subs
       - [publish](#publish)
       - [updateEndpointProperties](#updateendpointproperties)
     - [dataCapture](#datacapture)
-      - [publishData](#publishdata)
       - [startCapture](#startcapture)
       - [stopCapture](#stopcapture)
+      - [publishData](#publishdata)
+      - [subscribeToData](#subscribetodata)
   - [Types](#types)
     - [User](#user)
     - [Organization](#organization)
@@ -629,6 +630,99 @@ digitalExchange.iot.updateEndpointProperties(
 
 ### dataCapture<a id="datacapture"></a>
 
+
+#### startCapture<a id="startcapture"></a>
+
+Commands a Data Capture to begin collecting data. Capture must be in 'Ready' state for startCapture to succeed.
+
+**Parameters**
+
+```
+captureId :  str, required
+    The id of the Data Capture.
+```
+
+**Return Type**
+
+[DxTypes.StartCaptureResult](#dxtypesstartcaptureresult)
+
+
+**Example**
+
+```
+import asyncio
+from avista_digital_exchange_sdk import AvistaDigitalExchange
+
+# NOTE: The capture must be in 'READY' state to be started.
+captureId = CAPTURE_ID
+authenticationToken = AUTHENTICATION_TOKEN
+
+
+async def main():
+    # Create an instance of the AvistaDigitalExchange SDK
+    # You may use a user authentication token or the authentication token of the Data Capture
+    digitalExchange = AvistaDigitalExchange(authenticationToken)
+    print("Instantiated AvistaDigitalExchange instance with authentication token")
+
+    try:
+        print("Calling dataCapture.startCapture")
+        result = await digitalExchange.dataCapture.startCapture(
+            captureId=captureId)
+    except:
+        print("dataCapture.startCapture failed")
+
+if __name__ == "__main__":
+    asyncio.run(main())
+
+```
+
+
+#### stopCapture<a id="stopcapture"></a>
+
+Commands a Data Capture to stop collecting data. Capture must be in 'CAPTURING' state for stopCapture to succeed.
+
+**Parameters**
+
+```
+captureId :  str, required
+    The id of the Data Capture.
+```
+
+**Return Type**
+
+[DxTypes.StopCaptureResult](#dxtypesstopcaptureresult)
+
+
+**Example**
+
+```
+import asyncio
+from avista_digital_exchange_sdk import AvistaDigitalExchange
+
+# NOTE: The capture must be in 'CAPTURING' state to be stopped.
+captureId = CAPTURE_ID
+authenticationToken = AUTHENTICATION_TOKEN
+
+
+async def main():
+    # Create an instance of the AvistaDigitalExchange SDK
+    # You may use a user authentication token or the authentication token of the Data Capture
+    digitalExchange = AvistaDigitalExchange(authenticationToken)
+    print("Instantiated AvistaDigitalExchange instance with authentication token")
+
+    try:
+        print("Calling dataCapture.stopCapture")
+        result = await digitalExchange.dataCapture.stopCapture(
+            captureId=captureId)
+    except:
+        print("dataCapture.stopCapture failed")
+
+if __name__ == "__main__":
+    asyncio.run(main())
+
+```
+
+
 #### publishData<a id="publishdata"></a>
 
 Publish attribute values to an active Data Capture.
@@ -690,57 +784,9 @@ async def publishDataExample():
 asyncio.run(publishDataExample())
 ```
 
-#### startCapture<a id="startcapture"></a>
+#### subscribeToData<a id="subscribetodata"></a>
 
-Commands a Data Capture to begin collecting data. Capture must be in 'Ready' state for startCapture to succeed.
-
-**Parameters**
-
-```
-captureId :  str, required
-    The id of the Data Capture.
-```
-
-**Return Type**
-
-[DxTypes.StartCaptureResult](#dxtypesstartcaptureresult)
-
-
-**Example**
-
-```
-# captureDataPublishSample.py
-import asyncio
-import time
-from avista_digital_exchange_sdk import AvistaDigitalExchange, DxTypes
-
-# Create an instance of the AvistaDigitalExchange SDK
-# You may use a user authentication token or the authentication token of the Data Capture
-digitalExchange = AvistaDigitalExchange(AUTHENTICATION_TOKEN_VALUE)
-print("Instantiated AvistaDigitalExchange instance with authentication token")
-
-# Specify the capture you are starting.
-# NOTE: The capture must be in 'READY' state to accept data
-captureId = YOUR_CAPTURE_ID
-
-def getCurrentMilliseconds():
-    return int(f'{time.time() * 1000}'.split('.')[0])
-
-async def startCaptureExample():
-    try:
-        print("Calling dataCapture.startCapture")
-        result = await digitalExchange.dataCapture.startCapture(
-            captureId=captureId)
-    except:
-        print("dataCapture.startCapture failed")
-
-asyncio.run(startCaptureExample())
-```
-
-
-#### stopCapture<a id="stopcapture"></a>
-
-Commands a Data Capture to stop collecting data. Capture must be in 'CAPTURING' state for stopCapture to succeed.
+Listen for data being published to a Data Capture in realtime.
 
 **Parameters**
 
@@ -751,40 +797,39 @@ captureId :  str, required
 
 **Return Type**
 
-[DxTypes.StopCaptureResult](#dxtypesstopcaptureresult)
-
+AsyncIterator[[DxTypes.PublishCaptureDataResult](#dxtypespublishcapturedataresult)]
 
 **Example**
 
 ```
-# captureDataPublishSample.py
 import asyncio
-import time
-from avista_digital_exchange_sdk import AvistaDigitalExchange, DxTypes
+from avista_digital_exchange_sdk import AvistaDigitalExchange
 
-# Create an instance of the AvistaDigitalExchange SDK
-# You may use a user authentication token or the authentication token of the Data Capture
-digitalExchange = AvistaDigitalExchange(AUTHENTICATION_TOKEN_VALUE)
-print("Instantiated AvistaDigitalExchange instance with authentication token")
+authenticationToken = AUTHENTICATION_TOKEN
+captureId = CAPTURE_ID
 
-# Specify the capture you are stopping.
-# NOTE: The capture must be in 'CAPTURING' state to be stopped.
-captureId = YOUR_CAPTURE_ID
 
-def getCurrentMilliseconds():
-    return int(f'{time.time() * 1000}'.split('.')[0])
+async def main():
+    # Create an instance of the AvistaDigitalExchange SDK
+    # You may use a user authentication token or the authentication token of the Data Capture
+    digitalExchange = AvistaDigitalExchange(authenticationToken)
+    print("Instantiated AvistaDigitalExchange instance with authentication token")
 
-async def stopCaptureExample():
     try:
-        print("Calling dataCapture.stopCapture")
-        result = await digitalExchange.dataCapture.stopCapture(
-            captureId=captureId)
-    except:
-        print("dataCapture.stopCapture failed")
+        print("Calling dataCapture.subscribeToData")
+        # The for-loop will run each time a data publish event is received.
+        async for result in digitalExchange.dataCapture.subscribeToData(
+                captureId=captureId):
+            print("DataCapture.subscribeToData: Data received.")
+            print("Do something with data...")
+    except Exception as error:
+        print(f"dataCapture.subscribeToData failed with error: {error}")
+        raise error
 
-asyncio.run(stopCaptureExample())
+if __name__ == "__main__":
+    asyncio.run(main())
+
 ```
-
 
 
 ---
