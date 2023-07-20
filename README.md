@@ -8,6 +8,7 @@ This package allows you to access the Avista Digital Exchange and perform a subs
 
 *Note: This document contains HTML tags at each section header to support internal document references in the PyPi markdown viewer. View [this readme_renderer issue](https://github.com/pypa/readme_renderer/issues/169) for more information.*
 
+
 ## Table of Contents<a id="table-of-contents"></a>
 
 *Note: Internal document links are not working when viewing this document in PyPi because of this [readme_renderer](https://github.com/pypa/readme_renderer/issues/169) issue*
@@ -648,6 +649,8 @@ captureId :  str, required
 
 
 **Example**
+
+https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/blob/main/examples/dataCapture.startCapture.py#L1-L23
 
 ```
 import asyncio
