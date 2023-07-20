@@ -78,20 +78,20 @@ This package allows you to access the Avista Digital Exchange and perform a subs
 
 1. Install the python package.
 
-```
+```bash
 pip3 install avista-digital-exchange-sdk
 ```
 
 2. Ensure you have the latest version.
 
-```
+```bash
 pip3 install --upgrade avista-digital-exchange-sdk
 ```
 
 3. Import the module in your python script.
 4. Initialize the module with your authentication token.  The authentication token can be a user authentication token, or an iot endpoint authentication token.  If an endpoint token is used, only iot operations can be performed.
 
-```
+```python
 from avista_digital_exchange_sdk import AvistaDigitalExchange
 
 digitalExchange = AvistaDigitalExchange("tokenvalue")
@@ -118,7 +118,7 @@ None
 
 **Example**
 
-```
+```python
 user = digitalExchange.getUserInfo()
 ```
 
@@ -140,7 +140,7 @@ None
 
 **Example**
 
-```
+```python
 dataStores = digitalExchange.dataStores.listDataStores()
 ```
 
@@ -161,7 +161,7 @@ dataStoreId :  str, required
 
 **Example**
 
-```
+```python
 dataStore = digitalExchange.dataStores.getDataStore("dataStoreId.1234")
 
 dataStore.ls()
@@ -186,7 +186,7 @@ dataStoreDirectoryId :  str, required
 
 **Example**
 
-```
+```python
 dir = digitalExchange.dataStores.getDataStoreDirectory("dataStoreDirectoryId.1234")
 ```
 
@@ -207,7 +207,7 @@ dataStoreFileId :  str, required
 
 **Example**
 
-```
+```python
 file = digitalExchange.dataStores.getDataStoreFileMeta("dataStoreFileId.1234")
 ```
 
@@ -230,7 +230,7 @@ writeLocation :  str, required
 
 **Example**
 
-```
+```python
 file = digitalExchange.dataStores.downloadDataStoreFile("dataStoreFileId.1234", "./")
 ```
 
@@ -259,7 +259,7 @@ description :  str, optional
 
 **Example**
 
-```
+```python
 file = digitalExchange.dataStores.uploadFileToDataStore("dataStoreId.1234", "dataStoreDirectoryId.1234", "./testFile.txt")
 ```
 
@@ -280,7 +280,7 @@ dataStoreFileId :  str, required
 
 **Example**
 
-```
+```python
 file = digitalExchange.dataStores.deleteDataStoreFile("dataStoreFileId.1234")
 ```
 
@@ -304,7 +304,7 @@ iotEndpointId :  str, required
 
 **Example**
 
-```
+```python
 iotEndpointId = "iotEndpointId.1234"
 endpoint = digitalExchange.iot.getEndpoint(
      iotEndpointId)
@@ -338,7 +338,7 @@ description :  str, optional
 
 **Example**
 
-```
+```python
 iotHubId = "iotHubId.1234"
 modelId = "modelId.4321"
 name = "Temperature Sensor"
@@ -395,7 +395,7 @@ telemetry :  [dict], required
 
 **Example**
 
-```
+```python
 properties = [
     {
         "name": "Longitude",
@@ -462,7 +462,7 @@ resultFileWriteLocation :  str, optional
 
 **Example**
 
-```
+```python
 iotEndpointId = "iotEndpointId.1234"
 result = digitalExchange.iot.listEndpointLastValues(
      iotEndpointId)
@@ -504,7 +504,7 @@ Bool indicating success or error
 
 **Example**
 
-```
+```python
 result = digitalExchange.iot.queryByTimeRange(
     "iotEndpointId.1234", 
     ["SOC", "V", "V - Setpoint"], 
@@ -570,7 +570,7 @@ Dictionary shown below
 
 **Example**
 
-```
+```python
 # Create the input data array
 inputData = [
     {
@@ -616,7 +616,7 @@ properties :  dict, required
 
 **Example**
 
-```
+```python
 
 properties = {
     'moving': False
@@ -648,13 +648,15 @@ captureId :  str, required
 [DxTypes.StartCaptureResult](#dxtypesstartcaptureresult)
 
 
-**Example**
+**Example Code**
+
+[examples/dataCapture.startCapture.py](examples/dataCapture.startCapture.py)
 
 https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/blob/4e53e39b6356379a52a6029960c9257448071aea/examples/dataCapture.startCapture.py#L1-L30
 
 
 https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/blob/main/examples/dataCapture.startCapture.py#L1-L23
-```
+```python
 import asyncio
 from avista_digital_exchange_sdk import AvistaDigitalExchange
 
@@ -700,7 +702,7 @@ captureId :  str, required
 
 **Example**
 
-```
+```python
 import asyncio
 from avista_digital_exchange_sdk import AvistaDigitalExchange
 
@@ -748,7 +750,7 @@ data :  [DxTypes.CaptureDataRecordInput], required
 
 **Example**
 
-```
+```python
 # captureDataPublishSample.py
 import asyncio
 import time
@@ -806,7 +808,7 @@ AsyncIterator[[DxTypes.PublishCaptureDataResult](#dxtypespublishcapturedataresul
 
 **Example**
 
-```
+```python
 import asyncio
 from avista_digital_exchange_sdk import AvistaDigitalExchange
 
