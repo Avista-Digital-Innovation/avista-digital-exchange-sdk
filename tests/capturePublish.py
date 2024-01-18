@@ -6,7 +6,6 @@
 import asyncio
 from src.avista_digital_exchange_sdk import AvistaDigitalExchange, DxTypes
 import time
-from typing import List, Dict
 
 
 async def main():
@@ -14,11 +13,11 @@ async def main():
     # Create an instance of the ADX SDK
     # You may use a user authentication token or the authentication token of the Data Capture
     digitalExchange = AvistaDigitalExchange(
-        "")
+        "8eb938fa-33be-49d2-9c8d-0ada6a94b4db")
     print("Instantiated AvistaDigitalExchange object with authentication token")
 
     # Specify the capture you are publishing data to
-    captureId = "dataCapture.71dcb979-d96c-4595-9d94-4c5edb7ff02c"
+    captureId = "dataCapture.68877650-42f8-4381-9b63-c70b550c3632"
 
     # Start Data Capture
     # try:

@@ -135,7 +135,7 @@ class AsyncBaseClient:
 
         async with ws_connect(
             self.ws_url,
-            subprotocols=[Subprotocol(GRAPHQL_TRANSPORT_WS)],
+            subprotocols=[GRAPHQL_TRANSPORT_WS],
             origin=self.ws_origin,
             extra_headers=self.ws_headers,
         ) as websocket:

@@ -47,7 +47,7 @@ class GraphQLClientGraphQLError(GraphQLClientError):
     @classmethod
     def from_dict(cls, error: dict[str, Any]) -> "GraphQLClientGraphQLError":
         return cls(
-            message=error["message"],
+            message=error.get("message"),
             locations=error.get("locations"),
             path=error.get("path"),
             extensions=error.get("extensions"),
