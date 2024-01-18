@@ -25,6 +25,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.6] - 2024-01-18
+
+### Fixed
+
+- Updated the required python version. Earlier versions were failing due to typing.
+
 ## [0.3.5] - 2024-01-17
 
 ### Fixed
@@ -211,7 +217,8 @@ First Beta-ready release.
      - addServiceToCollaborative
      - removeServiceFromCollaborative
 
-[Unreleased]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2024_01_17_v0.3.5...HEAD
+[Unreleased]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2024_01_18_v0.3.6...HEAD
+[0.3.5]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2024_01_17_v0.3.5...release/2024_01_18_v0.3.6
 [0.3.5]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2023_07_18_v0.3.3...release/2024_01_17_v0.3.5
 [0.3.3]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2023_06_15_v0.3.0...release/2023_07_18_v0.3.3
 [0.3.0]: https://github.com/Avista-Digital-Innovation/avista-digital-exchange-sdk/compare/release/2023_02_15_v0.2.1...release/2023_06_15_v0.3.0
