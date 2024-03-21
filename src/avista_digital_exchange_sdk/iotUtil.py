@@ -21,6 +21,7 @@ from .data_types.model_telemetry_input import ModelTelemetryInput
 import time
 import signal
 import datetime
+import re
 
 
 class IoTUtil(object):
@@ -110,10 +111,12 @@ class IoTUtil(object):
             if self._debug:
                 print(
                     f'received query result chunk {result.resultChunkIndex}')
-
+                    
+        export = True
         # get onNotifyObject
         subscription = self._getSubscriptionToQueryExportFileCompletion(
             queryId)
+
 
         # Generate export file
         mutationResult = self._generateQueryResultFile(queryId, "CSV")
@@ -125,10 +128,15 @@ class IoTUtil(object):
         if self._debug:
             print(exportFileResult)
 
-        exportFileResult.downloadAndWriteFile(
-            exportFileResult.url, resultWriteLocation)
+        if resultWriteLocation is not None:
+            exportFileResult.downloadAndWriteFile(
+                exportFileResult.url, resultWriteLocation)
 
-        return True
+        else:
+            exportText = exportFileResult.downloadFile(exportFileResult.url)
+            export = self._generateRangeQueryDict(exportText)
+        
+        return export
 
     def getEndpoint(self, iotEndpointId):
         query = iot_getEndpoint(
@@ -161,6 +169,40 @@ class IoTUtil(object):
             self._client, self._debug, queryId, fileFormat)
         result = mutation.performMutation()
         return result
+
+    def _generateRangeQueryDict(self, text):
+        rows = text.split('\n')
+        if rows[-1] == '':
+            rows.pop()
+        
+        # First row in the csv text file is the headers
+        headers = rows[0].split(',')
+
+        result = []
+        for data_row in rows[1:]:
+
+            data = {}
+
+            headerCount = 0
+            data_values = data_row.split(',')
+            for header in headers:
+                data[header] = self._convertFromString(data_values[headerCount])
+                headerCount += 1
+
+            result.append(data)
+        
+        return result
+    
+    def _convertFromString(self, value):
+        result = value
+        if re.search('^-?\d+\.\d+$', value):
+            result = float(value)
+        elif re.search('^-?\d+$', value):
+            result = int(value)
+
+        return result
+
+
 
     def createEndpoint(self, iotHubId, modelId, name, description=None):
         mutation = iot_createEndpoint(

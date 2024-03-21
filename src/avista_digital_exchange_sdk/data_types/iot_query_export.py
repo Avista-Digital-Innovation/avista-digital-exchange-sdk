@@ -56,6 +56,10 @@ class IotQueryExport:
         open(fullWritePath, "wb").write(response.content)
         print('Wrote query export file to ' + fullWritePath)
 
+    def downloadFile(self, url) -> dict:
+        response = requests.get(url)        
+        return response.text
+
     @staticmethod
     def createWritePath(writeLocation, cloudFilename):
         # if location is a directory, append the cloudFilename
