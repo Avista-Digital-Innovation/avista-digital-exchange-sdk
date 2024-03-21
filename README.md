@@ -494,13 +494,21 @@ startTime :  ISO8601 str, required
 endTime: ISO8601 str, required
     The end of the time interval.
     Example: "2022-10-27T10:22:45.000Z"
-resultFileWriteLocation: str, required
+resultFileWriteLocation: str, optional
     The location to store the result file on the local file system. If a directory is provided but not a file name, the file will be saved as result.csv in the specified directory.
 ```
 
 **Return Type**
 
-Bool indicating success or error
+Bool indicating success or error (When resultFileWriteLocation is given)
+
+List including the response values (When resultFileWriteLocation is not given)
+
+    [
+        { 'iotEndpointId': 'iotEndpointId.1234', name: 'Iot Endpoint Name', timestamp: '2024-03-19 10:39:31.942000000', 'attribute1': 1.0, 'attribute2': 2.0'},
+        { 'iotEndpointId': 'iotEndpointId.1234', name: 'Iot Endpoint Name', timestamp: '2024-03-19 10:40:31.942000000', 'attribute1': 1.1, 'attribute2': 2.1'}   
+    ]
+
 
 **Example**
 
