@@ -202,8 +202,6 @@ class IoTUtil(object):
 
         return result
 
-
-
     def createEndpoint(self, iotHubId, modelId, name, description=None):
         mutation = iot_createEndpoint(
             self._client, self._debug, iotHubId, modelId, name, description)
