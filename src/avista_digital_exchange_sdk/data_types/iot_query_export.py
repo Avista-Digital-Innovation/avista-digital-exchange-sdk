@@ -56,7 +56,7 @@ class IotQueryExport:
         open(fullWritePath, "wb").write(response.content)
         print('Wrote query export file to ' + fullWritePath)
 
-    def downloadFile(self, url) -> dict:
+    def downloadFile(self, url):
         response = requests.get(url)        
         return response.text
 

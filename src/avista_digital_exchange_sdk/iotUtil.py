@@ -127,12 +127,10 @@ class IoTUtil(object):
             if self._debug:
                 print(
                     f'received query result chunk {result.resultChunkIndex}')
-                    
-        export = True
+
         # get onNotifyObject
         subscription = self._getSubscriptionToQueryExportFileCompletion(
             queryId)
-
 
         # Generate export file
         mutationResult = self._generateQueryResultFile(queryId, "CSV")
