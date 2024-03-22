@@ -495,7 +495,7 @@ startTime :  ISO8601 str, required
 endTime: ISO8601 str, required
     The end of the time interval.
     Example: "2022-10-27T10:22:45.000Z"
-resultFileWriteLocation: str, optional
+resultFileWriteLocation: str, required
     The location to store the result file on the local file system. If a directory is provided but not a file name, the file will be saved as result.csv in the specified directory.
 ```
 
@@ -537,7 +537,6 @@ endTime: ISO8601 str, required
 ```
 
 **Return Type**
-
 
 List including the response values
 
