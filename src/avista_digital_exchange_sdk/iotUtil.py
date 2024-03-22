@@ -74,7 +74,23 @@ class IoTUtil(object):
         result = mutation.performMutation()
         return result
 
-    def queryByTimeRange(self, iotEndpointId, attributeNames, startTime, endTime, resultWriteLocation=None):
+    def queryByTimeRange(self, iotEndpointId, attributeNames, startTime, endTime, resultWriteLocation):
+        exportFileResult = self._genQueryByTimeRange(iotEndpointId, attributeNames, startTime, endTime, resultWriteLocation)
+        
+        exportFileResult.downloadAndWriteFile(exportFileResult.url, resultWriteLocation)
+
+        return True
+
+    def queryDataByTimeRange(self, iotEndpointId, attributeNames, startTime, endTime):
+        exportFileResult = self._genQueryByTimeRange(iotEndpointId, attributeNames, startTime, endTime)
+        
+        exportText = exportFileResult.downloadFile(exportFileResult.url)
+        export = self._generateRangeQueryDict(exportText)
+        
+        return export
+
+
+    def _genQueryByTimeRange(self, iotEndpointId, attributeNames, startTime, endTime, resultWriteLocation=None):
 
         date = datetime.datetime.strptime(startTime, '%Y-%m-%dT%H:%M:%S.%fZ')
         startTime = int(
@@ -128,15 +144,8 @@ class IoTUtil(object):
         if self._debug:
             print(exportFileResult)
 
-        if resultWriteLocation is not None:
-            exportFileResult.downloadAndWriteFile(
-                exportFileResult.url, resultWriteLocation)
+        return exportFileResult
 
-        else:
-            exportText = exportFileResult.downloadFile(exportFileResult.url)
-            export = self._generateRangeQueryDict(exportText)
-        
-        return export
 
     def getEndpoint(self, iotEndpointId):
         query = iot_getEndpoint(
