@@ -32,6 +32,7 @@ This package allows you to access the Avista Digital Exchange and perform a subs
       - [createModel](#createmodel)
       - [listEndpointLastValues](#listendpointlastvalues)
       - [queryByTimeRange](#querybytimerange)
+      - [queryDataByTimeRange](#querydatabytimerange)
       - [publish](#publish)
       - [updateEndpointProperties](#updateendpointproperties)
     - [dataCapture](#datacapture)
@@ -511,6 +512,47 @@ result = digitalExchange.iot.queryByTimeRange(
     "2022-09-25T20:13:04.465Z", 
     "2022-09-26T20:58:04.465Z", 
     "./")
+```
+
+#### queryDataByTimeRange<a id="querydatabytimerange"></a>
+
+Queries the endpoint data using attribute and time filters, returning as a dictionary
+
+You must provide a time range and the attributeNames that you wish to query. The method automatically 
+iterates over all pagination tokens so the result will be compiled upon completion. When the compiled result is available.
+
+**Parameters**
+
+```
+iotEndpointId :  str, required
+    The id of the endpoint.
+attributeNames :  [str], required
+    The attributes to include in the query result.
+startTime :  ISO8601 str, required
+    The beginning of the time interval.
+    Example: "2022-09-27T10:22:45.000Z"
+endTime: ISO8601 str, required
+    The end of the time interval.
+    Example: "2022-10-27T10:22:45.000Z"
+```
+
+**Return Type**
+
+List including the response values
+
+    [
+        { 'iotEndpointId': 'iotEndpointId.1234', name: 'Iot Endpoint Name', timestamp: '2024-03-19 10:39:31.942000000', 'attribute1': 1.0, 'attribute2': 2.0'},
+        { 'iotEndpointId': 'iotEndpointId.1234', name: 'Iot Endpoint Name', timestamp: '2024-03-19 10:40:31.942000000', 'attribute1': 1.1, 'attribute2': 2.1'}   
+    ]
+
+**Example**
+
+```py
+result = digitalExchange.iot.queryDataByTimeRange(
+    "iotEndpointId.1234", 
+    ["SOC", "V", "V - Setpoint"], 
+    "2022-09-25T20:13:04.465Z", 
+    "2022-09-26T20:58:04.465Z")
 ```
 
 #### publish<a id="iotpublish"></a>
