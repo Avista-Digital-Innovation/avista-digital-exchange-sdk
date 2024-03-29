@@ -75,29 +75,31 @@ class IoTUtil(object):
         return result
 
     def queryByTimeRange(self, iotEndpointId, attributeNames, startTime, endTime, resultWriteLocation):
-        exportFileResult = self._genQueryByTimeRange(iotEndpointId, attributeNames, startTime, endTime, resultWriteLocation)
-        
-        exportFileResult.downloadAndWriteFile(exportFileResult.url, resultWriteLocation)
+        exportFileResult = self._genQueryByTimeRange(
+            iotEndpointId, attributeNames, startTime, endTime, resultWriteLocation)
+
+        exportFileResult.downloadAndWriteFile(
+            exportFileResult.url, resultWriteLocation)
 
         return True
 
     def queryDataByTimeRange(self, iotEndpointId, attributeNames, startTime, endTime):
-        exportFileResult = self._genQueryByTimeRange(iotEndpointId, attributeNames, startTime, endTime)
-        
+        exportFileResult = self._genQueryByTimeRange(
+            iotEndpointId, attributeNames, startTime, endTime)
+
         exportText = exportFileResult.downloadFile(exportFileResult.url)
         export = self._generateRangeQueryDict(exportText)
-        
-        return export
 
+        return export
 
     def _genQueryByTimeRange(self, iotEndpointId, attributeNames, startTime, endTime, resultWriteLocation=None):
 
         date = datetime.datetime.strptime(startTime, '%Y-%m-%dT%H:%M:%S.%fZ')
         startTime = int(
-            (date - datetime.datetime(1970, 1, 1)).total_seconds()*1000)
+            (date - datetime.datetime(1970, 1, 1)).total_seconds() * 1000)
         date = datetime.datetime.strptime(endTime, '%Y-%m-%dT%H:%M:%S.%fZ')
         endTime = int(
-            (date - datetime.datetime(1970, 1, 1)).total_seconds()*1000)
+            (date - datetime.datetime(1970, 1, 1)).total_seconds() * 1000)
 
         filter = EndpointQueryFilterInput(iotEndpointId, attributeNames)
         endpointFilterInput = [filter]
@@ -144,7 +146,6 @@ class IoTUtil(object):
 
         return exportFileResult
 
-
     def getEndpoint(self, iotEndpointId):
         query = iot_getEndpoint(
             self._client, self._debug, iotEndpointId)
@@ -181,7 +182,7 @@ class IoTUtil(object):
         rows = text.split('\n')
         if rows[-1] == '':
             rows.pop()
-        
+
         # First row in the csv text file is the headers
         headers = rows[0].split(',')
 
@@ -193,16 +194,17 @@ class IoTUtil(object):
             headerCount = 0
             data_values = data_row.split(',')
             for header in headers:
-                data[header] = self._convertFromString(data_values[headerCount])
+                data[header] = self._convertFromString(
+                    data_values[headerCount])
                 headerCount += 1
 
             result.append(data)
-        
+
         return result
-    
+
     def _convertFromString(self, value):
         result = value
-        if re.search('^-?\d+\.\d+$', value):
+        if re.search('^-?\d+\.\d+(?:E-?\d+)?$', value):
             result = float(value)
         elif re.search('^-?\d+$', value):
             result = int(value)
