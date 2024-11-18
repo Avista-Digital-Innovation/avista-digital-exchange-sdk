@@ -5,6 +5,8 @@ from typing import List
 
 from .async_graphql_client.data_capture_publish_data import DataCapturePublishDataDataCapturePublishData
 
+from .async_graphql_client.iot_publish import IotPublishIotPublish
+
 
 class TimeUnitEnum(Enum):
     MILLISECONDS = 1
@@ -136,7 +138,7 @@ class StartCaptureResult(DxTypeBaseClass):
     startedAt: str | None
     error: str | None
 
-    def __init__(self, success: bool, captureId: str,  startedAt: str | None = None, error: str | None = None) -> None:
+    def __init__(self, success: bool, captureId: str, startedAt: str | None = None, error: str | None = None) -> None:
         self.success = success
         self.captureId = captureId
         self.startedAt = startedAt
@@ -149,8 +151,134 @@ class StopCaptureResult(DxTypeBaseClass):
     stoppedAt: str | None
     error: str | None
 
-    def __init__(self, success: bool, captureId: str,  stoppedAt: str | None = None, error: str | None = None) -> None:
+    def __init__(self, success: bool, captureId: str, stoppedAt: str | None = None, error: str | None = None) -> None:
         self.success = success
         self.captureId = captureId
         self.stoppedAt = stoppedAt
         self.error = error
+
+
+class IotEndpointAttributeValue(DxTypeBaseClass):
+    name: str
+    schemaType: str
+    value: str
+
+    def __init__(self,
+                 name: str,
+                 schemaType: str,
+                 value: str) -> None:
+        self.name = name
+        self.schemaType = schemaType
+        self.value = value
+
+    def toDict(self):
+        return vars(self)
+
+
+class IotEndpointDataRecord(DxTypeBaseClass):
+    attributes: List[IotEndpointAttributeValue]
+    iotEndpointId: str
+    timestamp: str
+    timeUnit: str
+
+    def __init__(self,
+                 attributes: List[IotEndpointAttributeValue],
+                 iotEndpointId: str,
+                 timestamp: str,
+                 timeUnit: str) -> None:
+        self.attributes = attributes
+        self.iotEndpointId = iotEndpointId
+        self.timestamp = timestamp
+        self.timeUnit = timeUnit
+
+    def toDict(self):
+        result = vars(self)
+        result['attributes'] = list(map(lambda x: x.toDict(), self.attributes))
+        return (result)
+
+
+class IotEndpointDataRecordError(DxTypeBaseClass):
+    errorMessage: str
+    errorType: str
+
+    def __init__(self,
+                 errorMessage: str,
+                 errorType: str) -> None:
+        self.errorMessage = errorMessage
+        self.errorType = errorType
+
+    def toDict(self):
+        result = vars(self)
+        return result
+
+
+class IotEndpointPublishDataFailedRecord(DxTypeBaseClass):
+    record: IotEndpointDataRecord
+    errors: List[IotEndpointDataRecordError]
+
+    def __init__(self,
+                 record: IotEndpointDataRecord,
+                 errors: List[IotEndpointDataRecordError]) -> None:
+        self.record = record
+        self.errors = errors
+
+    def toDict(self):
+        result = {
+            "record": self.record.toDict(),
+            "errors": list(map(lambda x: x.toDict(), self.errors)),
+        }
+        return result
+
+
+class IotEndpointPublishDataResult(DxTypeBaseClass):
+    iotEndpointId: str
+    recordsWritten: List[IotEndpointDataRecord] | None
+    failedRecords: List[IotEndpointPublishDataFailedRecord] | None
+
+    def __init__(self,
+                 iotEndpointId: str,
+                 recordsWritten: List[IotEndpointDataRecord] | None = None,
+                 failedRecords: List[IotEndpointPublishDataFailedRecord] | None = None) -> None:
+        self.iotEndpointId = iotEndpointId
+        self.recordsWritten = recordsWritten
+        self.failedRecords = failedRecords
+
+    def toDict(self):
+        result = {
+            "iotEndpointId": self.iotEndpointId,
+            "recordsWritten": list(map(lambda x: x.toDict(), self.recordsWritten)),
+            "failedRecords": list(map(lambda x: x.toDict(), self.failedRecords)),
+        }
+        return result
+
+    @staticmethod
+    def fromIotEndpointPublishResult(result: IotPublishIotPublish):
+        recordsWritten = []
+        failedRecords = []
+
+        # Process successful records
+        for record in result.records_written:
+            recordsWritten.append(
+                IotEndpointDataRecord(
+                    attributes=list(map(lambda entry: IotEndpointAttributeValue(
+                        entry.name, entry.schema_type, entry.value), record.attributes)),
+                    iotEndpointId=record.iot_endpoint_id,
+                    timestamp=record.timestamp,
+                    timeUnit="MILLISECONDS"))
+
+        # Process failed records
+        for record in result.failed_records:
+            failedRecords.append(
+                IotEndpointPublishDataFailedRecord(
+                    record=IotEndpointDataRecord(
+                        attributes=list(map(lambda entry: IotEndpointAttributeValue(
+                            entry.name, entry.schema_type, entry.value), record.attributes)),
+                        iotEndpointId=record.iot_endpoint_id,
+                        timestamp=record.timestamp,
+                        timeUnit="MILLISECONDS"),
+                    errors=map(lambda entry: IotEndpointDataRecordError(entry), record.errors)))
+
+        return IotEndpointPublishDataResult(
+            iotEndpointId=result.iot_endpoint_id,
+            recordsWritten=recordsWritten,
+            failedRecords=failedRecords)

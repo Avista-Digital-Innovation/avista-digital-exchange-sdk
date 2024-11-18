@@ -13,67 +13,68 @@ This package allows you to access the Avista Digital Exchange and perform a subs
 
 *Note: Internal document links are not working when viewing this document in PyPi because of this [readme_renderer](https://github.com/pypa/readme_renderer/issues/169) issue*
 
-- [Avista Digital Exchange SDK](#avista-digital-exchange-sdk)
-  - [Table of Contents](#table-of-contents)
-  - [Getting Started](#getting-started)
-  - [AvistaDigitalExchange Functions](#avistadigitalexchange-functions)
-    - [getUserInfo](#getuserinfo)
-    - [dataStore](#datastore)
-      - [listDataStores](#listdatastores)
-      - [getDataStore](#getdatastore)
-      - [getDataStoreDirectory](#getdatastoredirectory)
-      - [getDataStoreFileMeta](#getdatastorefilemeta)
-      - [downloadDataStoreFile](#downloaddatastorefile)
-      - [uploadFileToDataStore](#uploadfiletodatastore)
-      - [deleteDataStoreFile](#deletedatastorefile)
-    - [iot](#iot)
-      - [getEndpoint](#getendpoint)
-      - [createEndpoint](#createendpoint)
-      - [createModel](#createmodel)
-      - [listEndpointLastValues](#listendpointlastvalues)
-      - [queryByTimeRange](#querybytimerange)
-      - [queryDataByTimeRange](#querydatabytimerange)
-      - [publish](#publish)
-      - [updateEndpointProperties](#updateendpointproperties)
-    - [dataCapture](#datacapture)
-      - [startCapture](#startcapture)
-      - [stopCapture](#stopcapture)
-      - [publishData](#publishdata)
-      - [subscribeToData](#subscribetodata)
-  - [Types](#types)
-    - [User](#user)
-    - [Organization](#organization)
-    - [DataStore](#datastore-1)
-      - [Methods](#methods)
-        - [cd](#cd)
-        - [ls](#ls)
-        - [pwd](#pwd)
-        - [uploadFile](#uploadfile)
-        - [downloadFile](#downloadfile)
-        - [deleteFile](#deletefile)
-    - [DataStoreDirectory](#datastoredirectory)
-      - [Methods](#methods-1)
-        - [printContents](#printcontents)
-    - [DataStoreFile](#datastorefile)
-    - [DigitalTwinModel](#digitaltwinmodel)
-    - [ModelProperty](#modelproperty)
-    - [ModelTelemetry](#modeltelemetry)
-    - [IotEndpoint](#iotendpoint)
-    - [EndpointProperty](#endpointproperty)
-    - [EndpointTelemetry](#endpointtelemetry)
-    - [DxTypes.CaptureDataRecordInput](#dxtypescapturedatarecordinput)
-    - [DxTypes.PublishCaptureDataResult](#dxtypespublishcapturedataresult)
-    - [DxTypes.PublishCaptureDataSuccessfulRecord](#dxtypespublishcapturedatasuccessfulrecord)
-    - [DxTypes.PublishCaptureDataFailedRecord](#dxtypespublishcapturedatafailedrecord)
-    - [DxTypes.StartCaptureResult](#dxtypesstartcaptureresult)
-    - [DxTypes.StopCaptureResult](#dxtypesstopcaptureresult)
-  - [Troubleshooting](#troubleshooting)
-  - [Development](#development)
-  - [Deployment](#deployment)
-  - [Generating Python types and GraphQL Client from GraphQL Schema](#generating-python-types-and-graphql-client-from-graphql-schema)
-  - [Fix for py-graphql-mapper module](#fix-for-py-graphql-mapper-module)
-  - [websocketclient / websocket-client submodule](#websocketclient--websocket-client-submodule)
-  - [Resources](#resources)
+1. [Avista Digital Exchange SDK](#avista-digital-exchange-sdk)
+   1. [Table of Contents](#table-of-contents)
+   2. [Getting Started](#getting-started)
+   3. [AvistaDigitalExchange Functions](#avistadigitalexchange-functions)
+      1. [getUserInfo](#getuserinfo)
+      2. [dataStore](#datastore)
+         1. [listDataStores](#listdatastores)
+         2. [getDataStore](#getdatastore)
+         3. [getDataStoreDirectory](#getdatastoredirectory)
+         4. [getDataStoreFileMeta](#getdatastorefilemeta)
+         5. [downloadDataStoreFile](#downloaddatastorefile)
+         6. [uploadFileToDataStore](#uploadfiletodatastore)
+         7. [deleteDataStoreFile](#deletedatastorefile)
+      3. [iot](#iot)
+         1. [getEndpoint](#getendpoint)
+         2. [createEndpoint](#createendpoint)
+         3. [createModel](#createmodel)
+         4. [listEndpointLastValues](#listendpointlastvalues)
+         5. [queryByTimeRange](#querybytimerange)
+         6. [queryDataByTimeRange](#querydatabytimerange)
+         7. [publish](#publish)
+         8. [updateEndpointProperties](#updateendpointproperties)
+         9. [subscribeToEndpoint ](#subscribetoendpoint-)
+      4. [dataCapture](#datacapture)
+         1. [startCapture](#startcapture)
+         2. [stopCapture](#stopcapture)
+         3. [publishData](#publishdata)
+         4. [subscribeToData](#subscribetodata)
+   4. [Types](#types)
+      1. [User](#user)
+      2. [Organization](#organization)
+      3. [DataStore](#datastore-1)
+         1. [Methods](#methods)
+            1. [cd](#cd)
+            2. [ls](#ls)
+            3. [pwd](#pwd)
+            4. [uploadFile](#uploadfile)
+            5. [downloadFile](#downloadfile)
+            6. [deleteFile](#deletefile)
+      4. [DataStoreDirectory](#datastoredirectory)
+         1. [Methods](#methods-1)
+            1. [printContents](#printcontents)
+      5. [DataStoreFile](#datastorefile)
+      6. [DigitalTwinModel](#digitaltwinmodel)
+      7. [ModelProperty](#modelproperty)
+      8. [ModelTelemetry](#modeltelemetry)
+      9. [IotEndpoint](#iotendpoint)
+      10. [EndpointProperty](#endpointproperty)
+      11. [EndpointTelemetry](#endpointtelemetry)
+      12. [DxTypes.CaptureDataRecordInput](#dxtypescapturedatarecordinput)
+      13. [DxTypes.PublishCaptureDataResult](#dxtypespublishcapturedataresult)
+      14. [DxTypes.PublishCaptureDataSuccessfulRecord](#dxtypespublishcapturedatasuccessfulrecord)
+      15. [DxTypes.PublishCaptureDataFailedRecord](#dxtypespublishcapturedatafailedrecord)
+      16. [DxTypes.StartCaptureResult](#dxtypesstartcaptureresult)
+      17. [DxTypes.StopCaptureResult](#dxtypesstopcaptureresult)
+   5. [Troubleshooting](#troubleshooting)
+   6. [Development](#development)
+   7. [Deployment](#deployment)
+   8. [Generating Python types and GraphQL Client from GraphQL Schema](#generating-python-types-and-graphql-client-from-graphql-schema)
+   9. [Fix for py-graphql-mapper module](#fix-for-py-graphql-mapper-module)
+   10. [websocketclient / websocket-client submodule](#websocketclient--websocket-client-submodule)
+   11. [Resources](#resources)
 
 ## Getting Started<a id="getting-started"></a>
 
@@ -667,6 +668,87 @@ properties = {
 digitalExchange.iot.updateEndpointProperties(
      "iotEndpointId.1234",
      properties)
+```
+
+#### subscribeToEndpoint <a id="subscribetoendpoint"></a>
+
+Subscribe to real-time updates from IoT endpoint publish events.
+
+**Parameters**
+
+```
+iotEndpointId :  str, required
+    The id of the endpoint.
+```
+
+**Return Type**
+
+Dictionary shown below
+
+```
+{
+    'iotEndpointId': 'iotEndpointId.1234',
+    'recordsWritten': [
+        {
+            'timestamp': '1670008999', 
+            'iotEndpointId': 'iotEndpointId.1234',
+            'attributes': [
+                {
+                    'name': 'speed',
+                    'value': '24.5'
+                }
+            ]
+        }
+    ],
+    'recordsFailed': [
+        {
+            'record': {
+                'timestamp': '1670007999',
+                'iotEndpointId': 'iotEndpointId.1234',
+                'attributes': [
+                    {
+                        'name': 'speed',
+                        'value': '24.5'
+                    }
+                ]
+            },
+            'errors': [
+                {
+                    'errorType': 'DUPLICATE_RECORD',
+                    'errorMessage': 'A record already exists for this endpoint at the given timestamp.'
+                }
+            ]
+        }
+    ]
+}
+```
+
+**Example**
+
+```py
+import tracemalloc
+import asyncio
+from avista_digital_exchange_sdk import AvistaDigitalExchange
+
+# Specify the endpoint you are subscribing to
+iotEndpointId = ENDPOINT_ID
+authenticationToken = AUTHENTICATION_TOKEN
+dxInstance = AvistaDigitalExchange(
+    authenticationToken, True)
+
+async def subscriptionTest():
+    try:
+        async for result in dxInstance.iot.subscribeToEndpoint(
+                endpointId=iotEndpointId):
+            # This code block runs each time a subscription event is received.
+            print(result)
+
+    except Exception as error:
+        print(f"iot.subscribeToEndpoint failed with error: {error}")
+        raise error
+
+
+asyncio.run(subscriptionTest())
 ```
 
 ---

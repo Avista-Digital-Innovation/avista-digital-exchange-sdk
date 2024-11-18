@@ -1,4 +1,7 @@
 
+from typing import AsyncIterator
+
+from . import DxTypes
 from .endpointUtil import *
 from .exceptions import *
 
@@ -56,6 +59,20 @@ class IoTUtil(object):
             'recordsWritten': resultDict["recordsWritten"],
             'recordsFailed': resultDict["failedRecords"]
         }
+
+    # -> AsyncIterator[DxTypes.PublishCaptureDataResult]:
+    async def subscribeToEndpoint(self, endpointId: str):
+
+        if self._debug:
+            print("Subscribing to endpoint data....")
+        async for item in self._client.updatedGqlClient.on_iot_publish(
+                iot_endpoint_id=endpointId):
+            if self._debug:
+                print("IoTUtil.subscribeToEndpoint: Data received.")
+
+            result = DxTypes.IotEndpointPublishDataResult.fromIotEndpointPublishResult(
+                item.on_iot_publish)
+            yield result
 
     def updateEndpointProperties(self, iotEndpointId, properties):
         for key in properties:

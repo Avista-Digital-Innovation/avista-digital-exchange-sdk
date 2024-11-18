@@ -37,6 +37,7 @@ class PublishIotDataResult:
         tabStr = globals.getTabStr(tabs)
 
         return f""" {{
+{tabStr}iotEndpointId
 {tabStr}{f"recordsWritten {IotDataRecord.getQueryString(tabs + 1, subobjectsRemaining - 1)}" if subobjectsRemaining > 0 else ""}
 {tabStr}{f"failedRecords {IotDataRecordWithErrors.getQueryString(tabs + 1, subobjectsRemaining - 1)}" if subobjectsRemaining > 0 else ""}
 {tabStr[0:-4]}}} """

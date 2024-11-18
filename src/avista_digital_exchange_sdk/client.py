@@ -11,6 +11,7 @@ class Client:
 
     def __init__(self, token, stage, debug):
         APPSYNC_API_ENDPOINT_URL_dev = 'https://annsvlcb4vew7msipwjyzzvyhi.appsync-api.us-west-2.amazonaws.com/graphql'
+
         APPSYNC_API_ENDPOINT_URL_prod = 'https://rrfs7pb7ancybo7bom7uxcsaxq.appsync-api.us-west-2.amazonaws.com/graphql'
 
         self.token = token
@@ -45,7 +46,7 @@ class Client:
         print(self.APPSYNC_API_ENDPOINT_URL)
         print(self.APPSYNC_API_WS_URL)
         self.updatedGqlClient = GeneratedGraphqlClient(url=self.APPSYNC_API_ENDPOINT_URL,
-                                                       ws_url="wss://annsvlcb4vew7msipwjyzzvyhi.appsync-realtime-api.us-west-2.amazonaws.com/graphql"
+                                                       ws_url=self.APPSYNC_API_WS_URL
                                                        + '?header=' +
                                                        headerEncode(
                                                          wsHeaders) + '&payload=e30=',

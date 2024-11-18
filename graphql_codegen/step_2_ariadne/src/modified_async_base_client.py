@@ -129,7 +129,7 @@ class AsyncBaseClient:
         return cast(dict[str, Any], data)
 
     async def execute_ws(
-        self, query: str, variables: Optional[Dict[str, Any]] = None
+        self, query: str, variables: Optional[Dict[str, Any]] = None, requestName=""
     ) -> AsyncIterator[Dict[str, Any]]:
         operation_id = str(uuid4())
 
@@ -139,11 +139,11 @@ class AsyncBaseClient:
             origin=self.ws_origin,
             extra_headers=self.ws_headers,
         ) as websocket:
-            def quitHandler(signum, frame):
-                # Stop subscription on terminate
-                self._send_stop(websocket=websocket, operation_id=operation_id)
+            # def quitHandler(signum, frame):
+            #     # Stop subscription on terminate
+            #     self._send_stop(websocket=websocket, operation_id=operation_id)
 
-            signal.signal(signal.SIGINT, quitHandler)
+            # signal.signal(signal.SIGINT, quitHandler)
 
             await self._send_connection_init(websocket)
 
@@ -152,6 +152,7 @@ class AsyncBaseClient:
                 operation_id=operation_id,
                 query=query,
                 variables=variables,
+                requestName=requestName
             )
 
             async for message in websocket:
@@ -189,6 +190,7 @@ class AsyncBaseClient:
         operation_id: str,
         query: str,
         variables: Optional[Dict[str, Any]] = None,
+        requestName: str = ""
     ) -> None:
         payload: Dict[str, Any] = {
             "id": operation_id,
@@ -198,7 +200,7 @@ class AsyncBaseClient:
                     "query": query,
                     "variables":
                         variables,
-                    "operationName": "onCapturePublishData"
+                    "operationName": requestName
                 }),
                 "extensions": self.ws_extensions
             },

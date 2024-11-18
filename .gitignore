@@ -160,3 +160,6 @@ graphql_codegen/input/schema.graphql
 graphql_codegen/step_1_gqlg/output/
 
 my-test-files
+myTestFiles
+runTests.py
+testing
