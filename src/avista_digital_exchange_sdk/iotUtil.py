@@ -12,6 +12,7 @@ from .graphql_mutations.iot_cancelQuery import iot_cancelQuery
 from .graphql_mutations.iot_createEndpoint import iot_createEndpoint
 from .graphql_mutations.iot_createModel import iot_createModel
 from .graphql_queries.iot_getEndpoint import iot_getEndpoint
+from .graphql_queries.iot_getGroup import iot_getGroup
 from .graphql_queries.iot_listEndpointLastValues import iot_listEndpointLastValues
 from .graphql_queries.iot_queryByTimeRange import iot_queryByTimeRange
 from .graphql_subscriptions.onNotifyIotQueryExportComplete import onNotifyIotQueryExportComplete
@@ -166,6 +167,12 @@ class IoTUtil(object):
     def getEndpoint(self, iotEndpointId):
         query = iot_getEndpoint(
             self._client, self._debug, iotEndpointId)
+        result = query.performQuery()
+        return result
+
+    def getGroup(self, iotGroupId, includeEndpoints):
+        query = iot_getGroup(
+            self._client, self._debug, iotGroupId, includeEndpoints)
         result = query.performQuery()
         return result
 
