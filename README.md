@@ -30,6 +30,7 @@ This package allows you to access the Avista Digital Exchange and perform a subs
          1. [getEndpoint](#getendpoint)
          1. [getGroup](#getgroup)
          2. [createEndpoint](#createendpoint)
+         2. [addEndpointsToGroup](#addendpointstogroup)
          3. [createModel](#createmodel)
          4. [listEndpointLastValues](#listendpointlastvalues)
          5. [queryByTimeRange](#querybytimerange)
@@ -382,6 +383,37 @@ endpoint = digitalExchange.iot.createEndpoint(
     name,
     description)
 ```
+
+
+#### addEndpointsToGroup<a id="addendpointstogroup"></a>
+
+Adds an existing IoT Endpoint to an IoT Group.
+
+**Parameters**
+
+```
+iotGroupId :  str, required
+    The group that will get the endpoint(s).
+iotEndpointId :  str|list, required
+    The endpoints that will be added. If there is only one endpoint, a string may be passed in place of a list.
+```
+
+**Return Type**
+
+[IotGroup](#iotgroup)
+
+**Example**
+
+```py
+iotGroupId = "iotGroupId.1234"
+iotEndpointIds = ["iotEndpointId.4321", "iotEndpointId.5678"]
+
+
+group = digitalExchange.iot.addEndpointsToGroup(
+    iotGroupId,
+    iotEndpointIds)
+```
+
 
 
 #### createModel<a id="createmodel"></a>
