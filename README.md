@@ -28,7 +28,9 @@ This package allows you to access the Avista Digital Exchange and perform a subs
          7. [deleteDataStoreFile](#deletedatastorefile)
       3. [iot](#iot)
          1. [getEndpoint](#getendpoint)
+         1. [getGroup](#getgroup)
          2. [createEndpoint](#createendpoint)
+         2. [addEndpointsToGroup](#addendpointstogroup)
          3. [createModel](#createmodel)
          4. [listEndpointLastValues](#listendpointlastvalues)
          5. [queryByTimeRange](#querybytimerange)
@@ -317,6 +319,34 @@ for telemetry in endpoint.telemetry:
     print(f"Telemetry attribute {telemetry.name} has type {telemetry.schemaType}.")
 ```
 
+#### getGroup<a id="getgroup"></a>
+
+Gets information about the iot group.  Can include information about the endpoints.
+
+**Parameters**
+
+```
+iotGroupId :  str, required
+includeEndpoints :  bool, required
+```
+
+**Return Type**
+
+[IotGroup](#iotgroup)
+
+**Example**
+
+```py
+iotGroupId = "iotGroupId.1234"
+includeEndpoints = True
+group = digitalExchange.iot.getGroup(
+     iotEndpointId
+     includeEndpoints)
+
+for endpoint in group.endpoints:
+    print(f"Endpoint {endpoint.name} has id {endpoint.iotEndpointId}.")
+```
+
 
 #### createEndpoint<a id="createendpoint"></a>
 
@@ -353,6 +383,37 @@ endpoint = digitalExchange.iot.createEndpoint(
     name,
     description)
 ```
+
+
+#### addEndpointsToGroup<a id="addendpointstogroup"></a>
+
+Adds an existing IoT Endpoint to an IoT Group.
+
+**Parameters**
+
+```
+iotGroupId :  str, required
+    The group that will get the endpoint(s).
+iotEndpointId :  str|list, required
+    The endpoints that will be added. If there is only one endpoint, a string may be passed in place of a list.
+```
+
+**Return Type**
+
+[IotGroup](#iotgroup)
+
+**Example**
+
+```py
+iotGroupId = "iotGroupId.1234"
+iotEndpointIds = ["iotEndpointId.4321", "iotEndpointId.5678"]
+
+
+group = digitalExchange.iot.addEndpointsToGroup(
+    iotGroupId,
+    iotEndpointIds)
+```
+
 
 
 #### createModel<a id="createmodel"></a>
@@ -1242,6 +1303,21 @@ properties: [EndpointProperty]
     The properties and their values. Properties are associated through the digital twin model used by the endpoint.
 telemetry: [EndpointTelemetry]
     The telemetry attributes of the endpoint. Telemetry variables are associated through the digital twin model used by the endpoint.
+```
+
+### IotGroup<a id="iotgroup"></a>
+
+**Properties**
+
+```
+iotGroupId: str
+iotHubId: str
+    The iot hub the group belongs to.
+name: str
+    The name of the group.
+description: str
+endpoints: [IotEndpoint]
+    Endpoints contained within the Group.
 ```
 
 ### EndpointProperty<a id="endpointproperty"></a>

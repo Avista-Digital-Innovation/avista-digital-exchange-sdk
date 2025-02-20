@@ -10,8 +10,10 @@ from .graphql_mutations.iot_updateEndpointProperties import iot_updateEndpointPr
 from .graphql_mutations.iot_generateQueryResultExport import iot_generateQueryResultExport
 from .graphql_mutations.iot_cancelQuery import iot_cancelQuery
 from .graphql_mutations.iot_createEndpoint import iot_createEndpoint
+from .graphql_mutations.iot_addEndpointsToGroup import iot_addEndpointsToGroup
 from .graphql_mutations.iot_createModel import iot_createModel
 from .graphql_queries.iot_getEndpoint import iot_getEndpoint
+from .graphql_queries.iot_getGroup import iot_getGroup
 from .graphql_queries.iot_listEndpointLastValues import iot_listEndpointLastValues
 from .graphql_queries.iot_queryByTimeRange import iot_queryByTimeRange
 from .graphql_subscriptions.onNotifyIotQueryExportComplete import onNotifyIotQueryExportComplete
@@ -169,6 +171,12 @@ class IoTUtil(object):
         result = query.performQuery()
         return result
 
+    def getGroup(self, iotGroupId, includeEndpoints):
+        query = iot_getGroup(
+            self._client, self._debug, iotGroupId, includeEndpoints)
+        result = query.performQuery()
+        return result
+
     def listEndpointLastValues(self, iotEndpointId):
         query = iot_listEndpointLastValues(
             self._client, self._debug, iotEndpointId)
@@ -231,6 +239,15 @@ class IoTUtil(object):
     def createEndpoint(self, iotHubId, modelId, name, description=None):
         mutation = iot_createEndpoint(
             self._client, self._debug, iotHubId, modelId, name, description)
+        result = mutation.performMutation()
+        return result
+
+    def addEndpointsToGroup(self, iotGroupId, iotEndpointIds):
+        if type(iotEndpointIds) is str:
+            iotEndpointIds = [iotEndpointIds]
+
+        mutation = iot_addEndpointsToGroup(
+            self._client, self._debug, iotGroupId, iotEndpointIds)
         result = mutation.performMutation()
         return result
 
