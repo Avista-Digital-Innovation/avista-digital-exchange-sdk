@@ -43,8 +43,7 @@ class Client:
         }}
 
         # ssl._create_default_https_context = ssl._create_unverified_context
-        print(self.APPSYNC_API_ENDPOINT_URL)
-        print(self.APPSYNC_API_WS_URL)
+
         self.updatedGqlClient = GeneratedGraphqlClient(url=self.APPSYNC_API_ENDPOINT_URL,
                                                        ws_url=self.APPSYNC_API_WS_URL
                                                        + '?header=' +
