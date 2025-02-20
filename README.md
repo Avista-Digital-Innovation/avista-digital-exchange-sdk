@@ -344,7 +344,7 @@ group = digitalExchange.iot.getGroup(
      includeEndpoints)
 
 for endpoint in group.endpoints:
-    print(f"Property {endpoint.name} has id {endpoint.iotEndpointId}.")
+    print(f"Endpoint {endpoint.name} has id {endpoint.iotEndpointId}.")
 ```
 
 

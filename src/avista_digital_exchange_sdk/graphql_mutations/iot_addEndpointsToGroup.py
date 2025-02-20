@@ -22,7 +22,6 @@ class iot_addEndpointsToGroup(Mutation):
 }}"""
 
     def performMutation(self):
-        print(f"Publishing data to endpoint {self.iotGroupId}...")
         self._result = self._client.performMutation(self._getMutationString())
         return self._processResult()
 
